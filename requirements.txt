@@ -1,0 +1,77 @@
+# ---------------------------
+# CORE AI + LLM STACK
+# ---------------------------
+openai>=1.35.0
+langgraph>=0.1.17
+langchain>=0.2.15
+langchain-core>=0.2.13
+langchain-community>=0.2.11
+
+# ---------------------------
+# DATA / STORAGE
+# ---------------------------
+pinecone-client>=3.2.2
+pydantic>=2.7.4
+python-dotenv>=1.0.1
+
+# ---------------------------
+# WEB SERVER (API)
+# ---------------------------
+fastapi>=0.111.0
+uvicorn>=0.30.1
+requests>=2.31.0
+
+# ---------------------------
+# GOOGLE OAUTH + GMAIL + CALENDAR
+# ---------------------------
+google-auth>=2.29.0
+google-auth-oauthlib>=1.2.0
+google-api-python-client>=2.131.0
+
+# ---------------------------
+# TELEGRAM BOT SUPPORT
+# ---------------------------
+python-telegram-bot>=21.0.1
+
+# ---------------------------
+# FIRELIES MEETING TRANSCRIPTION
+# ---------------------------
+aiohttp>=3.9.5
+
+# ---------------------------
+# AUDIO PROCESSING
+# ---------------------------
+pydub>=0.25.1
+ffmpeg-python>=0.2.0
+
+# ---------------------------
+# UTILITIES + VALIDATION + LOGGING
+# ---------------------------
+tenacity>=8.2.3
+python-dateutil>=2.9.0
+pytz>=2024.1
+
+# ---------------------------
+# TTS (ElevenLabs)
+# ---------------------------
+elevenlabs>=1.5.0
+
+# ---------------------------
+# SCRAPING / BROWSER AGENT
+# ---------------------------
+beautifulsoup4>=4.12.3
+
+# ---------------------------
+# WEATHER + EXTERNAL APIs
+# ---------------------------
+httpx>=0.27.0
+
+# ---------------------------
+# SECURITY
+# ---------------------------
+cryptography>=42.0.5
+
+# ---------------------------
+# DEVELOPMENT HELPERS
+# ---------------------------
+pytest>=8.2.0

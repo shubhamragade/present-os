@@ -1,0 +1,51 @@
+{
+  "parent": {
+    "type": "page_id",
+    "page_id": "2b233e0db053800bb521d85252f25dc7"
+  },
+
+  "title": [
+    {
+      "type": "text",
+      "text": { "content": "Name" }
+    }
+  ],
+
+  "properties": {
+    "Name": { "title": {} },
+
+    "Email": { "email": {} },
+
+    "Last Contacted": { "date": {} },
+
+    "Notes": { "rich_text": {} },
+
+    "Phone": { "phone": {} },
+
+    "Tone Preference": {
+      "select": {
+        "options": [
+          { "name": "Formal", "color": "blue" },
+          { "name": "Casual", "color": "green" },
+          { "name": "Friendly", "color": "yellow" },
+          { "name": "Professional", "color": "purple" }
+        ]
+      }
+    },
+
+    "Relationship Type": {
+      "select": {
+        "options": [
+          { "name": "Work", "color": "blue" },
+          { "name": "Client", "color": "yellow" },
+          { "name": "Friend", "color": "green" },
+          { "name": "Family", "color": "purple" }
+        ]
+      }
+    },
+
+    "Google Contact ID": { "rich_text": {} },
+
+    "Preferred Meeting Length (min)": { "number": {} }
+  }
+}

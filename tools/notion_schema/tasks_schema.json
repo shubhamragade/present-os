@@ -1,0 +1,88 @@
+{
+  "parent": {
+    "type": "page_id",
+    "page_id": "2b233e0db053800bb521d85252f25dc7"
+  },
+  "title": [
+    {
+      "type": "text",
+      "text": { "content": "Name" }
+    }
+  ],
+  "properties": {
+    "Name": { "title": {} },
+
+    "Description": { "rich_text": {} },
+
+    "Deadline": { "date": {} },
+
+    "Energy Level": {
+      "select": {
+        "options": [
+          { "name": "Low", "color": "green" },
+          { "name": "Medium", "color": "yellow" },
+          { "name": "High", "color": "red" }
+        ]
+      }
+    },
+
+    "Estimated Duration (min)": { "number": {} },
+
+    "PAEI": {
+      "select": {
+        "options": [
+          { "name": "Producer", "color": "red" },
+          { "name": "Administrator", "color": "blue" },
+          { "name": "Entrepreneur", "color": "green" },
+          { "name": "Integrator", "color": "purple" }
+        ]
+      }
+    },
+
+    "Map": {
+      "relation": { "database_id": "2c633e0d-b053-8112-b604-c72df67fd92f" }
+    },
+
+    "Quest": {
+      "relation": { "database_id": "2c633e0d-b053-8138-b802-e7ad13d6b435" }
+    },
+
+    "Related XP": {
+      "relation": { "database_id": "2c633e0d-b053-812c-acfb-e6941c951d25" }
+    },
+
+    "Source": {
+      "select": {
+        "options": [
+          { "name": "Voice", "color": "blue" },
+          { "name": "Telegram", "color": "green" },
+          { "name": "Email", "color": "yellow" },
+          { "name": "Fireflies", "color": "red" },
+          { "name": "Manual", "color": "gray" }
+        ]
+      }
+    },
+
+    "User": { "rich_text": {} },
+
+    "Status": {
+      "select": {
+        "options": [
+          { "name": "Pending", "color": "yellow" },
+          { "name": "In Progress", "color": "blue" },
+          { "name": "Scheduled", "color": "orange" },
+          { "name": "Completed", "color": "green" },
+          { "name": "Cancelled", "color": "red" }
+        ]
+      }
+    },
+
+    "Completed Date": { "date": {} },
+
+    "Google Event ID": { "rich_text": {} },
+
+    "Fireflies Meeting ID": { "rich_text": {} },
+
+    "Auto-Scheduled": { "checkbox": {} }
+  }
+}

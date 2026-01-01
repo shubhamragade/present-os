@@ -1,0 +1,48 @@
+{
+  "parent": {
+    "type": "page_id",
+    "page_id": "2b233e0db053800bb521d85252f25dc7"
+  },
+
+  "title": [
+    {
+      "type": "text",
+      "text": { "content": "Name" }
+    }
+  ],
+
+  "properties": {
+    "Name": { "title": {} },
+
+    "Amount": { "number": {} },
+
+    "Date": { "date": {} },
+
+    "PAEI": {
+      "select": {
+        "options": [
+          { "name": "Producer", "color": "red" },
+          { "name": "Administrator", "color": "blue" },
+          { "name": "Entrepreneur", "color": "green" },
+          { "name": "Integrator", "color": "purple" }
+        ]
+      }
+    },
+
+    "Reason": { "rich_text": {} },
+
+    "Task": {
+      "relation": { "database_id": "2c633e0d-b053-813e-8855-eca0c1010582" }
+    },
+
+    "MAP": {
+      "relation": { "database_id": "2c633e0d-b053-8112-b604-c72df67fd92f" }
+    },
+
+    "Quest": {
+      "relation": { "database_id": "2c633e0d-b053-8138-b802-e7ad13d6b435" }
+    },
+
+    "Week Number": { "number": {} }
+  }
+}

@@ -1,0 +1,61 @@
+{
+  "parent": {
+    "type": "page_id",
+    "page_id": "2b233e0db053800bb521d85252f25dc7"
+  },
+
+  "title": [
+    {
+      "type": "text",
+      "text": { "content": "Name" }
+    }
+  ],
+
+  "properties": {
+    "Name": { "title": {} },
+
+    "Purpose": { "rich_text": {} },
+
+    "Result": { "rich_text": {} },
+
+    "Start Date": { "date": {} },
+
+    "End Date": { "date": {} },
+
+    "Status": {
+      "select": {
+        "options": [
+          { "name": "Not Started", "color": "gray" },
+          { "name": "In Progress", "color": "blue" },
+          { "name": "Paused", "color": "yellow" },
+          { "name": "Completed", "color": "green" }
+        ]
+      }
+    },
+
+    "Category": {
+      "select": {
+        "options": [
+          { "name": "Business", "color": "blue" },
+          { "name": "Health", "color": "green" },
+          { "name": "Learning", "color": "yellow" },
+          { "name": "Relationships", "color": "purple" }
+        ]
+      }
+    },
+
+    "XP Target": { "number": {} },
+
+    "KPI": { "rich_text": {} },
+
+    "Related MAPs": {
+      "relation": { "database_id": "2c633e0d-b053-8112-b604-c72df67fd92f" }
+    },
+
+    "Related Tasks": {
+      "relation": { "database_id": "2c633e0d-b053-813e-8855-eca0c1010582" }
+    },
+
+    "User": { "rich_text": {} }
+  }
+}
