@@ -45,7 +45,7 @@ class QuestService:
             "Result": self.notion._prop_text(data["result"]),
             "Category": self.notion._prop_select(data["category"]),
             "User": self.notion._prop_text(data["avatar"]),
-            "Status": self.notion._prop_select("Active"),
+            "Status": self.notion._prop_select("In Progress"),
         }
 
         if data.get("xp_target") is not None:

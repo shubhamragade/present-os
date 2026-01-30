@@ -1,0 +1,21 @@
+Starting Integration Checks...
+
+--- Checking Notion ---
+[OK] Notion Connected. Active Quest: Build PresentOS MVP
+
+--- Checking Weather ---
+[OK] Weather Connected. Forecast: clear, Rain Risk: low
+
+--- Checking Google Calendar ---
+[FAIL] Calendar Failed: ('invalid_scope: Bad Request', {'error': 'invalid_scope', 'error_description': 'Bad Request'})
+
+--- Checking Gmail ---
+[OK] Gmail Connected. Found 3 unread emails.
+
+=== SUMMARY ===
+[OK] Notion
+[OK] Weather
+[FAIL] Calendar
+[OK] Gmail
+
+Some integrations failed. Check logs above.

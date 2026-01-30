@@ -1,12 +1,18 @@
-from fastapi import FastAPI, WebSocket, WebSocketDisconnect
+from fastapi import FastAPI, WebSocket, WebSocketDisconnect, UploadFile, File, Response
 from pydantic import BaseModel
 from datetime import datetime
 import asyncio
 import logging
+import os
+import tempfile
 
 from app.integrations.notion_client import NotionClient
+from app.integrations.whisper_client import WhisperClient
+from app.integrations.murf_client import MurfClient
 from app.graph.state import PresentOSState
 from app.graph.graph_executor import build_presentos_graph
+from app.services.notification_service import get_notification_service
+from app.services.notification_service import get_notification_service
 
 # Configure logging
 logging.basicConfig(level=logging.INFO)
@@ -151,7 +157,16 @@ async def status():
                     "icon": "🌊"
                 },
                 "todays_plan": ["Deep work", "Email review", "Team sync"],
-                "tasks": tasks,
+                "tasks": [
+                    {
+                        "id": task["id"],
+                        "title": task["name"],  # Map name -> title for frontend
+                        "status": "done" if task["status"] == "Done" else "pending",
+                        "due": task.get("due"),
+                        "questId": task.get("quest_id")
+                    }
+                    for task in tasks
+                ],
                 "notifications": [
                     {"title": "🎯 Quest Active", "message": quest_data["name"], "time": "Today", "read": False}
                 ],
@@ -173,6 +188,48 @@ async def status():
                 "notifications": [],
                 "agents": []
             }
+        }
+
+
+@app.get("/api/energy")
+async def get_energy():
+    """Get current energy status with contextual message"""
+    try:
+        # Mock WHOOP data for now (replace with real WHOOP API later)
+        recovery = 75  # Could come from WHOOP API
+        strain = 12.5
+        
+        # Determine energy level and message
+        if recovery >= 67:
+            level = "high"
+            message = "Perfect for deep work or surfing 🌊"
+            emoji = "⚡"
+        elif recovery >= 34:
+            level = "medium"
+            message = "Good for meetings and light tasks"
+            emoji = "🔋"
+        else:
+            level = "low"
+            message = "Time to rest and recharge"
+            emoji = "🪫"
+        
+        return {
+            "recovery": recovery,
+            "strain": strain,
+            "level": level,
+            "message": message,
+            "emoji": emoji,
+            "advice": message
+        }
+    except Exception as e:
+        logger.error(f"Error in /api/energy: {e}")
+        return {
+            "recovery": 70,
+            "strain": 10,
+            "level": "medium",
+            "message": "Energy data unavailable",
+            "emoji": "🔋",
+            "advice": "Continue with normal activities"
         }
 
 
@@ -258,7 +315,16 @@ async def chat(request: ChatRequest):
                     "icon": "🌊"
                 },
                 "todays_plan": ["Deep work", "Email review", "Team sync"],
-                "tasks": tasks,
+                "tasks": [
+                    {
+                        "id": task["id"],
+                        "title": task["name"],
+                        "status": "done" if task["status"] == "Done" else "pending",
+                        "due": task.get("due"),
+                        "questId": task.get("quest_id")
+                    }
+                    for task in tasks
+                ],
                 "notifications": notifications,
                 "agents": [
                     {"name": "Task Agent", "status": "🟢 Running", "last_action": "Just now"},
@@ -278,6 +344,105 @@ async def chat(request: ChatRequest):
             "avatar": "Warrior",
             "updated_state": {}
         }
+
+
+# Notification Endpoints
+@app.get("/api/notifications")
+async def get_notifications(user_id: str = "default", unread_only: bool = False):
+    """Get notifications for user"""
+    try:
+        notification_service = get_notification_service()
+        notifications = notification_service.get_notifications(user_id, unread_only)
+        unread_count = notification_service.get_unread_count(user_id)
+        
+        return {
+            "notifications": notifications,
+            "unread_count": unread_count
+        }
+    except Exception as e:
+        logger.error(f"Error fetching notifications: {e}")
+        return {"notifications": [], "unread_count": 0}
+
+
+@app.post("/api/notifications/{notification_id}/read")
+async def mark_notification_read(notification_id: str):
+    """Mark a notification as read"""
+    try:
+        notification_service = get_notification_service()
+        success = notification_service.mark_as_read(notification_id)
+        return {"success": success}
+    except Exception as e:
+        logger.error(f"Error marking notification as read: {e}")
+        return {"success": False}
+
+
+@app.post("/api/notifications/read-all")
+async def mark_all_notifications_read(user_id: str = "default"):
+    """Mark all notifications as read"""
+    try:
+        notification_service = get_notification_service()
+        count = notification_service.mark_all_as_read(user_id)
+        return {"success": True, "count": count}
+    except Exception as e:
+        logger.error(f"Error marking all notifications as read: {e}")
+        return {"success": False, "count": 0}
+
+
+@app.post("/api/notifications/test")
+async def create_test_notification(user_id: str = "default"):
+    """Create a test notification (for development)"""
+    try:
+        notification_service = get_notification_service()
+        
+        # Create a sample XP balance alert
+        notification = notification_service.create_xp_balance_alert(
+            lagging_role="I",
+            percentage=18.5,
+            suggestion="Consider adding 'Coffee with friend' task this week.",
+            user_id=user_id
+        )
+        
+        return {"success": True, "notification": notification_service._to_dict(notification)}
+    except Exception as e:
+        logger.error(f"Error creating test notification: {e}")
+        return {"success": False}
+
+
+# Voice Endpoints
+@app.post("/api/voice/stt")
+async def stt(file: UploadFile = File(...)):
+    """Transcribe uploaded audio file"""
+    whisper = WhisperClient.create_from_env()
+    if not whisper:
+        return {"error": "Whisper client not configured"}
+
+    try:
+        # Save to temp file
+        with tempfile.NamedTemporaryFile(delete=False, suffix=os.path.splitext(file.filename)[1]) as tmp:
+            tmp.write(await file.read())
+            tmp_path = tmp.name
+
+        transcript = whisper.transcribe(tmp_path)
+        os.unlink(tmp_path)
+
+        return {"text": transcript}
+    except Exception as e:
+        logger.error(f"STT error: {e}")
+        return {"error": str(e)}
+
+
+@app.post("/api/voice/tts")
+async def tts(request: ChatRequest):
+    """Synthesize text to speech using Murf AI"""
+    murf = MurfClient.create_from_env()
+    if not murf:
+        return {"error": "Murf client not configured"}
+
+    audio_content = murf.synthesize(request.message)
+    if not audio_content:
+        return {"error": "Synthesis failed"}
+
+    return Response(content=audio_content, media_type="audio/mpeg")
 
 
 @app.get("/api/xp/award")

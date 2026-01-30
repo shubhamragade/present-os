@@ -1,0 +1,266 @@
+INFO:httpx:HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+INFO:presentos.intent:Raw intent data for 'Start a 90 minute deep work session for coding...': {
+  "intents": [
+    {
+      "intent": "start_focus_session",
+      "category": "focus",
+      "payload": {
+        "duration_minutes": 90,
+        "deep_work": true
+      },
+      "paei_hint": "P"
+    }
+  ],
+  "read_domains": [],
+  "confidence": 0.9,
+  "explanation": "The user wants to initiate a focus session specifically for deep work related to coding.",
+  "paei_hint": "P"
+}
+INFO:presentos.graph:Graph invoked: 'Start a 90 minute deep work session for coding...'
+INFO:presentos.parent_agent:ParentNode making REAL decisions
+INFO:httpx:HTTP Request: POST https://api.openai.com/v1/embeddings "HTTP/1.1 200 OK"
+INFO:presentos.pinecone:Pinecone returned 3 matches
+INFO:presentos.parent_agent:RAG Retrieved 1 memories
+INFO:presentos.parent_agent:PAEI Decision: P - Fast execution required (deadline: low)
+INFO:presentos.parent_agent:RPM Result: 1.0 - proceed
+INFO:httpx:HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+INFO:httpx:HTTP Request: POST https://api.openai.com/v1/embeddings "HTTP/1.1 200 OK"
+INFO:presentos.pinecone:Upserted 1 vectors into namespace=user_patterns
+INFO:presentos.rag:Stored memory mem-21714777c2754064a344f2a394169714 (preference)
+INFO:presentos.parent_agent:Continuous learning: Memory writer check complete
+INFO:presentos.graph:Executing 3 instructions
+INFO:presentos.execution_router:Executing focus_agent with PAEI: P
+INFO:presentos.integrations.weather:Weather: clear, Wind: 5.0kt
+INFO:presentos.integrations.weather:Weather: clear, Wind: 5.0kt
+INFO:presentos.weather_agent:WeatherAgent: beach_day (confidence: 0.7)
+2026-01-25 23:00:16,106 INFO presentos.notion: Created XP entry: amount=14 paei=P week=4 id=2f333e0d-b053-8181-80ae-e39066117691
+INFO:presentos.notion:Created XP entry: amount=14 paei=P week=4 id=2f333e0d-b053-8181-80ae-e39066117691
+INFO:presentos.xp_agent:XP entry created: action=deep_work_block xp=14 page_id=2f333e0d-b053-8181-80ae-e39066117691
+INFO:httpx:HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+INFO:presentos.pinecone:PineconeClient initialized index=presentos-memory-1536 namespace=presentos-rag
+INFO:presentos.graph:Graph execution completed - PDF flow executed
+INFO:httpx:HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+INFO:presentos.intent:Raw intent data for 'Create a new quest: 'Project Zero' to build the fi...': {
+  "intents": [
+    {
+      "intent": "create_quest",
+      "category": "quest",
+      "payload": {
+        "name": "Project Zero",
+        "purpose": "to build the first agentic OS",
+        "result": "first agentic OS",
+        "category": "development"
+      },
+      "paei_hint": "P"
+    }
+  ],
+  "read_domains": [],
+  "confidence": 0.9,
+  "explanation": "User wants to create a new quest with specific details.",
+  "paei_hint": "P"
+}
+INFO:presentos.graph:Graph invoked: 'Create a new quest: 'Project Zero' to build the fi...'
+INFO:presentos.parent_agent:ParentNode making REAL decisions
+INFO:httpx:HTTP Request: POST https://api.openai.com/v1/embeddings "HTTP/1.1 200 OK"
+INFO:presentos.pinecone:Pinecone returned 3 matches
+INFO:presentos.parent_agent:RAG Retrieved 3 memories
+INFO:presentos.parent_agent:PAEI Decision: E - Strategic/visionary focus
+INFO:presentos.parent_agent:RPM Result: 1.0 - proceed
+INFO:httpx:HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+INFO:httpx:HTTP Request: POST https://api.openai.com/v1/embeddings "HTTP/1.1 200 OK"
+INFO:presentos.pinecone:Upserted 1 vectors into namespace=user_patterns
+INFO:presentos.rag:Stored memory mem-25b791ca406c41fdad5bb9f9f115617f (preference)
+INFO:presentos.parent_agent:Continuous learning: Memory writer check complete
+INFO:presentos.graph:Executing 3 instructions
+INFO:presentos.execution_router:Executing quest_agent with PAEI: E
+INFO:presentos.integrations.weather:Weather: clear, Wind: 5.0kt
+INFO:presentos.integrations.weather:Weather: clear, Wind: 5.0kt
+INFO:presentos.weather_agent:WeatherAgent: beach_day (confidence: 0.7)
+2026-01-25 23:00:30,219 INFO presentos.notion: Created XP entry: amount=10 paei=E week=4 id=2f333e0d-b053-81a4-b188-e01984462745
+INFO:presentos.notion:Created XP entry: amount=10 paei=E week=4 id=2f333e0d-b053-81a4-b188-e01984462745
+INFO:presentos.xp_agent:XP entry created: action=task_complete xp=10 page_id=2f333e0d-b053-81a4-b188-e01984462745
+INFO:httpx:HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+INFO:presentos.pinecone:PineconeClient initialized index=presentos-memory-1536 namespace=presentos-rag
+INFO:presentos.graph:Graph execution completed - PDF flow executed
+STARTING TARGETED AGENT TESTS
+
+TRACING: Start a 90 minute deep work session for coding
+--------------------------------------------------
+Agent: focus_agent
+Result: {
+  "action": "focus_enabled",
+  "enabled_at": "2026-01-25T17:30:13.145504+00:00",
+  "duration_minutes": 90,
+  "deep_work": true,
+  "reason": "user_requested",
+  "policies": {
+    "suppress_notifications": true,
+    "avoid_meetings": true,
+    "prefer_long_blocks": true,
+    "block_calendar": true,
+    "silence_phone": true,
+    "delay_email_processing": true,
+    "minimum_duration": 60,
+    "energy_requirement": "medium_high",
+    "interruption_allowed": "emergency_only"
+  },
+  "energy_context": "medium_energy",
+  "time_context": "afternoon_secondary_peak",
+  "confidence": 0.75,
+  "calendar_scheduled": true,
+  "paei_context": {
+    "role": "P",
+    "email_style": "bullet_points",
+    "task_approach": "time-boxed execution",
+    "execution_notes": [
+      "Time-box to 15min",
+      "Skip documentation",
+      "Focus on shipping"
+    ]
+  }
+}
+Agent: weather_agent
+Result: {
+  "action": "weather_intelligence_report",
+  "advisory": {
+    "type": "weather_intelligence",
+    "location": {
+      "city": "Pune",
+      "country": "IN",
+      "formatted": "Pune, IN"
+    },
+    "current": {
+      "condition": "clear",
+      "temperature_c": 22.45,
+      "rain_risk": "low",
+      "wind_speed_knots": 5.0,
+      "description": "clear sky"
+    },
+    "surf_analysis": {
+      "condition_type": "beach_day",
+      "wind_knots": 5.0,
+      "swell_feet": 1.5,
+      "tide": "outgoing",
+      "score": 0.3,
+      "decision_logic": {
+        "condition_type": "beach_day",
+        "priority": "medium",
+        "recommended_actions": [
+          "suggest_outdoor_work"
+        ],
+        "calendar_impact": "suggest_time",
+        "duration_hours": 1.5,
+        "confidence": 0.7
+      }
+    },
+    "proactive_intelligence": {
+      "type": "advisory_only",
+      "action": "no_change_needed",
+      "message": "Conditions are normal, no schedule adjustments needed."
+    },
+    "intent_context": "general",
+    "scheduled_for": null,
+    "check_time": "2026-01-25T17:30:15.433767"
+  },
+  "parent_agent_signals": {
+    "should_consider_blocking_time": false,
+    "should_suggest_virtual_meetings": false,
+    "priority": "medium"
+  },
+  "metadata": {
+    "feature": "environmental_decision_making",
+    "location": "Pune",
+    "confidence": 0.7
+  }
+}
+Agent: xp_agent
+Result: {
+  "status": "success",
+  "xp": 14,
+  "category": "deep_work",
+  "bonus": 4,
+  "reason": "Deep Work Block (medium) 60 min [PAEI=P]",
+  "xp_page_id": "2f333e0d-b053-8181-80ae-e39066117691",
+  "paei": "P",
+  "action_type": "deep_work_block",
+  "raw_action": "deep_work_block"
+}
+Response: Great job updating the weather data!  Staying informed about the weather helps you plan your day better. Keep up the excellent work!
+
+TRACING: Create a new quest: 'Project Zero' to build the first agentic OS by December
+--------------------------------------------------
+Agent: quest_agent
+Result: {
+  "status": "quest_created",
+  "quest_id": "2f333e0d-b053-81c7-bdf4-faeb8f036f38",
+  "name": "Project Zero",
+  "category": "development",
+  "avatar": "Warrior"
+}
+Agent: weather_agent
+Result: {
+  "action": "weather_intelligence_report",
+  "advisory": {
+    "type": "weather_intelligence",
+    "location": {
+      "city": "Pune",
+      "country": "IN",
+      "formatted": "Pune, IN"
+    },
+    "current": {
+      "condition": "clear",
+      "temperature_c": 22.45,
+      "rain_risk": "low",
+      "wind_speed_knots": 5.0,
+      "description": "clear sky"
+    },
+    "surf_analysis": {
+      "condition_type": "beach_day",
+      "wind_knots": 5.0,
+      "swell_feet": 1.5,
+      "tide": "outgoing",
+      "score": 0.3,
+      "decision_logic": {
+        "condition_type": "beach_day",
+        "priority": "medium",
+        "recommended_actions": [
+          "suggest_outdoor_work"
+        ],
+        "calendar_impact": "suggest_time",
+        "duration_hours": 1.5,
+        "confidence": 0.7
+      }
+    },
+    "proactive_intelligence": {
+      "type": "advisory_only",
+      "action": "no_change_needed",
+      "message": "Conditions are normal, no schedule adjustments needed."
+    },
+    "intent_context": "general",
+    "scheduled_for": null,
+    "check_time": "2026-01-25T17:30:29.766837"
+  },
+  "parent_agent_signals": {
+    "should_consider_blocking_time": false,
+    "should_suggest_virtual_meetings": false,
+    "priority": "medium"
+  },
+  "metadata": {
+    "feature": "environmental_decision_making",
+    "location": "Pune",
+    "confidence": 0.7
+  }
+}
+Agent: xp_agent
+Result: {
+  "status": "success",
+  "xp": 10,
+  "category": "e_execution",
+  "bonus": 4,
+  "reason": "Task Complete (medium) 60 min [PAEI=E]",
+  "xp_page_id": "2f333e0d-b053-81a4-b188-e01984462745",
+  "paei": "E",
+  "action_type": "task_complete",
+  "raw_action": "task_complete"
+}
+Response: Great job on updating the weather data!  Staying informed about the weather can really help you plan your day effectively. Keep up the fantastic work!

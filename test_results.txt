@@ -1,0 +1,46 @@
+C:\Users\shubh\anaconda3\python.exe: can't open file 'C:\\present-os\\tools\\test_intent_classifier.py': [Errno 2] No such file or directory
+INFO:presentos.browser_agent:BrowserAgent \u2192 general_research: What are the top 3 agentic AI frameworks in 2025?
+ERROR:presentos.browser_agent:Failed to save research to Notion: Notion API error 400: {"object":"error","status":400,"code":"validation_error","message":"body failed validation. Fix one:\nbody.parent.page_id should be defined, instead was `undefined`.\nbody.parent.database_id should be a valid uuid, instead was `\"\"`.\nbody.parent.data_source_id should be defined, instead was `undefined`.\nbody.parent.workspace should be defined, instead was `undefined`.","request_id":"f54f77e0-5c22-4bf7-a4d0-a5f2dbd06e57"}
+
+>>> TESTING BROWSE AGENT <<<
+Full Result: {'action': 'search_completed', 'research_type': 'general_research', 'query': 'What are the top 3 agentic AI frameworks in 2025?', 'result': {'answer': '**The top 3 agentic AI frameworks in 2025 are LangChain (often with LangGraph), AutoGen, and CrewAI.**[1][2][3][4][6] These consistently rank highest across multiple sources due to their popularity, versatility, multi-agent capabilities, and production readiness, with LangChain leading in adoption, AutoGen excelling in enterprise multi-agent coordination, and CrewAI simplifying role-based collaboration.[1][3][4]\n\n### Detailed Analysis\n\n#### 1. LangChain (and LangGraph)\nLangChain is the most wide...', 'sources_count': 0, 'success': True, 'notion_saved': False}, 'quest_id': None, 'full_result': None}
+Result: **The top 3 agentic AI frameworks in 2025 are LangChain (often with LangGraph), AutoGen, and CrewAI....
+
+>>> TESTING TELEGRAM CLIENT <<<
+1. Checking Bot Identity (getMe)...
+Traceback (most recent call last):
+  File "C:\present-os\tools\test_telegram_client.py", line 46, in <module>
+    test_telegram()
+  File "C:\present-os\tools\test_telegram_client.py", line 27, in test_telegram
+    print(f"\u2705 Bot connected: @{me['result']['username']} (ID: {me['result']['id']})")
+  File "C:\Users\shubh\anaconda3\Lib\encodings\cp1252.py", line 19, in encode
+    return codecs.charmap_encode(input,self.errors,encoding_table)[0]
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+UnicodeEncodeError: 'charmap' codec can't encode character '\u2705' in position 0: character maps to <undefined>
+
+Traceback (most recent call last):
+>>> TESTING FIREFLIES CLIENT <<<
+1. Searching recent meetings...
+  File "C:\present-os\tools\test_fireflies_client.py", line 27, in test_fireflies
+    print(f"\u2705 Found {len(meetings)} meetings")
+  File "C:\Users\shubh\anaconda3\Lib\encodings\cp1252.py", line 19, in encode
+    return codecs.charmap_encode(input,self.errors,encoding_table)[0]
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+UnicodeEncodeError: 'charmap' codec can't encode character '\u2705' in position 0: character maps to <undefined>
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\present-os\tools\test_fireflies_client.py", line 42, in <module>
+    test_fireflies()
+  File "C:\present-os\tools\test_fireflies_client.py", line 39, in test_fireflies
+    print(f"\u274c API Error: {e}")
+  File "C:\Users\shubh\anaconda3\Lib\encodings\cp1252.py", line 19, in encode
+    return codecs.charmap_encode(input,self.errors,encoding_table)[0]
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+UnicodeEncodeError: 'charmap' codec can't encode character '\u274c' in position 0: character maps to <undefined>
+
+>>> TESTING FINANCE AGENT <<<
+Result: {'status': 'error', 'error': 'NOTION_DB_EXPENSES_ID not set in .env'}
+No XP awarded (Expected if DB missing)
+INFO:presentos.finance_agent:FinanceAgent triggered: log_expense

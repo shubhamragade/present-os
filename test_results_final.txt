@@ -1,0 +1,22 @@
+============================= test session starts =============================
+platform win32 -- Python 3.12.7, pytest-7.4.4, pluggy-1.6.0
+rootdir: C:\present-os
+plugins: anyio-4.2.0, hydra-core-1.3.2, langsmith-0.4.41
+collected 18 items
+
+tests\unit\test_calendar_service.py ........                             [ 44%]
+tests\unit\test_paelogic.py ..........                                   [100%]
+
+============================== warnings summary ===============================
+..\Users\shubh\anaconda3\Lib\site-packages\pydantic\_internal\_config.py:323
+  C:\Users\shubh\anaconda3\Lib\site-packages\pydantic\_internal\_config.py:323: PydanticDeprecatedSince20: Support for class-based `config` is deprecated, use ConfigDict instead. Deprecated in Pydantic V2.0 to be removed in V3.0. See Pydantic V2 Migration Guide at https://errors.pydantic.dev/2.11/migration/
+    warnings.warn(DEPRECATION_MESSAGE, DeprecationWarning)
+
+..\Users\shubh\anaconda3\Lib\site-packages\pydantic\_internal\_generate_schema.py:298
+..\Users\shubh\anaconda3\Lib\site-packages\pydantic\_internal\_generate_schema.py:298
+..\Users\shubh\anaconda3\Lib\site-packages\pydantic\_internal\_generate_schema.py:298
+  C:\Users\shubh\anaconda3\Lib\site-packages\pydantic\_internal\_generate_schema.py:298: PydanticDeprecatedSince20: `json_encoders` is deprecated. See https://docs.pydantic.dev/2.11/concepts/serialization/#custom-serializers for alternatives. Deprecated in Pydantic V2.0 to be removed in V3.0. See Pydantic V2 Migration Guide at https://errors.pydantic.dev/2.11/migration/
+    warnings.warn(
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+======================= 18 passed, 4 warnings in 5.62s ========================

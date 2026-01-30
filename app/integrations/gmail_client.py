@@ -13,6 +13,7 @@ Capabilities:
 - Fetch unread emails
 - Fetch full email content
 - Create Gmail drafts (reply or new)
+- Send emails via Gmail API
 """
 
 from __future__ import annotations
@@ -34,7 +35,8 @@ logger.setLevel(logging.INFO)
 # ------------------------------------------------------------------
 SCOPES = [
     "https://www.googleapis.com/auth/gmail.readonly",
-    "https://www.googleapis.com/auth/gmail.send",  # REQUIRED for drafts
+    "https://www.googleapis.com/auth/gmail.send",
+    "https://www.googleapis.com/auth/gmail.compose",  # REQUIRED for drafts
 ]
 
 # ------------------------------------------------------------------
@@ -61,6 +63,13 @@ def _gmail_service():
 # Public API
 # ------------------------------------------------------------------
 
+def fetch_emails(max_results: int = 10, query: str = "is:unread") -> List[Dict[str, Any]]:
+    """Alias for fetch_unread_messages to match Expected Interface"""
+    if query == "is:unread":
+        return fetch_unread_messages(max_results)
+    return search_emails(query, max_results)
+
+
 def fetch_unread_messages(max_results: int = 10) -> List[Dict[str, Any]]:
     """
     Fetch unread Gmail messages (metadata + full body).
@@ -82,7 +91,24 @@ def fetch_unread_messages(max_results: int = 10) -> List[Dict[str, Any]]:
                 id=item["id"],
                 format="full",
             ).execute()
-            messages.append(msg)
+            
+            # Helper to get header
+            headers = msg.get("payload", {}).get("headers", [])
+            header_dict = {h["name"]: h["value"] for h in headers}
+            
+            # Helper to get body (snippet as fallback)
+            snippet = msg.get("snippet", "")
+            # Simple body extraction could go here, but snippet is safer for now
+            
+            messages.append({
+                "id": msg["id"],
+                "thread_id": msg["threadId"],
+                "from": header_dict.get("From", ""),
+                "subject": header_dict.get("Subject", ""),
+                "date": header_dict.get("Date", ""),
+                "body": snippet,  # Using snippet for simplicity in V1
+                "snippet": snippet
+            })
 
         return messages
 
@@ -179,4 +205,55 @@ def create_draft(
 
     except HttpError as e:
         logger.exception("Failed to create Gmail draft: %s", e)
+        raise
+
+
+def send_email(
+    to: str,
+    subject: str,
+    body: str,
+    thread_id: Optional[str] = None,
+) -> Dict[str, Any]:
+    """
+    Send an email via Gmail API.
+    
+    Args:
+        to: Recipient email address
+        subject: Email subject
+        body: Email body (plain text)
+        thread_id: Optional thread ID for replies
+    
+    Returns:
+        Sent message object from Gmail API
+    """
+    service = _gmail_service()
+
+    raw_message = (
+        f"To: {to}\r\n"
+        f"Subject: {subject}\r\n"
+        f"MIME-Version: 1.0\r\n"
+        f"Content-Type: text/plain; charset=utf-8\r\n\r\n"
+        f"{body}"
+    )
+
+    encoded_message = base64.urlsafe_b64encode(
+        raw_message.encode("utf-8")
+    ).decode("utf-8")
+
+    message_body = {"raw": encoded_message}
+    
+    if thread_id:
+        message_body["threadId"] = thread_id
+
+    try:
+        sent_message = service.users().messages().send(
+            userId="me",
+            body=message_body,
+        ).execute()
+
+        logger.info(f"✅ Email sent successfully: {sent_message.get('id')} to {to}")
+        return sent_message
+
+    except HttpError as e:
+        logger.exception(f"Failed to send email: {e}")
         raise

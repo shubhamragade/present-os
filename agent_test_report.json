@@ -1,0 +1,187 @@
+{
+  "timestamp": "2026-01-28T09:47:34.414934",
+  "summary": {
+    "total": 31,
+    "passed": 29,
+    "failed": 0,
+    "errors": 2
+  },
+  "results": {
+    "Task Agent": [
+      {
+        "query": "Add task call mom tonight",
+        "status": "PASS",
+        "time": 17.50070309638977
+      },
+      {
+        "query": "Show my tasks",
+        "status": "PASS",
+        "time": 9.725679397583008
+      },
+      {
+        "query": "Create task review quarterly report due Friday",
+        "status": "PASS",
+        "time": 18.608004331588745
+      }
+    ],
+    "Calendar Agent": [
+      {
+        "query": "What's on my schedule today?",
+        "status": "PASS",
+        "time": 10.35716700553894
+      },
+      {
+        "query": "Schedule team meeting tomorrow at 2 PM",
+        "status": "PASS",
+        "time": 17.482954502105713
+      },
+      {
+        "query": "Block deep work tomorrow morning 9 to 11",
+        "status": "PASS",
+        "time": 19.279247999191284
+      }
+    ],
+    "Weather Agent": [
+      {
+        "query": "What's the weather in Pune?",
+        "status": "ERROR",
+        "error": "'charmap' codec can't encode characters in position 52-53: character maps to <undefined>"
+      },
+      {
+        "query": "Is it good for outdoor work today?",
+        "status": "PASS",
+        "time": 14.465468883514404
+      },
+      {
+        "query": "Weather forecast for Mumbai",
+        "status": "PASS",
+        "time": 13.47203516960144
+      }
+    ],
+    "XP Agent": [
+      {
+        "query": "Show my XP status",
+        "status": "PASS",
+        "time": 10.983502388000488
+      },
+      {
+        "query": "What's my current level?",
+        "status": "PASS",
+        "time": 10.772332668304443
+      },
+      {
+        "query": "How much XP do I have?",
+        "status": "PASS",
+        "time": 10.313494443893433
+      }
+    ],
+    "Email Agent": [
+      {
+        "query": "Check my emails",
+        "status": "PASS",
+        "time": 41.82560729980469
+      },
+      {
+        "query": "Show unread emails",
+        "status": "PASS",
+        "time": 35.602192878723145
+      },
+      {
+        "query": "Any important emails today?",
+        "status": "PASS",
+        "time": 7.043469667434692
+      }
+    ],
+    "Focus Agent": [
+      {
+        "query": "Start a 25 minute focus session",
+        "status": "PASS",
+        "time": 19.284239292144775
+      },
+      {
+        "query": "Block time for concentration this afternoon",
+        "status": "PASS",
+        "time": 13.633565902709961
+      },
+      {
+        "query": "I need deep work time tomorrow",
+        "status": "PASS",
+        "time": 18.44143557548523
+      }
+    ],
+    "Finance Agent": [
+      {
+        "query": "Show my budget summary",
+        "status": "PASS",
+        "time": 7.941558122634888
+      },
+      {
+        "query": "What bills are due this month?",
+        "status": "PASS",
+        "time": 7.264260768890381
+      },
+      {
+        "query": "Track my expenses",
+        "status": "PASS",
+        "time": 16.28412628173828
+      }
+    ],
+    "Contact Agent": [
+      {
+        "query": "Show contact for John",
+        "status": "PASS",
+        "time": 9.458252429962158
+      },
+      {
+        "query": "Who is my contact at Microsoft?",
+        "status": "PASS",
+        "time": 8.759152173995972
+      },
+      {
+        "query": "Add note for contact: met at conference",
+        "status": "PASS",
+        "time": 15.051466941833496
+      }
+    ],
+    "Research Agent": [
+      {
+        "query": "Research best practices for API design 2026",
+        "status": "PASS",
+        "time": 8.756144046783447
+      },
+      {
+        "query": "Find information about AI productivity tools",
+        "status": "PASS",
+        "time": 9.702401638031006
+      },
+      {
+        "query": "Look up latest trends in no-code platforms",
+        "status": "ERROR",
+        "error": "[Errno 22] Invalid argument"
+      }
+    ],
+    "Plan Report Agent": [
+      {
+        "query": "What's my plan for today?",
+        "status": "PASS",
+        "time": 12.839850425720215
+      },
+      {
+        "query": "Give me a daily summary",
+        "status": "PASS",
+        "time": 7.729405164718628
+      },
+      {
+        "query": "What should I focus on today?",
+        "status": "PASS",
+        "time": 10.869338512420654
+      }
+    ],
+    "Voice System": [
+      {
+        "status": "PASS",
+        "bytes": 64618
+      }
+    ]
+  }
+}

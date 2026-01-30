@@ -107,20 +107,37 @@ def run_xp_node(
     # -------------------------------------------------
     # 4️⃣ OUTPUT (FOR UI / TESTS)
     # -------------------------------------------------
+    # -------------------------------------------------
+    # 4️⃣ OUTPUT (FOR UI / TESTS)
+    # -------------------------------------------------
+    result_data = {
+        "status": "success",
+        "xp": xp_result["xp"],
+        "category": xp_result.get("category"),
+        "bonus": xp_result.get("bonus"),
+        "reason": xp_result["reason"],
+        "xp_page_id": xp_page_id,
+        "paei": payload.get("paei"),
+        "action_type": action_type,
+        "raw_action": raw_action,
+    }
+        
+    # -------------------------------------------------
+    # 5️⃣ INJECT FULL SUMMARY (For "Show XP" requests)
+    # -------------------------------------------------
+    if notion:
+        try:
+            summary = notion.get_xp_summary()
+            state.add_agent_output(agent="xp_agent", result={**result_data, "summary": summary}, score=1.0)
+            return state
+        except Exception as e:
+            logger.warning("Failed to fetch XP summary for agent output: %s", e)
+
+    # Fallback if no notion or failure
     state.add_agent_output(
         agent="xp_agent",
-        result={
-            "status": "success",
-            "xp": xp_result["xp"],
-            "category": xp_result.get("category"),
-            "bonus": xp_result.get("bonus"),
-            "reason": xp_result["reason"],
-            "xp_page_id": xp_page_id,
-            "paei": payload.get("paei"),
-            "action_type": action_type,
-            "raw_action": raw_action,
-        },
-        score=0.9 if xp_page_id else 0.5,  # Higher score if persisted
+        result=result_data,
+        score=0.9 if xp_page_id else 0.5,
     )
 
     logger.debug("XP agent completed for action: %s", action_type)

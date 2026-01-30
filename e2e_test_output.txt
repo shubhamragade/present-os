@@ -1,0 +1,11 @@
+
+Traceback (most recent call last):
+================================================================================
+  File "C:\present-os\tools\test_e2e_pipeline.py", line 169, in <module>
+    test_end_to_end_pipeline()
+  File "C:\present-os\tools\test_e2e_pipeline.py", line 29, in test_end_to_end_pipeline
+    print("\U0001f680 PRESENTOS END-TO-END PIPELINE TEST")
+  File "C:\Users\shubh\anaconda3\Lib\encodings\cp1252.py", line 19, in encode
+    return codecs.charmap_encode(input,self.errors,encoding_table)[0]
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+UnicodeEncodeError: 'charmap' codec can't encode character '\U0001f680' in position 0: character maps to <undefined>

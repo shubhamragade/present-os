@@ -1,0 +1,226 @@
+============================= test session starts =============================
+platform win32 -- Python 3.12.7, pytest-7.4.4, pluggy-1.6.0
+rootdir: C:\present-os
+plugins: anyio-4.2.0, hydra-core-1.3.2, langsmith-0.4.41
+collected 7 items
+
+tests\unit\test_calendar_service.py EEEEEEE                              [100%]
+
+=================================== ERRORS ====================================
+__________ ERROR at setup of test_producer_task_scheduled_in_morning __________
+
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x000002ACB3F144D0>
+
+    @pytest.fixture
+    def calendar_service(monkeypatch):
+        """
+        CalendarService with all external signals stubbed.
+        No Google, no WHOOP, no Weather required.
+        """
+    
+        # Fake Notion client (not used directly here)
+        notion = NotionClient.from_env()
+    
+        svc = CalendarService(notion=notion)
+    
+        # Stub energy pattern
+>       monkeypatch.setattr(
+            svc,
+            "_get_user_energy_profile",
+            lambda: {
+                "peak": ("09:00", "12:00"),
+                "dip": ("14:00", "17:00")
+            }
+        )
+E       AttributeError: CalendarService(notion=<app.integrations.notion_client.NotionClient object at 0x000002ACB936CE30>, fireflies_email='ai@fireflies.ai', min_deep_work_protection=60, surf_location='Santa Monica', paei_prefs=PAEITimePreferences(P={'peak_hours': [(9, 12), (15, 17)], 'avoid_hours': [(13, 14)]}, A={'peak_hours': [(10, 12), (14, 16)], 'avoid_hours': []}, E={'peak_hours': [(11, 13), (16, 18)], 'avoid_hours': [(9, 10)]}, I={'peak_hours': [(13, 15), (17, 19)], 'avoid_hours': [(9, 12)]})) has no attribute '_get_user_energy_profile'
+
+tests\unit\test_calendar_service.py:28: AttributeError
+__________ ERROR at setup of test_admin_task_scheduled_in_afternoon ___________
+
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x000002ACB936F9E0>
+
+    @pytest.fixture
+    def calendar_service(monkeypatch):
+        """
+        CalendarService with all external signals stubbed.
+        No Google, no WHOOP, no Weather required.
+        """
+    
+        # Fake Notion client (not used directly here)
+        notion = NotionClient.from_env()
+    
+        svc = CalendarService(notion=notion)
+    
+        # Stub energy pattern
+>       monkeypatch.setattr(
+            svc,
+            "_get_user_energy_profile",
+            lambda: {
+                "peak": ("09:00", "12:00"),
+                "dip": ("14:00", "17:00")
+            }
+        )
+E       AttributeError: CalendarService(notion=<app.integrations.notion_client.NotionClient object at 0x000002ACB936FFE0>, fireflies_email='ai@fireflies.ai', min_deep_work_protection=60, surf_location='Santa Monica', paei_prefs=PAEITimePreferences(P={'peak_hours': [(9, 12), (15, 17)], 'avoid_hours': [(13, 14)]}, A={'peak_hours': [(10, 12), (14, 16)], 'avoid_hours': []}, E={'peak_hours': [(11, 13), (16, 18)], 'avoid_hours': [(9, 10)]}, I={'peak_hours': [(13, 15), (17, 19)], 'avoid_hours': [(9, 12)]})) has no attribute '_get_user_energy_profile'
+
+tests\unit\test_calendar_service.py:28: AttributeError
+_________ ERROR at setup of test_entrepreneur_task_requires_deep_work _________
+
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x000002ACB8D55A60>
+
+    @pytest.fixture
+    def calendar_service(monkeypatch):
+        """
+        CalendarService with all external signals stubbed.
+        No Google, no WHOOP, no Weather required.
+        """
+    
+        # Fake Notion client (not used directly here)
+        notion = NotionClient.from_env()
+    
+        svc = CalendarService(notion=notion)
+    
+        # Stub energy pattern
+>       monkeypatch.setattr(
+            svc,
+            "_get_user_energy_profile",
+            lambda: {
+                "peak": ("09:00", "12:00"),
+                "dip": ("14:00", "17:00")
+            }
+        )
+E       AttributeError: CalendarService(notion=<app.integrations.notion_client.NotionClient object at 0x000002ACB8D57710>, fireflies_email='ai@fireflies.ai', min_deep_work_protection=60, surf_location='Santa Monica', paei_prefs=PAEITimePreferences(P={'peak_hours': [(9, 12), (15, 17)], 'avoid_hours': [(13, 14)]}, A={'peak_hours': [(10, 12), (14, 16)], 'avoid_hours': []}, E={'peak_hours': [(11, 13), (16, 18)], 'avoid_hours': [(9, 10)]}, I={'peak_hours': [(13, 15), (17, 19)], 'avoid_hours': [(9, 12)]})) has no attribute '_get_user_energy_profile'
+
+tests\unit\test_calendar_service.py:28: AttributeError
+______________ ERROR at setup of test_integrator_task_post_lunch ______________
+
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x000002ACB8D568A0>
+
+    @pytest.fixture
+    def calendar_service(monkeypatch):
+        """
+        CalendarService with all external signals stubbed.
+        No Google, no WHOOP, no Weather required.
+        """
+    
+        # Fake Notion client (not used directly here)
+        notion = NotionClient.from_env()
+    
+        svc = CalendarService(notion=notion)
+    
+        # Stub energy pattern
+>       monkeypatch.setattr(
+            svc,
+            "_get_user_energy_profile",
+            lambda: {
+                "peak": ("09:00", "12:00"),
+                "dip": ("14:00", "17:00")
+            }
+        )
+E       AttributeError: CalendarService(notion=<app.integrations.notion_client.NotionClient object at 0x000002ACB8D570E0>, fireflies_email='ai@fireflies.ai', min_deep_work_protection=60, surf_location='Santa Monica', paei_prefs=PAEITimePreferences(P={'peak_hours': [(9, 12), (15, 17)], 'avoid_hours': [(13, 14)]}, A={'peak_hours': [(10, 12), (14, 16)], 'avoid_hours': []}, E={'peak_hours': [(11, 13), (16, 18)], 'avoid_hours': [(9, 10)]}, I={'peak_hours': [(13, 15), (17, 19)], 'avoid_hours': [(9, 12)]})) has no attribute '_get_user_energy_profile'
+
+tests\unit\test_calendar_service.py:28: AttributeError
+_________ ERROR at setup of test_low_recovery_reschedules_hard_tasks __________
+
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x000002ACB8D577D0>
+
+    @pytest.fixture
+    def calendar_service(monkeypatch):
+        """
+        CalendarService with all external signals stubbed.
+        No Google, no WHOOP, no Weather required.
+        """
+    
+        # Fake Notion client (not used directly here)
+        notion = NotionClient.from_env()
+    
+        svc = CalendarService(notion=notion)
+    
+        # Stub energy pattern
+>       monkeypatch.setattr(
+            svc,
+            "_get_user_energy_profile",
+            lambda: {
+                "peak": ("09:00", "12:00"),
+                "dip": ("14:00", "17:00")
+            }
+        )
+E       AttributeError: CalendarService(notion=<app.integrations.notion_client.NotionClient object at 0x000002ACB8D561B0>, fireflies_email='ai@fireflies.ai', min_deep_work_protection=60, surf_location='Santa Monica', paei_prefs=PAEITimePreferences(P={'peak_hours': [(9, 12), (15, 17)], 'avoid_hours': [(13, 14)]}, A={'peak_hours': [(10, 12), (14, 16)], 'avoid_hours': []}, E={'peak_hours': [(11, 13), (16, 18)], 'avoid_hours': [(9, 10)]}, I={'peak_hours': [(13, 15), (17, 19)], 'avoid_hours': [(9, 12)]})) has no attribute '_get_user_energy_profile'
+
+tests\unit\test_calendar_service.py:28: AttributeError
+____________ ERROR at setup of test_high_priority_overrides_energy ____________
+
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x000002ACB8D578F0>
+
+    @pytest.fixture
+    def calendar_service(monkeypatch):
+        """
+        CalendarService with all external signals stubbed.
+        No Google, no WHOOP, no Weather required.
+        """
+    
+        # Fake Notion client (not used directly here)
+        notion = NotionClient.from_env()
+    
+        svc = CalendarService(notion=notion)
+    
+        # Stub energy pattern
+>       monkeypatch.setattr(
+            svc,
+            "_get_user_energy_profile",
+            lambda: {
+                "peak": ("09:00", "12:00"),
+                "dip": ("14:00", "17:00")
+            }
+        )
+E       AttributeError: CalendarService(notion=<app.integrations.notion_client.NotionClient object at 0x000002ACB8D577A0>, fireflies_email='ai@fireflies.ai', min_deep_work_protection=60, surf_location='Santa Monica', paei_prefs=PAEITimePreferences(P={'peak_hours': [(9, 12), (15, 17)], 'avoid_hours': [(13, 14)]}, A={'peak_hours': [(10, 12), (14, 16)], 'avoid_hours': []}, E={'peak_hours': [(11, 13), (16, 18)], 'avoid_hours': [(9, 10)]}, I={'peak_hours': [(13, 15), (17, 19)], 'avoid_hours': [(9, 12)]})) has no attribute '_get_user_energy_profile'
+
+tests\unit\test_calendar_service.py:28: AttributeError
+________ ERROR at setup of test_calendar_service_works_without_google _________
+
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x000002ACB9759580>
+
+    @pytest.fixture
+    def calendar_service(monkeypatch):
+        """
+        CalendarService with all external signals stubbed.
+        No Google, no WHOOP, no Weather required.
+        """
+    
+        # Fake Notion client (not used directly here)
+        notion = NotionClient.from_env()
+    
+        svc = CalendarService(notion=notion)
+    
+        # Stub energy pattern
+>       monkeypatch.setattr(
+            svc,
+            "_get_user_energy_profile",
+            lambda: {
+                "peak": ("09:00", "12:00"),
+                "dip": ("14:00", "17:00")
+            }
+        )
+E       AttributeError: CalendarService(notion=<app.integrations.notion_client.NotionClient object at 0x000002ACB975B110>, fireflies_email='ai@fireflies.ai', min_deep_work_protection=60, surf_location='Santa Monica', paei_prefs=PAEITimePreferences(P={'peak_hours': [(9, 12), (15, 17)], 'avoid_hours': [(13, 14)]}, A={'peak_hours': [(10, 12), (14, 16)], 'avoid_hours': []}, E={'peak_hours': [(11, 13), (16, 18)], 'avoid_hours': [(9, 10)]}, I={'peak_hours': [(13, 15), (17, 19)], 'avoid_hours': [(9, 12)]})) has no attribute '_get_user_energy_profile'
+
+tests\unit\test_calendar_service.py:28: AttributeError
+============================== warnings summary ===============================
+..\Users\shubh\anaconda3\Lib\site-packages\pydantic\_internal\_config.py:323
+  C:\Users\shubh\anaconda3\Lib\site-packages\pydantic\_internal\_config.py:323: PydanticDeprecatedSince20: Support for class-based `config` is deprecated, use ConfigDict instead. Deprecated in Pydantic V2.0 to be removed in V3.0. See Pydantic V2 Migration Guide at https://errors.pydantic.dev/2.11/migration/
+    warnings.warn(DEPRECATION_MESSAGE, DeprecationWarning)
+
+..\Users\shubh\anaconda3\Lib\site-packages\pydantic\_internal\_generate_schema.py:298
+..\Users\shubh\anaconda3\Lib\site-packages\pydantic\_internal\_generate_schema.py:298
+..\Users\shubh\anaconda3\Lib\site-packages\pydantic\_internal\_generate_schema.py:298
+  C:\Users\shubh\anaconda3\Lib\site-packages\pydantic\_internal\_generate_schema.py:298: PydanticDeprecatedSince20: `json_encoders` is deprecated. See https://docs.pydantic.dev/2.11/concepts/serialization/#custom-serializers for alternatives. Deprecated in Pydantic V2.0 to be removed in V3.0. See Pydantic V2 Migration Guide at https://errors.pydantic.dev/2.11/migration/
+    warnings.warn(
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+=========================== short test summary info ===========================
+ERROR tests/unit/test_calendar_service.py::test_producer_task_scheduled_in_morning
+ERROR tests/unit/test_calendar_service.py::test_admin_task_scheduled_in_afternoon
+ERROR tests/unit/test_calendar_service.py::test_entrepreneur_task_requires_deep_work
+ERROR tests/unit/test_calendar_service.py::test_integrator_task_post_lunch - ...
+ERROR tests/unit/test_calendar_service.py::test_low_recovery_reschedules_hard_tasks
+ERROR tests/unit/test_calendar_service.py::test_high_priority_overrides_energy
+ERROR tests/unit/test_calendar_service.py::test_calendar_service_works_without_google
+======================== 4 warnings, 7 errors in 6.28s ========================

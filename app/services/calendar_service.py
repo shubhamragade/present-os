@@ -108,24 +108,6 @@ class CalendarService:
         except Exception as e:
             logger.error(f"Weather score failed: {e}")
             return 0.5
-    # Add this method to CalendarService class:
-def _score_deadline_proximity(self, slot_start: datetime, deadline: datetime) -> float:
-    """Score based on how close to deadline"""
-    if deadline is None:
-        return 0.5
-    
-    hours_until_deadline = (deadline - slot_start).total_seconds() / 3600
-    
-    if hours_until_deadline <= 0:
-        return 1.0  # Overdue
-    elif hours_until_deadline <= 24:
-        return 0.9  # Urgent (today/tomorrow)
-    elif hours_until_deadline <= 72:
-        return 0.7  # Soon (3 days)
-    elif hours_until_deadline <= 168:
-        return 0.5  # This week
-    else:
-        return 0.3  # Later
 
     def _get_perfect_kite_conditions(self, location: str) -> bool:
         """PDF Page 14-15: Perfect kite conditions detection"""
@@ -242,6 +224,86 @@ def _score_deadline_proximity(self, slot_start: datetime, deadline: datetime) ->
             "slot_score": best_slot.score,
             "breakdown": best_slot.breakdown
         }
+
+    def create_event(self, payload: Dict[str, Any], user_context: Dict[str, Any]) -> Dict[str, Any]:
+        """PDF-compliant event creation with PAEI awareness"""
+        calendar_id = user_context.get("calendar_id", "primary")
+        
+        event = {
+            "summary": payload.get("title", "Meeting"),
+            "location": payload.get("location", ""),
+            "description": payload.get("description", ""),
+            "start": {"dateTime": payload.get("start", datetime.now(timezone.utc).isoformat())},
+            "end": {"dateTime": payload.get("end", (datetime.now(timezone.utc) + timedelta(hours=1)).isoformat())},
+        }
+        
+        # Add attendees if any
+        if payload.get("attendees"):
+            event["attendees"] = [{"email": email} for email in payload["attendees"]]
+            
+        # Add Fireflies if requested
+        if payload.get("auto_transcribe"):
+            event.setdefault("attendees", []).append({"email": self.fireflies_email})
+            
+        created = google_calendar.create_event(
+            calendar_id=calendar_id,
+            event=event,
+            idempotency_key=str(uuid.uuid4())
+        )
+        
+        return {
+            "action": "created_event",
+            "event": created,
+            "success": True
+        }
+
+    def reschedule_event(self, event_id: str, new_start_iso: str, user_context: Dict[str, Any]) -> Dict[str, Any]:
+        """PDF-compliant rescheduling"""
+        calendar_id = user_context.get("calendar_id", "primary")
+        
+        # Fetch current event to get duration
+        current = google_calendar.get_event(calendar_id, event_id)
+        start = parse_iso(current["start"].get("dateTime") or current["start"].get("date"))
+        end = parse_iso(current["end"].get("dateTime") or current["end"].get("date"))
+        duration = end - start
+        
+        new_start = parse_iso(new_start_iso)
+        new_end = new_start + duration
+        
+        updates = {
+            "start": {"dateTime": new_start.isoformat()},
+            "end": {"dateTime": new_end.isoformat()}
+        }
+        
+        updated = google_calendar.update_event(calendar_id, event_id, updates)
+        
+        return {
+            "action": "rescheduled_event",
+            "event": updated,
+            "success": True
+        }
+
+    def find_weather_optimal_slot(self, payload: Dict[str, Any], user_context: Dict[str, Any]) -> Dict[str, Any]:
+        """PDF Page 14-15: Find best slot based on weather"""
+        best_slot = self._find_optimal_slot(payload, user_context)
+        if not best_slot:
+            return {"action": "no_slot_found", "success": False}
+            
+        return {
+            "action": "found_optimal_slot",
+            "slot": {
+                "start": best_slot.start.isoformat(),
+                "end": best_slot.end.isoformat(),
+                "score": best_slot.score
+            },
+            "weather_score": best_slot.weather_score,
+            "success": True
+        }
+
+    def protect_time_block(self, payload: Dict[str, Any], user_context: Dict[str, Any]) -> Dict[str, Any]:
+        """PDF: Deep work protection"""
+        payload["is_deep_work"] = True
+        return self.schedule_task(payload, user_context)
 
     # -------------------------------------------------
     # SLOT OPTIMIZATION

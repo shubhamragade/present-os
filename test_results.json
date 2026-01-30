@@ -1,0 +1,345 @@
+[
+  {
+    "category": "API",
+    "test": "GET /api/status",
+    "passed": false,
+    "details": "Status: 404, XP Total: 0",
+    "timestamp": "2026-01-28T11:15:39.620233"
+  },
+  {
+    "category": "API",
+    "test": "GET /api/energy",
+    "passed": false,
+    "details": "Recovery: None%, Level: None",
+    "timestamp": "2026-01-28T11:15:41.682372"
+  },
+  {
+    "category": "API",
+    "test": "GET /api/notifications",
+    "passed": false,
+    "details": "Unread: None, Total: 0",
+    "timestamp": "2026-01-28T11:15:43.714269"
+  },
+  {
+    "category": "API",
+    "test": "POST /api/chat: 'Schedule deep work tomorrow mo...'",
+    "passed": false,
+    "details": "PAEI: None, XP: 0, Response: ...",
+    "timestamp": "2026-01-28T11:15:45.799811"
+  },
+  {
+    "category": "Agent",
+    "test": "Parent Agent (multi-intent)",
+    "passed": false,
+    "details": "Orchestrated multiple child agents",
+    "timestamp": "2026-01-28T11:15:45.799811"
+  },
+  {
+    "category": "API",
+    "test": "POST /api/chat: 'Add task: Test the notificatio...'",
+    "passed": false,
+    "details": "PAEI: None, XP: 0, Response: ...",
+    "timestamp": "2026-01-28T11:15:47.859365"
+  },
+  {
+    "category": "API",
+    "test": "POST /api/chat: 'Create task review code due to...'",
+    "passed": false,
+    "details": "PAEI: None, XP: 0, Response: ...",
+    "timestamp": "2026-01-28T11:15:50.928740"
+  },
+  {
+    "category": "API",
+    "test": "POST /api/chat: 'Add task call mom tonight...'",
+    "passed": false,
+    "details": "PAEI: None, XP: 0, Response: ...",
+    "timestamp": "2026-01-28T11:15:53.993370"
+  },
+  {
+    "category": "API",
+    "test": "POST /api/chat: 'Schedule meeting with team tom...'",
+    "passed": false,
+    "details": "PAEI: None, XP: 0, Response: ...",
+    "timestamp": "2026-01-28T11:15:57.050009"
+  },
+  {
+    "category": "API",
+    "test": "POST /api/chat: 'Block deep work tomorrow morni...'",
+    "passed": false,
+    "details": "PAEI: None, XP: 0, Response: ...",
+    "timestamp": "2026-01-28T11:16:00.367860"
+  },
+  {
+    "category": "API",
+    "test": "POST /api/chat: 'Reschedule my 10am call to aft...'",
+    "passed": false,
+    "details": "PAEI: None, XP: 0, Response: ...",
+    "timestamp": "2026-01-28T11:16:03.425945"
+  },
+  {
+    "category": "API",
+    "test": "POST /api/chat: 'Check my emails...'",
+    "passed": false,
+    "details": "PAEI: None, XP: 0, Response: ...",
+    "timestamp": "2026-01-28T11:16:06.461428"
+  },
+  {
+    "category": "API",
+    "test": "POST /api/chat: 'Reply to the latest email sayi...'",
+    "passed": false,
+    "details": "PAEI: None, XP: 0, Response: ...",
+    "timestamp": "2026-01-28T11:16:09.490775"
+  },
+  {
+    "category": "API",
+    "test": "POST /api/chat: 'Draft email to John about the ...'",
+    "passed": false,
+    "details": "PAEI: None, XP: 0, Response: ...",
+    "timestamp": "2026-01-28T11:16:12.532923"
+  },
+  {
+    "category": "API",
+    "test": "POST /api/chat: 'Research latest AI trends...'",
+    "passed": false,
+    "details": "PAEI: None, XP: 0, Response: ...",
+    "timestamp": "2026-01-28T11:16:15.603557"
+  },
+  {
+    "category": "API",
+    "test": "POST /api/chat: 'Find articles about productivi...'",
+    "passed": false,
+    "details": "PAEI: None, XP: 0, Response: ...",
+    "timestamp": "2026-01-28T11:16:18.643718"
+  },
+  {
+    "category": "API",
+    "test": "POST /api/chat: 'What are people saying about G...'",
+    "passed": false,
+    "details": "PAEI: None, XP: 0, Response: ...",
+    "timestamp": "2026-01-28T11:16:21.712937"
+  },
+  {
+    "category": "API",
+    "test": "POST /api/chat: 'Start 90 minute focus session...'",
+    "passed": false,
+    "details": "PAEI: None, XP: 0, Response: ...",
+    "timestamp": "2026-01-28T11:16:24.783822"
+  },
+  {
+    "category": "API",
+    "test": "POST /api/chat: 'Deep work now...'",
+    "passed": false,
+    "details": "PAEI: None, XP: 0, Response: ...",
+    "timestamp": "2026-01-28T11:16:27.843418"
+  },
+  {
+    "category": "API",
+    "test": "POST /api/chat: 'Block time for concentration...'",
+    "passed": false,
+    "details": "PAEI: None, XP: 0, Response: ...",
+    "timestamp": "2026-01-28T11:16:30.896768"
+  },
+  {
+    "category": "Agent",
+    "test": "XP Agent (tracking)",
+    "passed": false,
+    "details": "Total XP: 0, P:None, A:None, E:None, I:None",
+    "timestamp": "2026-01-28T11:16:33.931269"
+  },
+  {
+    "category": "API",
+    "test": "POST /api/chat: 'hi...'",
+    "passed": false,
+    "details": "PAEI: None, XP: 0, Response: ...",
+    "timestamp": "2026-01-28T11:16:36.014448"
+  },
+  {
+    "category": "Intent",
+    "test": "Classify: 'hi'",
+    "passed": true,
+    "details": "greeting",
+    "timestamp": "2026-01-28T11:16:36.014996"
+  },
+  {
+    "category": "API",
+    "test": "POST /api/chat: 'add task review code...'",
+    "passed": false,
+    "details": "PAEI: None, XP: 0, Response: ...",
+    "timestamp": "2026-01-28T11:16:38.567676"
+  },
+  {
+    "category": "Intent",
+    "test": "Classify: 'add task review code'",
+    "passed": true,
+    "details": "task creation",
+    "timestamp": "2026-01-28T11:16:38.567676"
+  },
+  {
+    "category": "API",
+    "test": "POST /api/chat: 'schedule meeting tomorrow...'",
+    "passed": false,
+    "details": "PAEI: None, XP: 0, Response: ...",
+    "timestamp": "2026-01-28T11:16:41.135311"
+  },
+  {
+    "category": "Intent",
+    "test": "Classify: 'schedule meeting tomorrow'",
+    "passed": true,
+    "details": "calendar",
+    "timestamp": "2026-01-28T11:16:41.135855"
+  },
+  {
+    "category": "API",
+    "test": "POST /api/chat: 'check emails...'",
+    "passed": false,
+    "details": "PAEI: None, XP: 0, Response: ...",
+    "timestamp": "2026-01-28T11:16:43.705035"
+  },
+  {
+    "category": "Intent",
+    "test": "Classify: 'check emails'",
+    "passed": true,
+    "details": "email",
+    "timestamp": "2026-01-28T11:16:43.705035"
+  },
+  {
+    "category": "API",
+    "test": "POST /api/chat: 'research AI trends...'",
+    "passed": false,
+    "details": "PAEI: None, XP: 0, Response: ...",
+    "timestamp": "2026-01-28T11:16:46.267504"
+  },
+  {
+    "category": "Intent",
+    "test": "Classify: 'research AI trends'",
+    "passed": true,
+    "details": "research (read domain)",
+    "timestamp": "2026-01-28T11:16:46.267504"
+  },
+  {
+    "category": "API",
+    "test": "POST /api/chat: 'tell me today's plan...'",
+    "passed": false,
+    "details": "PAEI: None, XP: 0, Response: ...",
+    "timestamp": "2026-01-28T11:16:48.820682"
+  },
+  {
+    "category": "Intent",
+    "test": "Classify: 'tell me today's plan'",
+    "passed": true,
+    "details": "plan report",
+    "timestamp": "2026-01-28T11:16:48.820682"
+  },
+  {
+    "category": "API",
+    "test": "POST /api/chat: 'free up weekend...'",
+    "passed": false,
+    "details": "PAEI: None, XP: 0, Response: ...",
+    "timestamp": "2026-01-28T11:16:51.368426"
+  },
+  {
+    "category": "Intent",
+    "test": "Classify: 'free up weekend'",
+    "passed": true,
+    "details": "calendar management",
+    "timestamp": "2026-01-28T11:16:51.368985"
+  },
+  {
+    "category": "Notification",
+    "test": "Create test notification",
+    "passed": false,
+    "details": "Notification ID: N/A",
+    "timestamp": "2026-01-28T11:16:53.910461"
+  },
+  {
+    "category": "Notification",
+    "test": "Mark as read",
+    "passed": false,
+    "details": "No notification ID",
+    "timestamp": "2026-01-28T11:16:55.951057"
+  },
+  {
+    "category": "Voice",
+    "test": "TTS endpoint",
+    "passed": false,
+    "details": "Status: 405, Content-Type: application/json",
+    "timestamp": "2026-01-28T11:16:58.018596"
+  },
+  {
+    "category": "API",
+    "test": "POST /api/chat: 'Good morning...'",
+    "passed": false,
+    "details": "PAEI: None, XP: 0, Response: ...",
+    "timestamp": "2026-01-28T11:17:00.086430"
+  },
+  {
+    "category": "API",
+    "test": "POST /api/chat: 'What's on my schedule today?...'",
+    "passed": false,
+    "details": "PAEI: None, XP: 0, Response: ...",
+    "timestamp": "2026-01-28T11:17:04.162867"
+  },
+  {
+    "category": "API",
+    "test": "POST /api/chat: 'Add task review yesterday's me...'",
+    "passed": false,
+    "details": "PAEI: None, XP: 0, Response: ...",
+    "timestamp": "2026-01-28T11:17:08.211276"
+  },
+  {
+    "category": "API",
+    "test": "POST /api/chat: 'Create task finish project pro...'",
+    "passed": false,
+    "details": "PAEI: None, XP: 0, Response: ...",
+    "timestamp": "2026-01-28T11:17:12.432453"
+  },
+  {
+    "category": "API",
+    "test": "POST /api/chat: 'Add task call client about fee...'",
+    "passed": false,
+    "details": "PAEI: None, XP: 0, Response: ...",
+    "timestamp": "2026-01-28T11:17:16.496629"
+  },
+  {
+    "category": "API",
+    "test": "POST /api/chat: 'Show my tasks...'",
+    "passed": false,
+    "details": "PAEI: None, XP: 0, Response: ...",
+    "timestamp": "2026-01-28T11:17:20.579479"
+  },
+  {
+    "category": "API",
+    "test": "POST /api/chat: 'Research best practices for AP...'",
+    "passed": false,
+    "details": "PAEI: None, XP: 0, Response: ...",
+    "timestamp": "2026-01-28T11:17:24.636896"
+  },
+  {
+    "category": "API",
+    "test": "POST /api/chat: 'Find articles about microservi...'",
+    "passed": false,
+    "details": "PAEI: None, XP: 0, Response: ...",
+    "timestamp": "2026-01-28T11:17:28.722039"
+  },
+  {
+    "category": "API",
+    "test": "POST /api/chat: 'Block 2 hours for deep work to...'",
+    "passed": false,
+    "details": "PAEI: None, XP: 0, Response: ...",
+    "timestamp": "2026-01-28T11:17:32.762693"
+  },
+  {
+    "category": "API",
+    "test": "POST /api/chat: 'Schedule team sync Friday 3pm...'",
+    "passed": false,
+    "details": "PAEI: None, XP: 0, Response: ...",
+    "timestamp": "2026-01-28T11:17:36.845849"
+  },
+  {
+    "category": "API",
+    "test": "POST /api/chat: 'Move my afternoon meeting to n...'",
+    "passed": false,
+    "details": "PAEI: None, XP: 0, Response: ...",
+    "timestamp": "2026-01-28T11:17:40.911500"
+  }
+]

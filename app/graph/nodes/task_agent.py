@@ -15,11 +15,11 @@ def run_task_node(
     notion: NotionClient,
 ) -> PresentOSState:
     """
-    Task Agent (PDF compliant)
+    Task Agent (PDF compliant + RPM enforcement)
 
     - Executes ONE task-related instruction
     - Writes tasks to Notion
-    - Initializes safe defaults
+    - AUTO-LINKS to active Quest/MAP if not specified (RPM compliance)
     - Emits agent output only
     - NEVER routes
     """
@@ -35,82 +35,90 @@ def run_task_node(
         return state
 
     # --------------------------------------------------
-    # BUILD NOTION PROPERTIES (SAFE + EXPLICIT)
+    # RPM ENFORCEMENT: Auto-link to active Quest/MAP
     # --------------------------------------------------
-    props: Dict[str, Any] = {
-        "Name": notion._prop_title(
-            payload.get("title", "Untitled Task")
-        ),
+    quest_id = payload.get("quest_id")
+    map_id = payload.get("map_id")
+    quest_name = payload.get("quest_name")
+    map_name = None
+    auto_linked = False
+    
+    # Auto-link to active Quest if not specified
+    if not quest_id:
+        try:
+            active_quest = notion.get_active_quest()
+            if active_quest:
+                quest_id = active_quest["id"]
+                quest_name = active_quest.get("name", "Active Quest")
+                auto_linked = True
+                logger.info(f"RPM: Auto-linked task to active Quest: {quest_name}")
+            else:
+                logger.warning("RPM: No active Quest found. Task created without Quest link.")
+        except Exception as e:
+            logger.warning(f"RPM: Failed to fetch active Quest: {e}")
+    
+    # Auto-link to active MAP if not specified
+    if not map_id:
+        try:
+            active_map = notion.get_active_map()
+            if active_map:
+                map_id = active_map["id"]
+                map_name = active_map.get("name", "Active MAP")
+                auto_linked = True
+                logger.info(f"RPM: Auto-linked task to active MAP: {map_name}")
+            else:
+                logger.debug("RPM: No active MAP found. Task created without MAP link.")
+        except Exception as e:
+            logger.warning(f"RPM: Failed to fetch active MAP: {e}")
 
-        # Safe defaults
-        "Status": notion._prop_select("To Do"),
-        "Auto-Scheduled": notion._prop_checkbox(False),
-        "Deep Work Required": notion._prop_checkbox(
-            bool(payload.get("deep_work_required", False))
-        ),
-        "Source": notion._prop_select("PresentOS"),
+    # --------------------------------------------------
+    # CREATE NOTION PAGE (USING STANDARDIZED HELPER)
+    # --------------------------------------------------
+    task_properties = {
+        "title": payload.get("title", "Untitled Task"),
+        "status": "todo",
+        "description": payload.get("description"),
+        "deadline": payload.get("deadline"),
+        "priority": payload.get("priority", "Medium"),
+        "paei": payload.get("paei"),
+        "energy_level": payload.get("energy_level"),
+        "estimated_duration": payload.get("estimated_duration"),
+        "google_event_id": payload.get("google_event_id"),
+        "quest_id": quest_id,
+        "map_id": map_id,
+        "source": payload.get("source", "PresentOS")
     }
 
-    # Optional text fields
-    if payload.get("description"):
-        props["Description"] = notion._prop_text(payload["description"])
+    res = notion.create_task(task_properties)
 
-    # Deadline
-    if payload.get("deadline"):
-        props["Deadline"] = notion._prop_date(payload["deadline"])
-
-    # Priority (must match Notion select values)
-    if payload.get("priority"):
-        props["Priority"] = notion._prop_select(payload["priority"])
-
-    # PAEI
-    if payload.get("paei"):
-        props["PAEI"] = notion._prop_select(payload["paei"])
-
-    # Energy level (if explicitly provided)
-    if payload.get("energy_level"):
-        props["Energy Level"] = notion._prop_select(payload["energy_level"])
-
-    # Estimated duration
-    if payload.get("estimated_duration"):
-        props["Estimated Duration (min)"] = notion._prop_number(
-            payload["estimated_duration"]
-        )
-
-    # Google calendar linkage
-    if payload.get("google_event_id"):
-        props["Google Event ID"] = notion._prop_text(
-            payload["google_event_id"]
-        )
-
-    # Quest / Map relations (ONLY if present)
-    if payload.get("quest_id"):
-        props["Quest"] = notion._prop_relation([payload["quest_id"]])
-
-    if payload.get("map_id"):
-        props["Map"] = notion._prop_relation([payload["map_id"]])
-
-    # --------------------------------------------------
-    # CREATE NOTION PAGE
-    # --------------------------------------------------
-    body = {
-        "parent": {"database_id": notion.db_ids["tasks"]},
-        "properties": props,
-    }
-
-    res = notion._request("POST", "/pages", json_body=body)
-
-    logger.info("Task created in Notion: %s", res.get("id"))
+    task_id = res.get("id")
+    logger.info("Task created in Notion: %s (Quest: %s, MAP: %s)", task_id, quest_name, map_name)
 
     # --------------------------------------------------
     # AGENT OUTPUT (NO DECISIONS)
     # --------------------------------------------------
+    result = {
+        "action": "task_created",
+        "task_id": task_id,
+        "title": payload.get("title"),
+        "quest_name": quest_name,
+        "quest_id": quest_id,
+        "map_id": map_id,
+        "auto_linked": auto_linked,
+    }
+    
+    # Add RPM context message if auto-linked
+    if auto_linked:
+        links = []
+        if quest_name:
+            links.append(f"Quest: {quest_name}")
+        if map_name:
+            links.append(f"MAP: {map_name}")
+        result["rpm_message"] = f"Auto-linked to {', '.join(links)}"
+    
     state.add_agent_output(
         agent="task_agent",
-        result={
-            "action": "task_created",
-            "task_id": res.get("id"),
-        },
+        result=result,
         score=0.95,
     )
 

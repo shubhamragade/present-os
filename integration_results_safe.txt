@@ -1,0 +1,22 @@
+Weather API key missing
+Starting Integration Checks...
+
+--- Checking Notion ---
+[OK] Notion Connected. Active Quest: Build PresentOS MVP
+
+--- Checking Weather ---
+[OK] Weather Connected. Forecast: clear, Rain Risk: low
+
+--- Checking Google Calendar ---
+[FAIL] Calendar Failed: module 'app.integrations.google_calendar' has no attribute 'list_events'
+
+--- Checking Gmail ---
+[FAIL] Gmail Failed: module 'app.integrations.gmail_client' has no attribute 'fetch_emails'
+
+=== SUMMARY ===
+[OK] Notion
+[OK] Weather
+[FAIL] Calendar
+[FAIL] Gmail
+
+Some integrations failed. Check logs above.

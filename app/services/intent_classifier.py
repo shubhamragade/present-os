@@ -30,6 +30,7 @@ class SubIntent(BaseModel):
     intent: str
     category: str
     payload: Dict[str, Any] = Field(default_factory=dict)
+    paei_hint: Optional[str] = Field(None, description="Suggested PAEI role (P, A, E, I) for this specific action")
 
 
 class IntentResult(BaseModel):
@@ -37,6 +38,7 @@ class IntentResult(BaseModel):
     read_domains: List[str] = Field(default_factory=list)
     confidence: float = Field(ge=0.0, le=1.0)
     explanation: str
+    paei_hint: Optional[str] = Field(None, description="Overall PAEI role suggestion")
     model: str
     raw: Dict[str, Any]
     is_fallback: bool = False
@@ -84,16 +86,19 @@ class IntentClassifier:
             # FIX: Ensure "json" is in user message for OpenAI
             user_message = f"Analyze this text and return JSON analysis: {text}"
             
+            # Define prompt-based instructions instead of strict schema to allow flexible payloads
+            # We still keep the structure in the prompt
+            
             start_time = time.time()
             resp = self.client.chat.completions.create(
                 model=self.model,
                 response_format={"type": "json_object"},
                 temperature=0.1,
                 messages=[
-                    {"role": "system", "content": INTENT_SYSTEM_PROMPT},
+                    {"role": "system", "content": f"{INTENT_SYSTEM_PROMPT}\n\nIMPORTANT: Return a JSON object with 'intents' (array), 'read_domains' (array), 'confidence' (number), 'explanation' (string), and 'paei_hint' (string)."},
                     {"role": "user", "content": user_message},
                 ],
-                max_tokens=500,
+                max_tokens=1000,
             )
             
             elapsed = time.time() - start_time
@@ -101,30 +106,10 @@ class IntentClassifier:
 
             raw_content = resp.choices[0].message.content
             
-            # Fix: Handle malformed JSON
-            try:
-                data = json.loads(raw_content)
-            except json.JSONDecodeError as e:
-                logger.error(f"JSON decode error: {e}")
-                # Try to extract JSON from text
-                import re
-                json_match = re.search(r'\{.*\}', raw_content, re.DOTALL)
-                if json_match:
-                    data = json.loads(json_match.group())
-                else:
-                    raise ValueError(f"Could not parse JSON from: {raw_content[:100]}")
+            # Structured Outputs guarantees valid JSON matching our schema
+            data = json.loads(raw_content)
 
-            # Validate required fields
-            if "intents" not in data:
-                data["intents"] = []
-            if "read_domains" not in data:
-                data["read_domains"] = []
-            if "confidence" not in data:
-                data["confidence"] = 0.7
-            if "explanation" not in data:
-                data["explanation"] = "Auto-generated explanation"
-
-            # Cache the result
+            # Validated by OpenAI, but strictly cache what we got
             _INTENT_CACHE[key] = data
             self._cache_timestamps[key] = time.time()
             
@@ -154,6 +139,7 @@ class IntentClassifier:
             "weather": ["weather", "surf", "wind", "kite", "forecast", "conditions"],
             "finance": ["finance", "bill", "pay", "money", "budget", "invoice"],
             "fireflies": ["transcribe", "recording", "meeting notes", "minutes"],
+            "chat": ["hi", "hello", "hey", "how are you", "martin", "presentos", "morning", "evening"],
         }
         
         read_domain_rules = {
@@ -247,6 +233,7 @@ class IntentClassifier:
             read_domains=read_domains,
             confidence=confidence,
             explanation=raw.get("explanation", ""),
+            paei_hint=raw.get("paei_hint"),
             model=self.model,
             raw=raw,
             is_fallback=is_fallback,
@@ -263,13 +250,13 @@ def get_default_intent_classifier() -> IntentClassifier:
 # ✅ FIXED: "research" REMOVED from WRITE categories
 VALID_CATEGORIES = {
     "task", "calendar", "email", "focus", "quest", "map", 
-    "meeting", "contact", "xp", "weather", "finance", "fireflies"
+    "meeting", "contact", "xp", "weather", "finance", "fireflies", "chat"
     # ❌ "research" is NOT here - it's ONLY a READ domain
 }
 
 VALID_READ_DOMAINS = {
     "plan_report", "weather", "research", "report", 
-    "xp_status", "finance_status", "quest_status", "meeting_summary"
+    "xp_status", "finance_status", "quest_status", "meeting_summary", "contact_info"
 }
 
 
@@ -281,19 +268,22 @@ INTENT_SYSTEM_PROMPT = """You are the PresentOS Intent Classifier (PDF-COMPLIANT
 
 CRITICAL RULE: "research" is ALWAYS a READ-ONLY domain, NEVER a WRITE category.
 
-WRITE CATEGORIES (User wants to DO something):
-- task: Creating, updating, or completing tasks ("add a task", "do this")
+WRITE CATEGORIES (User wants to DO/SAVE something):
+- task: Creating/updating tasks. Payload MUST include: 'title' (string), 'priority' (Low|Medium|High), 'due' (ISO date), 'quest_id' (string, if linked to a quest).
 - calendar: Scheduling meetings, events, or appointments ("schedule meeting")
-- email: Sending, drafting, or managing emails ("send email")
-- focus: Starting focus sessions ("start deep work")
-- quest: Creating or updating high-level goals ("create quest")
+- email: Sending, drafting, scanning, or managing emails ("send email", "scan inbox", "check emails")
+- focus: Starting focus sessions. Payload SHOULD include: 'duration_minutes' (int), 'deep_work' (bool).
+- quest: Creating goals. Payload MUST include: 'name' (string), 'purpose' (string), 'result' (string), 'category' (string).
 - map: Creating Massive Action Plans ("create MAP")
 - meeting: Scheduling meetings ("schedule call")
-- contact: Managing contacts ("add contact")
+- contact: Managing contacts ("add contact", "save note on John", "Sarah prefers calls", "John's phone number is 123"). 
+  - USE THIS whenever user PROVIDES information about a person.
+  - Payload SHOULD include: 'contact_name', 'note' or 'phone' or 'email'.
 - xp: Awarding XP points ("award XP")
 - weather: Checking conditions for decisions ("check weather")
 - finance: Processing bills/payments ("pay bill")
 - fireflies: Meeting transcription ("transcribe meeting")
+- chat: Greetings, small talk, or general engagement ("hi", "how are you")
 
 READ-ONLY DOMAINS (User wants INFORMATION):
 - plan_report: "What's my plan today?", "Show my daily schedule"
@@ -304,12 +294,19 @@ READ-ONLY DOMAINS (User wants INFORMATION):
 - finance_status: "Budget status", "Financial update"
 - quest_status: "Quest progress", "How's my goal"
 - meeting_summary: "Meeting notes", "Summarize meeting"
+- contact_info: "What do I know about Sarah?", "Show John's contact info", "What is Maria's number?"
+  - USE THIS ONLY when the user is ASKING for information.
 
 CRITICAL EXAMPLES:
-1. User: "Research best no-code tools for 2026"
-→ intents: []  # ← NO WRITE INTENTS!
-→ read_domains: ["research"]  # ← ONLY as read domain
-→ confidence: 0.9
+1. User: "Sarah prefers phone calls over email."
+→ intents: [{"intent": "add_note", "category": "contact", "payload": {"contact_name": "Sarah", "note": "prefers phone calls over email"}, "paei_hint": "I"}]
+→ read_domains: []
+→ confidence: 1.0
+
+2. User: "What do I know about Sarah?"
+→ intents: []
+→ read_domains: ["contact_info"]
+→ confidence: 1.0
 
 2. User: "Look up information about AI trends"
 → intents: []  # ← NO WRITE INTENTS!
@@ -336,12 +333,19 @@ ALWAYS REMEMBER:
 - If ANY research keyword appears → add "research" to read_domains
 - NEVER put "research" in intents array
 
+PAEI HINTS (Optional):
+- P (Producer): Action, doing, urgent, deadlines ("do this now", "finish")
+- A (Administrator): Structure, organizing, details, documenting ("organize", "plan")
+- E (Entrepreneur): Vision, ideas, strategy, creative ("brainstorm", "new idea")
+- I (Integrator): People, connection, feelings, team ("call mom", "team meeting")
+
 OUTPUT FORMAT (JSON ONLY):
 {
-  "intents": [{"intent": "...", "category": "...", "payload": {}}],
+  "intents": [{"intent": "...", "category": "...", "payload": {}, "paei_hint": "P"}],
   "read_domains": ["...", "..."],
   "confidence": 0.9,
-  "explanation": "Brief explanation"
+  "explanation": "Brief explanation",
+  "paei_hint": "P"
 }
 """
 

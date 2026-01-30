@@ -56,8 +56,37 @@ def run_quest_node(
 
     payload = instruction.get("payload", {})
 
-    required_fields = ["name", "purpose", "result", "category"]
+    required_fields = ["name", "purpose", "result"]
     missing = [f for f in required_fields if not payload.get(f)]
+
+    # If fields are missing, try to extract them from the user text using ConversationManager
+    if missing:
+        logger.info(f"ConversationManager detected missing slots: {missing}")
+        
+        from app.services.conversation_manager import ConversationManager
+        
+        # Get user text from state
+        user_text = state.input_text or payload.get("text", "")
+        
+        if user_text:
+            conv_mgr = ConversationManager()
+            extracted = conv_mgr.extract_quest_fields(user_text)
+            
+            # Merge extracted fields into payload
+            for field in missing:
+                if field in extracted and extracted[field]:
+                    payload[field] = extracted[field]
+                    logger.info(f"Extracted {field}: {extracted[field]}")
+            
+            # Re-check missing fields
+            missing = [f for f in required_fields if not payload.get(f)]
+    
+    # Add default category if missing
+    if not payload.get("category"):
+        payload["category"] = "General"
+    
+    if not payload.get("avatar"):
+        payload["avatar"] = "Warrior"
 
     if missing:
         state.add_agent_output(

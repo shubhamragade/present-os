@@ -1,0 +1,52 @@
+ERROR:presentos.fireflies_client:Fireflies API connection failed: 400 Client Error: Bad Request for url: https://api.fireflies.ai/graphql
+ERROR:presentos.fireflies_client:Response: {"errors":[{"friendly":false,"message":"Cannot query field \"meetings\" on type \"Query\".","locations":[{"line":3,"column":13}],"code":"GRAPHQL_VALIDATION_FAILED","extensions":{}}]}
+
+ERROR:presentos.fireflies_client:Fireflies API connection failed: 400 Client Error: Bad Request for url: https://api.fireflies.ai/graphql
+ERROR:presentos.fireflies_client:Response: {"errors":[{"friendly":false,"message":"Cannot query field \"meetings\" on type \"Query\".","locations":[{"line":3,"column":13}],"code":"GRAPHQL_VALIDATION_FAILED","extensions":{}}]}
+
+ERROR:presentos.fireflies_client:Fireflies API connection failed: 400 Client Error: Bad Request for url: https://api.fireflies.ai/graphql
+ERROR:presentos.fireflies_client:Response: {"errors":[{"friendly":false,"message":"Cannot query field \"meetings\" on type \"Query\".","locations":[{"line":3,"column":13}],"code":"GRAPHQL_VALIDATION_FAILED","extensions":{}}]}
+
+
+>>> TESTING FIREFLIES CLIENT <<<
+1. Searching recent meetings...
+Traceback (most recent call last):
+  File "C:\Users\shubh\anaconda3\Lib\site-packages\tenacity\__init__.py", line 382, in __call__
+    result = fn(*args, **kwargs)
+             ^^^^^^^^^^^^^^^^^^^
+  File "C:\present-os\app\integrations\fireflies_client.py", line 52, in _query
+    resp.raise_for_status()
+  File "C:\Users\shubh\anaconda3\Lib\site-packages\requests\models.py", line 1026, in raise_for_status
+    raise HTTPError(http_error_msg, response=self)
+requests.exceptions.HTTPError: 400 Client Error: Bad Request for url: https://api.fireflies.ai/graphql
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "C:\present-os\tools\test_fireflies_client.py", line 26, in test_fireflies
+    meetings = client.search_meetings(limit=3)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\present-os\app\integrations\fireflies_client.py", line 124, in search_meetings
+    data = self._query(query, {"limit": limit, "title": title_contains})
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\shubh\anaconda3\Lib\site-packages\tenacity\__init__.py", line 289, in wrapped_f
+    return self(f, *args, **kw)
+           ^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\shubh\anaconda3\Lib\site-packages\tenacity\__init__.py", line 379, in __call__
+    do = self.iter(retry_state=retry_state)
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\shubh\anaconda3\Lib\site-packages\tenacity\__init__.py", line 326, in iter
+    raise retry_exc from fut.exception()
+tenacity.RetryError: RetryError[<Future at 0x208120f6ba0 state=finished raised HTTPError>]
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\present-os\tools\test_fireflies_client.py", line 42, in <module>
+    test_fireflies()
+  File "C:\present-os\tools\test_fireflies_client.py", line 39, in test_fireflies
+    print(f"\u274c API Error: {e}")
+  File "C:\Users\shubh\anaconda3\Lib\encodings\cp1252.py", line 19, in encode
+    return codecs.charmap_encode(input,self.errors,encoding_table)[0]
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+UnicodeEncodeError: 'charmap' codec can't encode character '\u274c' in position 0: character maps to <undefined>

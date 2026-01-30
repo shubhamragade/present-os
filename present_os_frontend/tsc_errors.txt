@@ -1,0 +1,13 @@
+src/components/chat/MessageBubble.tsx(2,10): error TS1484: 'Message' is a type and must be imported using a type-only import when 'verbatimModuleSyntax' is enabled.
+src/components/chat/MessageBubble.tsx(2,19): error TS1484: 'PAEIRole' is a type and must be imported using a type-only import when 'verbatimModuleSyntax' is enabled.
+src/components/chat/MessageBubble.tsx(2,19): error TS6133: 'PAEIRole' is declared but its value is never read.
+src/components/features/PAEIIcon.tsx(2,10): error TS1484: 'PAEIRole' is a type and must be imported using a type-only import when 'verbatimModuleSyntax' is enabled.
+src/components/layout/Sidebar.tsx(2,56): error TS6133: 'ChevronRight' is declared but its value is never read.
+src/store/usePresentOS.ts(2,10): error TS1484: 'PresentOSState' is a type and must be imported using a type-only import when 'verbatimModuleSyntax' is enabled.
+src/store/usePresentOS.ts(2,26): error TS1484: 'Message' is a type and must be imported using a type-only import when 'verbatimModuleSyntax' is enabled.
+src/store/usePresentOS.ts(2,35): error TS1484: 'PAEIRole' is a type and must be imported using a type-only import when 'verbatimModuleSyntax' is enabled.
+src/store/usePresentOS.ts(2,35): error TS6133: 'PAEIRole' is declared but its value is never read.
+src/store/usePresentOS.ts(4,11): error TS6196: 'PresentOSActions' is declared but never used.
+src/store/usePresentOS.ts(20,58): error TS6133: 'get' is declared but its value is never read.
+src/types/index.ts(1,1): error TS6133: 'LucideIcon' is declared but its value is never read.
+src/types/index.ts(1,10): error TS1484: 'LucideIcon' is a type and must be imported using a type-only import when 'verbatimModuleSyntax' is enabled.

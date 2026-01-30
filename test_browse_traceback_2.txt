@@ -1,0 +1,20 @@
+INFO:presentos.browser_agent:BrowserAgent \u2192 general_research: What are the top 3 agentic AI frameworks in 2025?
+ERROR:presentos.browser_agent:Failed to save research to Notion: Notion API error 400: {"object":"error","status":400,"code":"validation_error","message":"body failed validation. Fix one:\nbody.parent.page_id should be defined, instead was `undefined`.\nbody.parent.database_id should be a valid uuid, instead was `\"\"`.\nbody.parent.data_source_id should be defined, instead was `undefined`.\nbody.parent.workspace should be defined, instead was `undefined`.","request_id":"bab90fb1-524c-41f4-9212-c39b96844c40"}
+ERROR:presentos.browser_agent:BrowserAgent failed: 'PresentOSState' object has no attribute 'config'
+Traceback (most recent call last):
+  File "C:\present-os\app\graph\nodes\browser_agent.py", line 308, in run_browser_node
+    "full_result": result if state.config.get("debug_mode") else None
+                             ^^^^^^^^^^^^
+  File "C:\Users\shubh\anaconda3\Lib\site-packages\pydantic\main.py", line 991, in __getattr__
+    raise AttributeError(f'{type(self).__name__!r} object has no attribute {item!r}')
+AttributeError: 'PresentOSState' object has no attribute 'config'. Did you mean: 'Config'?
+Traceback (most recent call last):
+
+>>> TESTING BROWSE AGENT <<<
+Outputs count: 1
+  File "C:\present-os\tools\test_browser_agent.py", line 42, in <module>
+    test_browse()
+  File "C:\present-os\tools\test_browser_agent.py", line 37, in test_browse
+    print(f"Result: {out.result.get('result', {}).get('answer')[:100]}...")
+                     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^
+TypeError: 'NoneType' object is not subscriptable

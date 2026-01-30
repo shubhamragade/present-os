@@ -1,0 +1,25 @@
+Starting Integration Checks...
+Traceback (most recent call last):
+
+--- Checking Notion ---
+  File "C:\present-os\tools\check_integrations.py", line 20, in check_notion
+    print(f"\u2705 Notion Connected. Active Quest: {quest.get('name') if quest else 'None'}")
+  File "C:\Users\shubh\anaconda3\Lib\encodings\cp1252.py", line 19, in encode
+    return codecs.charmap_encode(input,self.errors,encoding_table)[0]
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+UnicodeEncodeError: 'charmap' codec can't encode character '\u2705' in position 0: character maps to <undefined>
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\present-os\tools\check_integrations.py", line 85, in <module>
+    main()
+  File "C:\present-os\tools\check_integrations.py", line 65, in main
+    "Notion": check_notion(),
+              ^^^^^^^^^^^^^^
+  File "C:\present-os\tools\check_integrations.py", line 23, in check_notion
+    print(f"\u274c Notion Failed: {e}")
+  File "C:\Users\shubh\anaconda3\Lib\encodings\cp1252.py", line 19, in encode
+    return codecs.charmap_encode(input,self.errors,encoding_table)[0]
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+UnicodeEncodeError: 'charmap' codec can't encode character '\u274c' in position 0: character maps to <undefined>

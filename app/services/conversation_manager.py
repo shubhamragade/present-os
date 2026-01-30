@@ -148,3 +148,27 @@ class ConversationManager:
             state.conversation is not None
             and state.conversation.get("status") == "awaiting_user"
         )
+
+    def extract_quest_fields(self, text: str) -> Dict[str, Any]:
+        """
+        Fallback extraction for Quest fields from text.
+        """
+        # Simple extraction for common patterns if IntentClassifier misses them
+        res = {"name": None, "purpose": None, "result": None}
+        
+        # Very basic extraction - in a real system this would be an LLM call
+        # For now, we take the whole text as the name if nothing else works
+        import re
+        
+        # Look for "Quest: Name" or similar patterns
+        name_match = re.search(r"(?:Quest|goal|project)[:\s]+([^,\.]+)", text, re.IGNORECASE)
+        if name_match:
+            res["name"] = name_match.group(1).strip()
+            res["purpose"] = text.strip()
+            res["result"] = "Completed"
+        else:
+            res["name"] = text[:50].strip() + "..." if len(text) > 50 else text.strip()
+            res["purpose"] = text.strip()
+            res["result"] = "Success"
+            
+        return res

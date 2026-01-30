@@ -1,0 +1,13 @@
+ERROR:presentos.elevenlabs:ElevenLabs synthesis failed: 401 Client Error: Unauthorized for url: https://api.elevenlabs.io/v1/text-to-speech/21m00Tcm4TlvDq8ikWAM
+
+>>> TESTING VOICE SYSTEM <<<
+1. Testing ElevenLabs TTS...
+Traceback (most recent call last):
+  File "C:\present-os\tools\test_voice_system.py", line 53, in <module>
+    test_voice()
+  File "C:\present-os\tools\test_voice_system.py", line 33, in test_voice
+    print("\u274c TTS Failed.")
+  File "C:\Users\shubh\anaconda3\Lib\encodings\cp1252.py", line 19, in encode
+    return codecs.charmap_encode(input,self.errors,encoding_table)[0]
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+UnicodeEncodeError: 'charmap' codec can't encode character '\u274c' in position 0: character maps to <undefined>

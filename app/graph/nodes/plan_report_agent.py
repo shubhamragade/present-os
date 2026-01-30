@@ -115,6 +115,33 @@ def run_plan_report_node(
             "estimated_duration": props.get("Estimated Duration (min)", {}).get("number"),
         })
 
+    # Fetch Calendar Events
+    calendar_events = []
+    try:
+        from app.integrations.google_calendar import list_events
+        # Get events starting from now (or beginning of day if needed, but list_events defaults to now)
+        # To show full day schedule, we should ideally query from midnight, but let's conform to list_events default or specific usage
+        # list_events uses time_min=now by default
+        
+        # Determine time_min for "today" - start of day
+        today_start = f"{today}T00:00:00Z"
+        
+        events = list_events(max_results=10, time_min=today_start)
+        
+        for event in events:
+            start = event.get("start", {}).get("dateTime") or event.get("start", {}).get("date")
+            # Filter for today only
+            if start and start.startswith(today):
+                calendar_events.append({
+                    "id": event.get("id"),
+                    "summary": event.get("summary", "No Title"),
+                    "start": start,
+                    "end": event.get("end", {}).get("dateTime") or event.get("end", {}).get("date"),
+                    "location": event.get("location")
+                })
+    except Exception as e:
+        logger.warning(f"Failed to fetch calendar events: {e}")
+
     # Emit agent output
     state.add_agent_output(
         agent="plan_report_agent",
@@ -122,14 +149,16 @@ def run_plan_report_node(
             "action": "daily_plan",
             "date": today,
             "tasks": tasks_for_today,
+            "calendar_events": calendar_events,
             "summary": {
                 "total_tasks": len(tasks_for_today),
+                "total_events": len(calendar_events),
                 "high_priority": len([t for t in tasks_for_today if t.get("priority") == "High"]),
                 "overdue": len([t for t in tasks_for_today if t.get("deadline") and t.get("deadline").split("T")[0] < today]),
             }
         },
-        score=0.95 if tasks_for_today else 0.5,
+        score=0.95 if tasks_for_today or calendar_events else 0.5,
     )
 
-    logger.info("PlanReportAgent completed (%s tasks)", len(tasks_for_today))
+    logger.info("PlanReportAgent completed (%s tasks, %s events)", len(tasks_for_today), len(calendar_events))
     return state

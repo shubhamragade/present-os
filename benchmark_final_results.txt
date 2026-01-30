@@ -1,0 +1,30 @@
+STARTING SYSTEM BENCHMARK
+
+=== Example 1: Complex Orchestration ===
+User: "Tomorrow morning I have good energy, schedule deep work 9-12, move my 10am call if possible, and check if my camera is still on sale on Amazon."
+Martin: "Γ£à 2 actions coordinated. +7 I XP"
+XP Awarded: 10 (I)
+Time Taken: 21.87s
+Tasks Updated: 1 items
+----------------------------------------
+=== Example 4: Task + RPM ===
+User: "Add task: Review investment portfolio this Sunday."
+Martin: "Γ£à Task scheduled. +8 A XP"
+XP Awarded: 10 (A)
+Time Taken: 16.96s
+Tasks Updated: 1 items
+----------------------------------------
+=== Example 5: Research ===
+User: "Quick research: what are people saying about Grok 4 on X right now?"
+Martin: "Great job on completing that action successfully! Your progress is truly commendable, and IΓÇÖm here to support you every step of the way. Keep up the fantastic work! ≡ƒîƒ"
+XP Awarded: 0 (P)
+Time Taken: 10.01s
+Tasks Updated: 1 items
+----------------------------------------
+=== Example 2: Email + Task ===
+User: "Reply to the invoice from electricity company - tell them I will pay next week and ask for extended due date."
+Martin: "Γ£à Email scheduled. +7 I XP"
+XP Awarded: 10 (I)
+Time Taken: 16.45s
+Tasks Updated: 1 items
+----------------------------------------

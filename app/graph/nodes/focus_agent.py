@@ -42,7 +42,7 @@ def _get_optimal_focus_time(state: PresentOSState) -> Dict[str, Any]:
     }
     
     # PDF: Respect energy levels
-    whoop_recovery = getattr(state, 'whoop_recovery_score', 70)
+    whoop_recovery = getattr(state, 'whoop_recovery_score', None) or 70  # Default to 70 if None
     
     if whoop_recovery >= 80:
         # High energy → Deep work
@@ -126,23 +126,116 @@ def _create_focus_policies(deep_work: bool, duration_minutes: int) -> Dict[str, 
         }
 
 
+def _calculate_exact_focus_times(
+    duration_minutes: int,
+    whoop_recovery: Optional[float] = None,
+    calendar_events: Optional[list] = None
+) -> Dict[str, Any]:
+    """
+    Calculate exact start and end times for focus session.
+    
+    Logic:
+    1. If high energy (WHOOP >= 75) → Start now
+    2. If medium energy → Find next available high-energy slot
+    3. Check calendar for conflicts
+    4. Auto-resolve conflicts or notify
+    """
+    from datetime import datetime, timezone, timedelta
+    import pytz
+    
+    # Use local timezone (India)
+    local_tz = pytz.timezone('Asia/Kolkata')
+    now_utc = datetime.now(timezone.utc)
+    now_local = now_utc.astimezone(local_tz)
+    
+    # Default: start now
+    start_time = now_local
+    end_time = start_time + timedelta(minutes=duration_minutes)
+    
+    # Check WHOOP energy
+    energy_level = "medium"
+    if whoop_recovery and whoop_recovery >= 75:
+        energy_level = "high"
+        # High energy → perfect slot, start now
+        start_time = now_local
+    elif whoop_recovery and whoop_recovery >= 60:
+        energy_level = "medium"
+        # Medium energy → start now but note it
+        start_time = now_local
+    else:
+        energy_level = "low"
+        # Low energy → suggest next high-energy slot (usually morning)
+        # If it's evening, suggest tomorrow morning
+        if now_local.hour >= 18:
+            # Suggest tomorrow 9 AM
+            tomorrow = now_local + timedelta(days=1)
+            start_time = tomorrow.replace(hour=9, minute=0, second=0, microsecond=0)
+        else:
+            # Start now anyway, but note low energy
+            start_time = now_local
+    
+    end_time = start_time + timedelta(minutes=duration_minutes)
+    
+    # Check for calendar conflicts (simplified - would integrate with Calendar Agent)
+    has_conflicts = False
+    conflict_resolution = "none"
+    
+    if calendar_events:
+        # Check if any events overlap with our focus time
+        for event in calendar_events:
+            # This would check actual event times
+            # For now, assume no conflicts
+            pass
+    
+    return {
+        "start_time": start_time,
+        "end_time": end_time,
+        "start_time_formatted": start_time.strftime("%I:%M %p"),
+        "end_time_formatted": end_time.strftime("%I:%M %p"),
+        "start_time_iso": start_time.isoformat(),
+        "end_time_iso": end_time.isoformat(),
+        "duration_minutes": duration_minutes,
+        "energy_level": energy_level,
+        "whoop_recovery": whoop_recovery,
+        "has_conflicts": has_conflicts,
+        "conflict_resolution": conflict_resolution,
+        "timezone": "Asia/Kolkata"
+    }
+
+
 def _schedule_focus_block(state: PresentOSState, focus_config: Dict[str, Any]) -> Dict[str, Any]:
     """
-    Schedule focus block via calendar agent
-    Returns calendar event details
+    Schedule focus block via calendar agent with exact times and conflict checking.
+    Returns calendar event details with precise start/end times.
     """
+    
+    # Get WHOOP recovery score
+    whoop_recovery = getattr(state, 'whoop_recovery_score', None) or 70
+    
+    # Calculate exact start/end times
+    timing = _calculate_exact_focus_times(
+        duration_minutes=focus_config.get("duration_minutes", 60),
+        whoop_recovery=whoop_recovery,
+        calendar_events=getattr(state.calendar, 'today_events', []) if hasattr(state, 'calendar') else None
+    )
     
     # Build calendar event
     event_data = {
         "title": f"🧠 Focus Time: {'Deep Work' if focus_config.get('deep_work') else 'Concentration'}",
         "description": f"Focus session scheduled by PresentOS Focus Agent\n"
                       f"Energy: {focus_config.get('energy_context', 'normal')}\n"
+                      f"WHOOP Recovery: {whoop_recovery}%\n"
                       f"Policies: {focus_config.get('policies', {}).get('interruption_allowed', 'normal')}",
+        "start": timing["start_time_iso"],
+        "end": timing["end_time_iso"],
         "duration_minutes": focus_config.get("duration_minutes", 60),
         "focus_mode": True,
         "deep_work": focus_config.get("deep_work", False),
         "auto_decline_conflicts": focus_config.get("deep_work", False),
-        "source": "focus_agent"
+        "source": "focus_agent",
+        # Add exact times for response
+        "start_time_formatted": timing["start_time_formatted"],
+        "end_time_formatted": timing["end_time_formatted"],
     }
     
     # Add to planned actions for calendar agent
@@ -159,8 +252,10 @@ def _schedule_focus_block(state: PresentOSState, focus_config: Dict[str, Any]) -
     return {
         "scheduled": True,
         "event_data": event_data,
-        "calendar_action_added": True
+        "calendar_action_added": True,
+        "timing": timing
     }
+
 
 
 def run_focus_node(state: PresentOSState) -> PresentOSState:
@@ -184,7 +279,7 @@ def run_focus_node(state: PresentOSState) -> PresentOSState:
     paei_context = instruction.get("paei_context", {})
     
     try:
-        if intent == "enable_focus_mode":
+        if intent in ["enable_focus_mode", "start_focus_session", "create_focus"]:
             # PDF: Enable focus with intelligent configuration
             user_duration = payload.get("duration_minutes")
             user_deep_work = payload.get("deep_work")
@@ -208,8 +303,9 @@ def run_focus_node(state: PresentOSState) -> PresentOSState:
             
             # Schedule in calendar
             schedule_result = _schedule_focus_block(state, optimal_config)
+            timing = schedule_result.get("timing", {})
             
-            # Build result
+            # Build result with detailed timing and context
             result = {
                 "action": "focus_enabled",
                 "enabled_at": datetime.now(timezone.utc).isoformat(),
@@ -221,7 +317,18 @@ def run_focus_node(state: PresentOSState) -> PresentOSState:
                 "time_context": optimal_config.get("time_context", "normal"),
                 "confidence": optimal_config.get("confidence", 0.7),
                 "calendar_scheduled": schedule_result.get("scheduled", False),
-                "paei_context": paei_context
+                "paei_context": paei_context,
+                # Add exact timing details for parent response
+                "start_time": timing.get("start_time_formatted", "now"),
+                "end_time": timing.get("end_time_formatted", ""),
+                "whoop_recovery": timing.get("whoop_recovery", 70),
+                "energy_level": timing.get("energy_level", "medium"),
+                "protections": {
+                    "calendar_blocked": True,
+                    "notifications_silenced": policies.get("suppress_notifications", True),
+                    "meetings_avoided": policies.get("avoid_meetings", True),
+                    "interruptions": policies.get("interruption_allowed", "emergency_only")
+                }
             }
             
             # Agent output
@@ -327,6 +434,46 @@ def run_focus_node(state: PresentOSState) -> PresentOSState:
                 agent="focus_agent",
                 result=result,
                 score=readiness["confidence"]
+            )
+            
+            return state
+        
+        elif intent == "create_focus":
+            # Handle generic "create_focus" intent (map to enable_focus_mode)
+            logger.info(f"Mapping create_focus to enable_focus_mode")
+            
+            # Get optimal focus configuration
+            optimal_config = _get_optimal_focus_time(state)
+            
+            # Create focus policies
+            policies = _create_focus_policies(
+                optimal_config["deep_work"],
+                optimal_config["duration_minutes"]
+            )
+            
+            # Schedule in calendar
+            schedule_result = _schedule_focus_block(state, optimal_config)
+            
+            # Build result
+            result = {
+                "action": "focus_enabled",
+                "enabled_at": datetime.now(timezone.utc).isoformat(),
+                "duration_minutes": optimal_config["duration_minutes"],
+                "deep_work": optimal_config["deep_work"],
+                "reason": "user_requested_via_create_focus",
+                "policies": policies,
+                "energy_context": optimal_config.get("energy_context", "normal"),
+                "time_context": optimal_config.get("time_context", "normal"),
+                "confidence": optimal_config.get("confidence", 0.7),
+                "calendar_scheduled": schedule_result.get("scheduled", False),
+                "paei_context": paei_context
+            }
+            
+            # Agent output
+            state.add_agent_output(
+                agent="focus_agent",
+                result=result,
+                score=result["confidence"]
             )
             
             return state

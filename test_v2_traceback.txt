@@ -1,0 +1,37 @@
+INFO:presentos.email_agent:Drafting reply...
+INFO:httpx:HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+WARNING:googleapiclient.http:Encountered 403 Forbidden with reason "insufficientPermissions"
+ERROR:presentos.gmail:Failed to create Gmail draft: <HttpError 403 when requesting https://gmail.googleapis.com/gmail/v1/users/me/drafts?alt=json returned "Request had insufficient authentication scopes.". Details: "[{'message': 'Insufficient Permission', 'domain': 'global', 'reason': 'insufficientPermissions'}]">
+Traceback (most recent call last):
+  File "C:\present-os\app\integrations\gmail_client.py", line 199, in create_draft
+    ).execute()
+      ^^^^^^^^^
+  File "C:\Users\shubh\anaconda3\Lib\site-packages\googleapiclient\_helpers.py", line 130, in positional_wrapper
+    return wrapped(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\shubh\anaconda3\Lib\site-packages\googleapiclient\http.py", line 938, in execute
+    raise HttpError(resp, content, uri=self.uri)
+googleapiclient.errors.HttpError: <HttpError 403 when requesting https://gmail.googleapis.com/gmail/v1/users/me/drafts?alt=json returned "Request had insufficient authentication scopes.". Details: "[{'message': 'Insufficient Permission', 'domain': 'global', 'reason': 'insufficientPermissions'}]">
+ERROR:presentos.email_agent:Draft creation failed
+Traceback (most recent call last):
+  File "C:\present-os\app\graph\nodes\email_agent.py", line 141, in run_email_node
+    draft = create_draft(
+            ^^^^^^^^^^^^^
+  File "C:\present-os\app\integrations\gmail_client.py", line 199, in create_draft
+    ).execute()
+      ^^^^^^^^^
+  File "C:\Users\shubh\anaconda3\Lib\site-packages\googleapiclient\_helpers.py", line 130, in positional_wrapper
+    return wrapped(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\shubh\anaconda3\Lib\site-packages\googleapiclient\http.py", line 938, in execute
+    raise HttpError(resp, content, uri=self.uri)
+googleapiclient.errors.HttpError: <HttpError 403 when requesting https://gmail.googleapis.com/gmail/v1/users/me/drafts?alt=json returned "Request had insufficient authentication scopes.". Details: "[{'message': 'Insufficient Permission', 'domain': 'global', 'reason': 'insufficientPermissions'}]">
+Traceback (most recent call last):
+
+>>> TESTING DRAFT REPLY <<<
+  File "C:\present-os\tools\test_email_agent_v2.py", line 66, in <module>
+    test_draft_reply()
+  File "C:\present-os\tools\test_email_agent_v2.py", line 60, in test_draft_reply
+    outputs = new_state.agent_outputs.get("email_agent", [])
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'list' object has no attribute 'get'

@@ -76,41 +76,31 @@ def run_fireflies_node(state: PresentOSState) -> PresentOSState:
                 # Create tasks in Notion using YOUR exact schema
                 created_notion_tasks = []
                 for task_data in result.get("created_tasks", []):
-                    # Build properties exactly like your task_agent.py
-                    props = {
-                        "Name": notion._prop_title(task_data.get("title", "Meeting Task")),
-                        "Status": notion._prop_select("To Do"),
-                        "Auto-Scheduled": notion._prop_checkbox(False),
-                        "Source": notion._prop_select(task_data.get("source", "Fireflies")),
-                    }
-                    
-                    if task_data.get("description"):
-                        props["Description"] = notion._prop_text(task_data["description"])
-                    
-                    if task_data.get("priority"):
-                        props["Priority"] = notion._prop_select(task_data["priority"])
-                    
-                    if task_data.get("paei"):
-                        props["PAEI"] = notion._prop_select(task_data["paei"])
-                    
-                    # Add Fireflies-specific properties
-                    props["Fireflies Meeting"] = notion._prop_checkbox(True)
-                    props["Meeting ID"] = notion._prop_text(meeting_id)
-                    
-                    # Create the task
-                    body = {
-                        "parent": {"database_id": notion.db_ids["tasks"]},
-                        "properties": props,
+                    # Use standardized create_task helper
+                    task_properties = {
+                        "title": task_data.get("title", "Meeting Task"),
+                        "status": "todo",
+                        "description": task_data.get("description"),
+                        "priority": task_data.get("priority", "Medium"),
+                        "paei": task_data.get("paei"),
+                        "source": task_data.get("source", "Fireflies")
                     }
                     
                     try:
-                        res = notion._request("POST", "/pages", json_body=body)
+                        res = notion.create_task(task_properties)
+                        # Add meeting-specific properties via update
+                        notion._request("PATCH", f"/pages/{res['id']}", json_body={
+                            "properties": {
+                                "Fireflies Meeting ID": notion._prop_text(meeting_id)
+                            }
+                        })
+                        
                         created_notion_tasks.append({
                             "task_id": res.get("id"),
                             "title": task_data.get("title")
                         })
                     except Exception as e:
-                        logger.error(f"Failed to create Notion task: {e}")
+                        logger.error(f"Failed to create Notion task from Fireflies: {e}")
                 
                 # Calculate XP (PDF: Awards Integrator XP)
                 action_items_count = result.get("tasks_extracted", 0)

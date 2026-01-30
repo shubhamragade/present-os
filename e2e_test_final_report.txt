@@ -1,0 +1,107 @@
+INFO:httpx:HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+INFO:presentos.intent:Raw intent data for 'Add a high priority task: 'Test all agents' due to...': {
+  "intents": [
+    {
+      "intent": "task",
+      "category": "task",
+      "payload": {
+        "title": "Test all agents",
+        "priority": "High",
+        "due": "2023-10-06",
+        "quest_id": "MVP"
+      },
+      "paei_hint": "P"
+    }
+  ],
+  "read_domains": [],
+  "confidence": 0.9,
+  "explanation": "User wants to create a high priority task linked to a quest, indicating a clear action.",
+  "paei_hint": "P"
+}
+INFO:presentos.graph:Graph invoked: 'Add a high priority task: 'Test all agents' due to...'
+INFO:presentos.parent_agent:ParentNode making REAL decisions
+INFO:httpx:HTTP Request: POST https://api.openai.com/v1/embeddings "HTTP/1.1 200 OK"
+INFO:presentos.pinecone:Pinecone returned 3 matches
+INFO:presentos.parent_agent:RAG Retrieved 3 memories
+INFO:presentos.parent_agent:PAEI Decision: A - Systematic work required
+INFO:presentos.parent_agent:RPM Result: 1.0 - proceed
+INFO:httpx:HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+INFO:httpx:HTTP Request: POST https://api.openai.com/v1/embeddings "HTTP/1.1 200 OK"
+INFO:presentos.pinecone:Upserted 1 vectors into namespace=user_patterns
+INFO:presentos.rag:Stored memory mem-82f6e1a269fa46de9cebbb137bf82135 (preference)
+INFO:presentos.parent_agent:Continuous learning: Memory writer check complete
+INFO:presentos.graph:Executing 2 instructions
+INFO:presentos.execution_router:Executing task_agent with PAEI: A
+2026-01-25 22:56:44,326 INFO presentos.notion: Created XP entry: amount=9 paei=A week=4 id=2f333e0d-b053-814a-aba9-e98b0bba390c
+INFO:presentos.notion:Created XP entry: amount=9 paei=A week=4 id=2f333e0d-b053-814a-aba9-e98b0bba390c
+INFO:presentos.xp_agent:XP entry created: action=task_complete xp=9 page_id=2f333e0d-b053-814a-aba9-e98b0bba390c
+INFO:presentos.pinecone:PineconeClient initialized index=presentos-memory-1536 namespace=presentos-rag
+INFO:presentos.graph:Graph execution completed - PDF flow executed
+
+================================================================================
+PRESENTOS END-TO-END PIPELINE TEST
+================================================================================
+
+User Message: "Add a high priority task: 'Test all agents' due tomorrow, linked to the MVP quest, PAEI focus on Producer"
+
+STEP 1: Intent Classifier
+--------------------------------------------------------------------------------
+[OK] Classified Intents: 1
+   - Intent: task
+     Category: task
+     Payload: {
+      "title": "Test all agents",
+      "priority": "High",
+      "due": "2023-10-06",
+      "quest_id": "MVP"
+}
+   Confidence: 0.9
+   Model: gpt-4o-mini
+
+STEP 2: Parent Agent Decision
+--------------------------------------------------------------------------------
+   Graph built successfully
+   Initial state energy: 0.8
+   Timezone: Asia/Kolkata
+
+STEP 3: Graph Execution
+--------------------------------------------------------------------------------
+   Graph execution complete!
+
+   [DECISION] Parent Decision:
+      PAEI Role: A
+      XP Amount: 8
+      Reasoning: Systematic work required
+      Coordinated Action: False
+      Instructions: 2 agents activated
+
+   [AGENTS] Activated Agents:
+      - task_agent: task
+      - xp_agent: award_xp
+
+STEP 4: Child Agent Outputs
+--------------------------------------------------------------------------------
+   Total outputs: 1
+
+   [OUTPUT] xp_agent:
+      status: success
+      xp: 9
+      category: a_execution
+      bonus: 4
+      reason: Task Complete (medium) 60 min [PAEI=A]
+      xp_page_id: 2f333e0d-b053-814a-aba9-e98b0bba390c
+      paei: A
+      action_type: task_complete
+      raw_action: task_complete
+
+STEP 5: Final Response to User
+--------------------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\present-os\tools\test_e2e_pipeline.py", line 169, in <module>
+    test_end_to_end_pipeline()
+  File "C:\present-os\tools\test_e2e_pipeline.py", line 129, in test_end_to_end_pipeline
+    print(f"   [RESPONSE] Response: \"{final_response}\"\n")
+  File "C:\Users\shubh\anaconda3\Lib\encodings\cp1252.py", line 19, in encode
+    return codecs.charmap_encode(input,self.errors,encoding_table)[0]
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+UnicodeEncodeError: 'charmap' codec can't encode character '\u2705' in position 25: character maps to <undefined>

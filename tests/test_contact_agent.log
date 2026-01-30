@@ -1,0 +1,21 @@
+Testing Contact Agent Integration...
+
+1. Testing: Adding a note to a contact
+Query: Sarah prefers phone calls over email.
+Status: 200
+Response: Got it!  
+ò Noted that Sarah prefers phone calls over email.  
++5 Communication XP (preferences noted)  
+Anything else?
+PAEI: P
+
+2. Testing: Looking up contact info
+Query: what do I know about Sarah?
+Status: 200
+Response: Certainly! 
+
+ò You have some information about Sarah, but I don't have specific details available right now. 
+ò If youÆd like, I can help you gather more information or insights about her.
+
++5 Research XP (information gathering)  
+Anything else?

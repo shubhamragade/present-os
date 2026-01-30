@@ -55,6 +55,7 @@ class ExecutionRouter:
             "fireflies_agent": run_fireflies_node,
             "report_agent": lambda s: run_report_node(s, self.notion),
             "xp_agent": lambda s: run_xp_node(s, self.notion),
+            "finance_agent": run_finance_node,
         }
     
     def __call__(self, state: PresentOSState) -> PresentOSState:

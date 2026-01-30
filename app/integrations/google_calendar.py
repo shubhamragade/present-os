@@ -42,9 +42,7 @@ API_SERVICE_NAME = "calendar"
 API_VERSION = "v3"
 
 SCOPES = [
-    "https://www.googleapis.com/auth/calendar",
-    "https://www.googleapis.com/auth/calendar.events",
-    "https://www.googleapis.com/auth/calendar.events.readonly"
+    "https://www.googleapis.com/auth/calendar"
 ]
 
 def _build_credentials_from_refresh_token() -> google.oauth2.credentials.Credentials:
@@ -68,8 +66,6 @@ def _build_credentials_from_refresh_token() -> google.oauth2.credentials.Credent
         client_secret=CLIENT_SECRET,
         scopes=[
             "https://www.googleapis.com/auth/calendar",
-            "https://www.googleapis.com/auth/calendar.events",
-            "https://www.googleapis.com/auth/calendar.events.readonly",
         ],
     )
 def _calendar_service():
@@ -152,4 +148,25 @@ def find_conflicts(calendar_id: str, start: datetime, end: datetime, exclude_eve
         return items
     except googleapiclient.errors.HttpError as e:
         logger.exception("Google find_conflicts error: %s", e)
+        return []
+
+def list_events(calendar_id: str = "primary", max_results: int = 10, time_min: Optional[str] = None) -> List[Dict[str, Any]]:
+    """
+    List upcoming events for a specific calendar.
+    """
+    service = _calendar_service()
+    if not time_min:
+        time_min = datetime.now(timezone.utc).isoformat()
+    
+    try:
+        events_result = service.events().list(
+            calendarId=calendar_id,
+            timeMin=time_min,
+            maxResults=max_results,
+            singleEvents=True,
+            orderBy='startTime'
+        ).execute()
+        return events_result.get('items', [])
+    except googleapiclient.errors.HttpError as e:
+        logger.error(f"Failed to list events: {e}")
         return []

@@ -95,8 +95,13 @@ class Settings:
     # -----------------------------
     # ELEVENLABS (TTS)
     # -----------------------------
+    # ElevenLabs (Legacy)
     ELEVENLABS_API_KEY: str = os.getenv("ELEVENLABS_API_KEY", "")
     ELEVENLABS_VOICE_ID: str = os.getenv("ELEVENLABS_VOICE_ID", "")
+
+    # Murf AI (Current)
+    MURF_API_KEY: str = os.getenv("MURF_API_KEY", "")
+    MURF_VOICE_ID: str = os.getenv("MURF_VOICE_ID", "en-US-marcus")
 
     # -----------------------------
     # TELEGRAM BOT

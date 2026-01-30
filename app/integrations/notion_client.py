@@ -57,6 +57,33 @@ def _sleep_backoff(attempt: int, base: float = 0.5, cap: float = 10.0) -> None:
 
 
 # ---------------------------------------------------------
+# Notion Schemas (Source of Truth Alignment)
+# ---------------------------------------------------------
+PAEI_MAP = {
+    "P": "Producer",
+    "A": "Administrator",
+    "E": "Entrepreneur",
+    "I": "Integrator"
+}
+
+STATUS_MAP_TASKS = {
+    "todo": "Pending",
+    "done": "Completed"
+}
+
+STATUS_MAP_RPM = {
+    "active": "In Progress",
+    "in_progress": "In Progress",
+    "completed": "Completed"
+}
+
+SOURCE_MAP = {
+    "PresentOS": "Manual",
+    "Voice": "Voice",
+    "Email": "Email"
+}
+
+# ---------------------------------------------------------
 # NotionClient
 # ---------------------------------------------------------
 class NotionClient:
@@ -142,7 +169,7 @@ class NotionClient:
         body = {
             "filter": {
                 "property": "Status",
-                "select": {"equals": "In Progress"},  # ✅ CORRECT: "select" type
+                "select": {"equals": "In Progress"},
             },
             "sorts": [
                 {"timestamp": "last_edited_time", "direction": "descending"}
@@ -188,7 +215,7 @@ class NotionClient:
                 "and": [
                     {
                         "property": "Status",
-                        "select": {"equals": "In Progress"},  # ✅ CORRECT: "select" type
+                        "select": {"equals": "In Progress"},
                     },
                     {
                         "property": "Quest",
@@ -255,7 +282,7 @@ class NotionClient:
             if status_filter:
                 body["filter"] = {
                     "property": "Status",
-                    "select": {"equals": status_filter},
+                    "select": {"equals": self._map_task_status(status_filter)},
                 }
 
             res = self._request(
@@ -271,7 +298,7 @@ class NotionClient:
                 tasks.append({
                     "id": page["id"],
                     "name": self._txt(props.get("Name")) or "Untitled Task",
-                    "status": self._get_select(props.get("Status")) or "To Do",
+                    "status": "done" if self._get_select(props.get("Status")) == "Completed" else "pending",
                     "priority": self._get_select(props.get("Priority")) or "Medium",
                 })
 
@@ -285,37 +312,169 @@ class NotionClient:
     def get_xp_summary(self) -> Dict[str, Any]:
         """
         Calculate XP totals for frontend display.
-        Frontend expects: {"P": X, "A": Y, "E": Z, "I": W, "total": SUM, "streak": N}
+        Returns: {
+            "P": X, "A": Y, "E": Z, "I": W,
+            "total": ALL_TIME,
+            "today": TODAY_XP,
+            "week": WEEK_XP,
+            "streak": N,
+            "focus_recommendation": "X" (Lowest PAEI)
+        }
         """
         try:
             xp_entries = self.get_xp_entries(page_size=100)
             
-            # Initialize totals
-            totals = {"P": 0, "A": 0, "E": 0, "I": 0, "total": 0, "streak": 0}
+            # Initialize metrics
+            totals = {"P": 0, "A": 0, "E": 0, "I": 0}
+            grand_total = 0
+            today_total = 0
+            week_total = 0
+            month_total = 0
+            
+            now = datetime.utcnow().date()
+            current_week = int(now.strftime("%V"))
             
             for entry in xp_entries:
                 props = entry.get("properties", {})
                 
-                # Get XP amount using your helper method
+                # Get Amount
                 amount = self._get_number(props.get("Amount", {})) or 0
+                grand_total += amount
                 
-                # Get PAEI using your helper method
+                # Get Date and calculate periods
+                entry_date_obj = self._get_date(props.get("Date", {}))
+                # _get_date might return date object or string, handle both
+                if isinstance(entry_date_obj, str):
+                    try:
+                        entry_date_obj = datetime.strptime(entry_date_obj, "%Y-%m-%d").date()
+                    except ValueError:
+                        pass
+                
+                if isinstance(entry_date_obj, type(now)):
+                    if entry_date_obj == now:
+                        today_total += amount
+                    
+                    # Week check (simple iso week)
+                    if int(entry_date_obj.strftime("%V")) == current_week:
+                        week_total += amount
+
+                    # Month check
+                    if entry_date_obj.month == now.month and entry_date_obj.year == now.year:
+                        month_total += amount
+
+                # Get PAEI
                 paei = self._get_select(props.get("PAEI", {}))
+                key = "P" # Default
+                for k, v in PAEI_MAP.items():
+                    if v == paei:
+                        key = k
+                        break
+                # Fallback if mapped directly as P, A, E, I or full name
+                if paei in ["P", "A", "E", "I"]: 
+                    key = paei
                 
-                if paei in totals:
-                    totals[paei] += amount
-                    totals["total"] += amount
+                if key in totals:
+                    totals[key] += amount
             
-            # Calculate streak (simplified - count consecutive days with XP)
-            # For now, hardcode or implement later
-            totals["streak"] = 5  # TODO: Implement proper streak calculation
+            # Calculate Focus Recommendation (Lowest score)
+            focus_rec_key = min(totals, key=totals.get)
+            focus_name = PAEI_MAP.get(focus_rec_key, "Producer")
             
-            logger.info(f"XP summary calculated: {totals}")
-            return totals
+            # Generate Advice
+            advice_map = {
+                "P": "Focus on execution and closing open loops. Try a 'Power Hour'.",
+                "A": "Focus on organization and systems. Review your calendar and files.",
+                "E": "Focus on strategy and new ideas. brainstorm on a whiteboard.",
+                "I": "Focus on connection and alignment. Reach out to a colleague."
+            }
+            focus_message = advice_map.get(focus_rec_key, "Keep balancing your energy.")
+
+            result = {
+                **totals,
+                "total": grand_total,
+                "today": today_total,
+                "week": week_total,
+                "month": month_total, # Added Month
+                "streak": 5, 
+                "focus_recommendation": focus_name,
+                "focus_message": focus_message
+            }
+            
+            logger.info(f"XP summary calculated: {result}")
+            return result
             
         except Exception as e:
             logger.error(f"Error calculating XP summary: {e}")
-            return {"P": 0, "A": 0, "E": 0, "I": 0, "total": 0, "streak": 0}
+            return {
+                "P": 0, "A": 0, "E": 0, "I": 0, 
+                "total": 0, "today": 0, "week": 0, 
+                "streak": 0,
+                "focus_recommendation": "Producer"
+            }
+
+    # -------------------------------------------------
+    # HELPERS: Mapping
+    # -------------------------------------------------
+    def _map_paei(self, paei: Optional[str]) -> str:
+        return PAEI_MAP.get(paei, "Producer")
+
+    def _map_task_status(self, status: Optional[str]) -> str:
+        return STATUS_MAP_TASKS.get(status, "Pending")
+
+    def _map_source(self, source: Optional[str]) -> str:
+        return SOURCE_MAP.get(source, "Manual")
+
+    # -------------------------------------------------
+    # TASK OPERATIONS (NEW - FRONTEND REQUIRES THIS)
+    # -------------------------------------------------
+    def create_task(self, properties: Dict[str, Any]) -> Dict[str, Any]:
+        """
+        Standardized task creation helper.
+        Input properties should be human-readable, this maps them to Notion schema.
+        """
+        props: Dict[str, Any] = {
+            "Name": self._prop_title(properties.get("title", "Untitled Task")),
+            "Status": self._prop_select(self._map_task_status(properties.get("status"))),
+            "Source": self._prop_select(self._map_source(properties.get("source"))),
+        }
+
+        if properties.get("description"):
+            props["Description"] = self._prop_text(properties["description"])
+        
+        if properties.get("deadline"):
+            props["Deadline"] = self._prop_date(properties["deadline"])
+            
+        if properties.get("priority"):
+            # Ensure priority matches schema (Low, Medium, High)
+            priority = properties["priority"].capitalize()
+            if priority not in ["Low", "Medium", "High"]:
+                priority = "Medium"
+            props["Priority"] = self._prop_select(priority)
+
+        if properties.get("paei"):
+            props["PAEI"] = self._prop_select(self._map_paei(properties["paei"]))
+
+        if properties.get("energy_level"):
+             props["Energy Level"] = self._prop_select(properties["energy_level"].capitalize())
+
+        if properties.get("estimated_duration"):
+             props["Estimated Duration (min)"] = self._prop_number(properties["estimated_duration"])
+
+        if properties.get("google_event_id"):
+             props["Google Event ID"] = self._prop_text(properties["google_event_id"])
+
+        if properties.get("quest_id"):
+            props["Quest"] = self._prop_relation([properties["quest_id"]])
+
+        if properties.get("map_id"):
+            props["Map"] = self._prop_relation([properties["map_id"]])
+
+        body = {
+            "parent": {"database_id": self.db_ids["tasks"]},
+            "properties": props,
+        }
+
+        return self._request("POST", "/pages", json_body=body, idempotency_key=str(uuid.uuid4()))
 
     # -------------------------------------------------
     # Low-level request wrapper
@@ -452,7 +611,8 @@ class NotionClient:
         return {
             "id": page["id"],
             "name": _get_text(props["Name"]),
-            "email": _get_text(props["Email"]),
+            "email": props.get("Email", {}).get("email"), # Use proper email extractor
+            "phone": props.get("Phone", {}).get("phone_number"), # Extract Phone
             "tone_preference": props.get("Tone Preference", {}).get("select", {}).get("name"),
             "relationship": props.get("Relationship Type", {}).get("select", {}).get("name"),
         }
@@ -586,6 +746,10 @@ class NotionClient:
     def _prop_number(n: float) -> Dict[str, Any]:
         return {"number": n}
 
+    @staticmethod
+    def _prop_relation(ids: List[str]) -> Dict[str, Any]:
+        return {"relation": [{"id": i} for i in ids]}
+
     # -------------------------------------------------
     # XP operations (FINAL, CORRECT)
     # -------------------------------------------------
@@ -620,7 +784,7 @@ class NotionClient:
         }
 
         if paei:
-            props["PAEI"] = self._prop_select(paei)
+            props["PAEI"] = self._prop_select(self._map_paei(paei))
         if xp_category:
             props["XP Category"] = self._prop_select(xp_category)
         if xp_bonus is not None:
@@ -654,6 +818,111 @@ class NotionClient:
 
         return res
 
+    def create_expense(
+        self,
+        *,
+        merchant: str,
+        amount: float,
+        category: str = "General",
+        currency: str = "USD",
+        status: str = "Paid",
+        date: Optional[datetime] = None
+    ) -> Dict[str, Any]:
+        """
+        Log an expense to Notion.
+        """
+        now = date or datetime.utcnow()
+        props = {
+            "Name": self._prop_title(merchant),
+            "Amount": self._prop_number(amount),
+            "Category": self._prop_select(category),
+            "Currency": self._prop_select(currency),
+            "Status": self._prop_select(status),
+            "Date": self._prop_date(now.date().isoformat()),
+        }
+
+        body = {
+            "parent": {"database_id": self.db_ids["expenses"]},
+            "properties": props
+        }
+
+        return self._request(
+            "POST", 
+            "/pages", 
+            json_body=body,
+            idempotency_key=str(uuid.uuid4())
+        )
+
+    def get_expenses_by_period(
+        self,
+        start_date: str,
+        end_date: str,
+        category: Optional[str] = None
+    ) -> List[Dict[str, Any]]:
+        """
+        Get expenses within a date range for budget analysis.
+        
+        Args:
+            start_date: ISO date string (YYYY-MM-DD)
+            end_date: ISO date string (YYYY-MM-DD)
+            category: Optional category filter
+        
+        Returns:
+            List of expense records with amount, category, date
+        """
+        if not self.db_ids.get("expenses"):
+            logger.warning("Expenses DB not configured")
+            return []
+        
+        # Build filter for date range
+        filters = [
+            {
+                "property": "Date",
+                "date": {"on_or_after": start_date}
+            },
+            {
+                "property": "Date",
+                "date": {"on_or_before": end_date}
+            }
+        ]
+        
+        if category:
+            filters.append({
+                "property": "Category",
+                "select": {"equals": category}
+            })
+        
+        body = {
+            "filter": {"and": filters},
+            "sorts": [{"property": "Date", "direction": "descending"}],
+            "page_size": 100
+        }
+        
+        try:
+            res = self._request(
+                "POST",
+                f"/databases/{self.db_ids['expenses']}/query",
+                json_body=body,
+            )
+            
+            expenses = []
+            for page in res.get("results", []):
+                props = page.get("properties", {})
+                expenses.append({
+                    "id": page["id"],
+                    "merchant": self._txt(props.get("Name")),
+                    "amount": self._get_number(props.get("Amount")) or 0,
+                    "category": self._get_select(props.get("Category")) or "General",
+                    "date": self._get_date(props.get("Date")),
+                    "status": self._get_select(props.get("Status")),
+                })
+            
+            return expenses
+            
+        except Exception as e:
+            logger.error(f"Error fetching expenses: {e}")
+            return []
+
     def get_xp_entries(self, page_size: int = 50) -> List[Dict[str, Any]]:
         res = self._request(
             "POST",
@@ -677,6 +946,8 @@ class NotionClient:
             "contacts": os.getenv("NOTION_DB_CONTACTS_ID") or "",
             "quests": os.getenv("NOTION_DB_QUESTS_ID") or "",
             "maps": os.getenv("NOTION_DB_MAPS_ID") or "",
+            "research": os.getenv("NOTION_DB_RESEARCH_ID") or "",
+            "expenses": os.getenv("NOTION_DB_EXPENSES_ID") or "",
         }
 
         return cls(token=token, db_ids=dbs)

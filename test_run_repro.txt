@@ -1,0 +1,223 @@
+============================= test session starts =============================
+platform win32 -- Python 3.12.7, pytest-7.4.4, pluggy-1.6.0
+rootdir: C:\present-os
+plugins: anyio-4.2.0, hydra-core-1.3.2, langsmith-0.4.41
+collected 18 items
+
+tests\unit\test_calendar_service.py FFFFFFFF                             [ 44%]
+tests\unit\test_paelogic.py ..........                                   [100%]
+
+================================== FAILURES ===================================
+____________________________ test_score_paei_time _____________________________
+
+calendar_service = CalendarService(notion=<MagicMock id='2624824835584'>, fireflies_email='ai@fireflies.ai', min_deep_work_protection=60,...s': [(11, 13), (16, 18)], 'avoid_hours': [(9, 10)]}, I={'peak_hours': [(13, 15), (17, 19)], 'avoid_hours': [(9, 12)]}))
+
+    def test_score_paei_time(calendar_service):
+        # Test Producer peak hours (9-12, 15-17)
+        # 10:00 AM -> Peak -> 1.0
+        dt_peak = datetime(2023, 1, 1, 10, 0, 0, tzinfo=timezone.utc)
+>       assert calendar_service._score_paei_time(dt_peak, "P") == 1.0
+E       AttributeError: 'CalendarService' object has no attribute '_score_paei_time'
+
+tests\unit\test_calendar_service.py:42: AttributeError
+___________________________ test_score_energy_match ___________________________
+
+calendar_service = CalendarService(notion=<MagicMock id='2624906685488'>, fireflies_email='ai@fireflies.ai', min_deep_work_protection=60,...s': [(11, 13), (16, 18)], 'avoid_hours': [(9, 10)]}, I={'peak_hours': [(13, 15), (17, 19)], 'avoid_hours': [(9, 12)]}))
+
+    def test_score_energy_match(calendar_service):
+        # High recovery (>70) + Morning (9-12) -> 1.0
+        dt_morning = datetime(2023, 1, 1, 10, 0, 0, tzinfo=timezone.utc)
+>       assert calendar_service._score_energy_match(dt_morning, 90) == 1.0
+E       AttributeError: 'CalendarService' object has no attribute '_score_energy_match'
+
+tests\unit\test_calendar_service.py:55: AttributeError
+________________________ test_score_deadline_proximity ________________________
+
+calendar_service = CalendarService(notion=<MagicMock id='2624907189504'>, fireflies_email='ai@fireflies.ai', min_deep_work_protection=60,...s': [(11, 13), (16, 18)], 'avoid_hours': [(9, 10)]}, I={'peak_hours': [(13, 15), (17, 19)], 'avoid_hours': [(9, 12)]}))
+
+    def test_score_deadline_proximity(calendar_service):
+        now = datetime(2023, 1, 1, 12, 0, 0, tzinfo=timezone.utc)
+    
+        # < 24 hours -> 1.0
+        deadline_urgent = now + timedelta(hours=20)
+>       assert calendar_service._score_deadline_proximity(now, deadline_urgent) == 1.0
+E       AttributeError: 'CalendarService' object has no attribute '_score_deadline_proximity'
+
+tests\unit\test_calendar_service.py:70: AttributeError
+_________________________ test_schedule_task_success __________________________
+
+args = ()
+keywargs = {'calendar_service': CalendarService(notion=<MagicMock id='2624907197472'>, fireflies_email='ai@fireflies.ai', min_dee...': [(11, 13), (16, 18)], 'avoid_hours': [(9, 10)]}, I={'peak_hours': [(13, 15), (17, 19)], 'avoid_hours': [(9, 12)]}))}
+
+    @wraps(func)
+    def patched(*args, **keywargs):
+>       with self.decoration_helper(patched,
+                                    args,
+                                    keywargs) as (newargs, newkeywargs):
+
+C:\Users\shubh\anaconda3\Lib\unittest\mock.py:1392: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+C:\Users\shubh\anaconda3\Lib\contextlib.py:137: in __enter__
+    return next(self.gen)
+C:\Users\shubh\anaconda3\Lib\unittest\mock.py:1374: in decoration_helper
+    arg = exit_stack.enter_context(patching)
+C:\Users\shubh\anaconda3\Lib\contextlib.py:526: in enter_context
+    result = _enter(cm)
+C:\Users\shubh\anaconda3\Lib\unittest\mock.py:1463: in __enter__
+    original, local = self.get_original()
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = <unittest.mock._patch object at 0x00000263289C3110>
+
+    def get_original(self):
+        target = self.getter()
+        name = self.attribute
+    
+        original = DEFAULT
+        local = False
+    
+        try:
+            original = target.__dict__[name]
+        except (AttributeError, KeyError):
+            original = getattr(target, name, DEFAULT)
+        else:
+            local = True
+    
+        if name in _builtins and isinstance(target, ModuleType):
+            self.create = True
+    
+        if not self.create and original is DEFAULT:
+>           raise AttributeError(
+                "%s does not have the attribute %r" % (target, name)
+            )
+E           AttributeError: <class 'app.services.calendar_service.CalendarService'> does not have the attribute '_get_whoop_recovery'
+
+C:\Users\shubh\anaconda3\Lib\unittest\mock.py:1436: AttributeError
+____________________ test_schedule_task_deferred_no_slots _____________________
+
+args = ()
+keywargs = {'calendar_service': CalendarService(notion=<MagicMock id='2624917664256'>, fireflies_email='ai@fireflies.ai', min_dee...': [(11, 13), (16, 18)], 'avoid_hours': [(9, 10)]}, I={'peak_hours': [(13, 15), (17, 19)], 'avoid_hours': [(9, 12)]}))}
+
+    @wraps(func)
+    def patched(*args, **keywargs):
+>       with self.decoration_helper(patched,
+                                    args,
+                                    keywargs) as (newargs, newkeywargs):
+
+C:\Users\shubh\anaconda3\Lib\unittest\mock.py:1392: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+C:\Users\shubh\anaconda3\Lib\contextlib.py:137: in __enter__
+    return next(self.gen)
+C:\Users\shubh\anaconda3\Lib\unittest\mock.py:1374: in decoration_helper
+    arg = exit_stack.enter_context(patching)
+C:\Users\shubh\anaconda3\Lib\contextlib.py:526: in enter_context
+    result = _enter(cm)
+C:\Users\shubh\anaconda3\Lib\unittest\mock.py:1463: in __enter__
+    original, local = self.get_original()
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = <unittest.mock._patch object at 0x00000263289C3FB0>
+
+    def get_original(self):
+        target = self.getter()
+        name = self.attribute
+    
+        original = DEFAULT
+        local = False
+    
+        try:
+            original = target.__dict__[name]
+        except (AttributeError, KeyError):
+            original = getattr(target, name, DEFAULT)
+        else:
+            local = True
+    
+        if name in _builtins and isinstance(target, ModuleType):
+            self.create = True
+    
+        if not self.create and original is DEFAULT:
+>           raise AttributeError(
+                "%s does not have the attribute %r" % (target, name)
+            )
+E           AttributeError: <class 'app.services.calendar_service.CalendarService'> does not have the attribute '_get_whoop_recovery'
+
+C:\Users\shubh\anaconda3\Lib\unittest\mock.py:1436: AttributeError
+______________________ test_auto_reschedule_perfect_kite ______________________
+
+mock_forecast = <MagicMock name='get_forecast' id='2624917660368'>
+calendar_service = CalendarService(notion=<MagicMock id='2624917654560'>, fireflies_email='ai@fireflies.ai', min_deep_work_protection=60,...s': [(11, 13), (16, 18)], 'avoid_hours': [(9, 10)]}, I={'peak_hours': [(13, 15), (17, 19)], 'avoid_hours': [(9, 12)]}))
+
+    @patch("app.integrations.weather_client.get_forecast")
+    def test_auto_reschedule_perfect_kite(mock_forecast, calendar_service):
+        # PDF condition: 15-25 knots wind
+        mock_forecast.return_value = {
+            "wind_speed_knots": 20,
+            "rain_risk": "low"
+        }
+    
+        user_context = {"location": "Maui"}
+    
+>       result = calendar_service.auto_reschedule_based_on_weather(user_context)
+E       AttributeError: 'CalendarService' object has no attribute 'auto_reschedule_based_on_weather'
+
+tests\unit\test_calendar_service.py:169: AttributeError
+_______________________ test_auto_reschedule_rain_risk ________________________
+
+mock_forecast = <MagicMock name='get_forecast' id='2624918295648'>
+calendar_service = CalendarService(notion=<MagicMock id='2624918302848'>, fireflies_email='ai@fireflies.ai', min_deep_work_protection=60,...s': [(11, 13), (16, 18)], 'avoid_hours': [(9, 10)]}, I={'peak_hours': [(13, 15), (17, 19)], 'avoid_hours': [(9, 12)]}))
+
+    @patch("app.integrations.weather_client.get_forecast")
+    def test_auto_reschedule_rain_risk(mock_forecast, calendar_service):
+        # Rain risk high
+        mock_forecast.return_value = {
+            "wind_speed_knots": 5,
+            "rain_risk": "high"
+        }
+    
+        user_context = {"location": "London"}
+    
+>       result = calendar_service.auto_reschedule_based_on_weather(user_context)
+E       AttributeError: 'CalendarService' object has no attribute 'auto_reschedule_based_on_weather'
+
+tests\unit\test_calendar_service.py:185: AttributeError
+_______________________ test_auto_reschedule_no_change ________________________
+
+mock_forecast = <MagicMock name='get_forecast' id='2624918274176'>
+calendar_service = CalendarService(notion=<MagicMock id='2624918301216'>, fireflies_email='ai@fireflies.ai', min_deep_work_protection=60,...s': [(11, 13), (16, 18)], 'avoid_hours': [(9, 10)]}, I={'peak_hours': [(13, 15), (17, 19)], 'avoid_hours': [(9, 12)]}))
+
+    @patch("app.integrations.weather_client.get_forecast")
+    def test_auto_reschedule_no_change(mock_forecast, calendar_service):
+        # Boring weather
+        mock_forecast.return_value = {
+            "wind_speed_knots": 5,
+            "rain_risk": "low"
+        }
+    
+        user_context = {"location": "San Jose"}
+    
+>       result = calendar_service.auto_reschedule_based_on_weather(user_context)
+E       AttributeError: 'CalendarService' object has no attribute 'auto_reschedule_based_on_weather'
+
+tests\unit\test_calendar_service.py:200: AttributeError
+============================== warnings summary ===============================
+..\Users\shubh\anaconda3\Lib\site-packages\pydantic\_internal\_config.py:323
+  C:\Users\shubh\anaconda3\Lib\site-packages\pydantic\_internal\_config.py:323: PydanticDeprecatedSince20: Support for class-based `config` is deprecated, use ConfigDict instead. Deprecated in Pydantic V2.0 to be removed in V3.0. See Pydantic V2 Migration Guide at https://errors.pydantic.dev/2.11/migration/
+    warnings.warn(DEPRECATION_MESSAGE, DeprecationWarning)
+
+..\Users\shubh\anaconda3\Lib\site-packages\pydantic\_internal\_generate_schema.py:298
+..\Users\shubh\anaconda3\Lib\site-packages\pydantic\_internal\_generate_schema.py:298
+..\Users\shubh\anaconda3\Lib\site-packages\pydantic\_internal\_generate_schema.py:298
+  C:\Users\shubh\anaconda3\Lib\site-packages\pydantic\_internal\_generate_schema.py:298: PydanticDeprecatedSince20: `json_encoders` is deprecated. See https://docs.pydantic.dev/2.11/concepts/serialization/#custom-serializers for alternatives. Deprecated in Pydantic V2.0 to be removed in V3.0. See Pydantic V2 Migration Guide at https://errors.pydantic.dev/2.11/migration/
+    warnings.warn(
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+=========================== short test summary info ===========================
+FAILED tests/unit/test_calendar_service.py::test_score_paei_time - AttributeE...
+FAILED tests/unit/test_calendar_service.py::test_score_energy_match - Attribu...
+FAILED tests/unit/test_calendar_service.py::test_score_deadline_proximity - A...
+FAILED tests/unit/test_calendar_service.py::test_schedule_task_success - Attr...
+FAILED tests/unit/test_calendar_service.py::test_schedule_task_deferred_no_slots
+FAILED tests/unit/test_calendar_service.py::test_auto_reschedule_perfect_kite
+FAILED tests/unit/test_calendar_service.py::test_auto_reschedule_rain_risk - ...
+FAILED tests/unit/test_calendar_service.py::test_auto_reschedule_no_change - ...
+================== 8 failed, 10 passed, 4 warnings in 8.36s ===================

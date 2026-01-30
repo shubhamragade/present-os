@@ -20,7 +20,10 @@ from app.services.paei_engine import get_paei_decision  # Decision engine
 from app.services.rpm_engine import compute_rpm_from_context
 from app.services.energy_engine import compute_energy_from_state
 from app.services.time_parser import parse_time
+from app.services.time_parser import parse_time
 from app.integrations.notion_client import NotionClient
+from app.services.rag_service import get_rag_service  # RAG Memory
+from app.services.memory_writer import MemoryWriter
         
 # Get Notion client for auto-detection
 
@@ -73,6 +76,7 @@ READ_DOMAIN_AGENT_MAP = {
     "finance_status": "finance_agent",
     "quest_status": "quest_agent",
     "meeting_summary": "fireflies_agent",
+    "contact_info": "contact_agent",
 }
 
 
@@ -86,6 +90,8 @@ class ParentNode:
     """
     def __init__(self):
         self.notion = NotionClient.from_env()
+        self.rag = get_rag_service()
+        self.memory_writer = MemoryWriter(self.rag)
     
     def __call__(self, state: PresentOSState) -> PresentOSState:
         logger.info("ParentNode making REAL decisions")
@@ -102,14 +108,40 @@ class ParentNode:
         # -------------------------------------------------
         # 1. READ-ONLY Requests (WITH FIXED XP PAYLOAD)
         # -------------------------------------------------
-        if not intents:
+        # -------------------------------------------------
+        # 1. READ-ONLY Requests (WITH FIXED XP PAYLOAD)
+        # -------------------------------------------------
+        if not intents and not self._has_signals(state):
             return self._handle_read_only(read_domains, state, raw_text)
         
+        # -------------------------------------------------
+        # 1.5 PROCESS AGENT SIGNALS (Review previous outputs)
+        # -------------------------------------------------
+        # If Email/other agents emitted signals (e.g. "task_detected"), convert to intents
+        signal_intents = self._process_agent_signals(state)
+        if signal_intents:
+            logger.info(f"Generated {len(signal_intents)} intents from Agent Signals")
+            # If state.intent is None, we need to create it or just append to local list
+            # We'll just append to the local 'intents' list which drives the logic below
+            # Note: We won't update state.intent.intents to avoid persistence loops if not handled
+            intents.extend(signal_intents)
+
         # -------------------------------------------------
         # 2. EXTRACT Decision Signals
         # -------------------------------------------------
         intent_signals = self._extract_paei_signals(intents, text)
+        
+        # RAG RETRIEVAL (PDF Requirement)
+        memories = []
+        if text:
+            try:
+                memories = self.rag.query_memory(text, top_k=3)
+                logger.info(f"RAG Retrieved {len(memories)} memories")
+            except Exception as e:
+                logger.warning(f"RAG Retrieval failed: {e}")
+        
         context = self._build_decision_context(state)
+        context["memories"] = memories  # Inject into context
         
         
         # -------------------------------------------------
@@ -280,9 +312,26 @@ class ParentNode:
             },
             "is_coordinated_action": len([i for i in instructions if i["agent"] not in ["xp_agent", "weather_agent"]]) > 1,
             "energy_context": energy_result.__dict__,
+            "energy_context": energy_result.__dict__,
             "rpm_context": rpm_result.__dict__ if hasattr(rpm_result, "__dict__") else {},
+            "memories": memories,  # Store for debugging/transparency
             "timestamp": datetime.utcnow().isoformat()
         }
+
+        # -------------------------------------------------
+        # 12. CONTINUOUS LEARNING (PDF REQUIREMENT)
+        # -------------------------------------------------
+        try:
+            memory_context = {
+                "confidence": 0.85,  # Heuristic for now
+                "risk": "low",       # Heuristic for now
+                "execution_mode": paei_decision.role.value,
+                "energy": {"capacity": energy_result.capacity}
+            }
+            self.memory_writer.maybe_write(memory_context)
+            logger.info("Continuous learning: Memory writer check complete")
+        except Exception as e:
+            logger.warning(f"Continuous learning failed: {e}")
         
         return state
     
@@ -320,6 +369,20 @@ class ParentNode:
                         "query": raw_text,
                         "detailed": False
                     }
+                elif agent == "contact_agent":
+                    # Try to extract name from raw_text
+                    # Simple heuristic: look for "about [Name]" or "for [Name]"
+                    import re
+                    name_match = re.search(r"(?:about|for|of|on)\s+([A-Z][a-z]+(?:\s+[A-Z][a-z]+)*)", raw_text)
+                    payload = {
+                        "contact_name": name_match.group(1) if name_match else None,
+                        "query": raw_text
+                    }
+                elif agent == "finance_agent":
+                    payload = {
+                        "detailed": True,
+                        "query": raw_text
+                    }
                 # Add more as needed
                 
                 instructions.append({
@@ -350,15 +413,6 @@ class ParentNode:
             return "market_research"
         else:
             return "general_research"
-            
-            state.activated_agents = [i["agent"] for i in instructions]
-            state.parent_decision = {
-                "instructions": instructions,
-                "is_coordinated_action": False,
-                "unified_response": "Here's your requested information."
-            }
-            
-        return state
     
     def _add_xp_agent_if_needed(
         self,
@@ -706,6 +760,56 @@ class ParentNode:
         else:
             return "evening"
 
+
+    def _has_signals(self, state: PresentOSState) -> bool:
+        """Check if there are actionable signals in recent outputs"""
+        # Look at the last few outputs or filter by 'processed' flag in a real DB
+        # For this MVP, we look at agent_outputs that contain 'signal'
+        return any(
+            out.result.get("signal") for out in state.agent_outputs[-5:] 
+            if isinstance(out.result, dict)
+        )
+
+    def _process_agent_signals(self, state: PresentOSState) -> List[Any]:
+        """Convert agent signals into Intents"""
+        new_intents = []
+        
+        # In a real system, we'd mark these as processing to avoid loops
+        # Here we just look at the most recent output from email_agent
+        
+        # Filter for email_agent outputs in the last batch
+        processed_ids = set() # Avoid duplicates 
+        
+        for output in reversed(state.agent_outputs):
+             # Stop if too old (simple heuristic)
+            if (datetime.utcnow() - output.timestamp).seconds > 60:
+                break
+                
+            if output.agent_name == "email_agent" and output.result.get("signal") == "task_detected":
+                task_data = output.result.get("task", {})
+                
+                # Check duplication
+                sig_id = f"signal-{output.timestamp}-{task_data.get('payload', {}).get('title')}"
+                if sig_id in processed_ids:
+                    continue
+                processed_ids.add(sig_id)
+
+                # Create synthetic Intent (using a mock class or SubIntent if imported)
+                # Since we didn't import SubIntent here, we'll facilitate a duck-typed object
+                class SyntheticIntent:
+                    def __init__(self, intent, category, payload):
+                        self.intent = intent
+                        self.category = category
+                        self.payload = payload
+                
+                new_intents.append(SyntheticIntent(
+                    intent=task_data.get("intent", "create_task"),
+                    category="task", # Hardcoded mapping logic
+                    payload=task_data.get("payload", {})
+                ))
+                logger.info(f"Signal linked: Email -> Task ({task_data.get('intent')})")
+        
+        return new_intents
 
 # Global instance
 _parent_node = ParentNode()

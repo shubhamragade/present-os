@@ -1,0 +1,49 @@
+@import "tailwindcss";
+
+@theme {
+  --color-background: #09090b;
+  --color-surface: #18181b;
+  --color-primary: #3b82f6;
+  --color-secondary: #a1a1aa;
+  --color-accent: #f43f5e;
+
+  --color-producer: #ef4444;
+  --color-admin: #3b82f6;
+  --color-entrepreneur: #22c55e;
+  --color-integrator: #eab308;
+
+  --font-sans: Inter, sans-serif;
+}
+
+@layer base {
+  body {
+    @apply bg-background text-white antialiased;
+  }
+}
+
+/* Scrollbar hiding for clean UI */
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+/* Notification animations */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-fadeIn {
+  animation: fadeIn 0.2s ease-out;
+}

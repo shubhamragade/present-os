@@ -1,0 +1,6 @@
+Traceback (most recent call last):
+  File "C:\present-os\tools\test_fireflies_client.py", line 11, in <module>
+    from app.integrations.fireflies_client import FirefliesClient
+  File "C:\present-os\app\integrations\fireflies_client.py", line 66
+    def get_transcript(self, meeting_id: str) -> Dict[str, Any]:
+SyntaxError: expected 'except' or 'finally' block

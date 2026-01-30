@@ -1,0 +1,22 @@
+Testing Contact Agent Integration...
+
+1. Testing: Adding a note
+Query: Sarah prefers phone calls over email.
+Status: 200
+Response: Got it!  
+• Noted that Sarah prefers phone calls over email.  
++10 I XP (Task Complete (medium) 60 min [PAEI=I])  
+Anything else?
+
+2. Testing: Lookup
+Query: what do I know about Sarah?
+Status: 200
+Response: Got it! 
+
+• You have information about Sarah that you want to review.
+• Please specify what aspects you're interested in, such as her background, interests, or recent activities.
+
+Let's clarify what you're looking for to assist you better. 
+
++5 Research XP (information gathering)  
+Anything else?

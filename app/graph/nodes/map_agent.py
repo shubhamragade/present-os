@@ -66,6 +66,7 @@ def run_map_node(
     props: Dict[str, Any] = {
         "Name": notion._prop_title(title),
         "Quest": {"relation": [{"id": quest_id}]},
+        "Status": notion._prop_select("In Progress"),
     }
 
     if payload.get("priority"):

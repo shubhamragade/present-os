@@ -277,7 +277,7 @@ def run_browser_node(state: PresentOSState) -> PresentOSState:
         
         # PDF: Save to Notion if successful
         if result.get("success"):
-            notion = NotionClient()
+            notion = NotionClient.from_env()
             saved = _save_to_notion(notion, query, result, quest_id)
             result["notion_saved"] = saved
             
@@ -291,7 +291,7 @@ def run_browser_node(state: PresentOSState) -> PresentOSState:
                     "quest_id": quest_id
                 })
         
-        # Agent output
+        # Agent output - FULL DETAILED RESULTS
         state.add_agent_output(
             agent="browser_agent",
             result={
@@ -299,20 +299,21 @@ def run_browser_node(state: PresentOSState) -> PresentOSState:
                 "research_type": research_type,
                 "query": query,
                 "result": {
-                    "answer": result.get("answer", "")[:500] + "..." if len(result.get("answer", "")) > 500 else result.get("answer", ""),
+                    "answer": result.get("answer", ""),  # FULL answer, no truncation
+                    "sources": result.get("sources", []),  # Include all sources
                     "sources_count": len(result.get("sources", [])),
                     "success": result.get("success", False),
                     "notion_saved": result.get("notion_saved", {}).get("success", False)
                 },
                 "quest_id": quest_id,
-                "full_result": result if state.config.get("debug_mode") else None
+                "full_result": result if state.meta.get("debug_mode") else None
             },
             score=0.8 if result.get("success") else 0.3
         )
         
         # PDF: "Preserves flow state for creative work"
         # Set state to indicate research is available
-        state.research_available = True
+        state.meta["research_available"] = True
         
         return state
         

@@ -1,0 +1,17 @@
+INFO:presentos.browser_agent:BrowserAgent \u2192 general_research: What are the top 3 agentic AI frameworks in 2025?
+ERROR:presentos.browser_agent:BrowserAgent failed: NotionClient.__init__() missing 2 required positional arguments: 'token' and 'db_ids'
+Traceback (most recent call last):
+  File "C:\present-os\app\graph\nodes\browser_agent.py", line 280, in run_browser_node
+    notion = NotionClient()
+             ^^^^^^^^^^^^^^
+TypeError: NotionClient.__init__() missing 2 required positional arguments: 'token' and 'db_ids'
+
+>>> TESTING BROWSE AGENT <<<
+Outputs count: 1
+Traceback (most recent call last):
+  File "C:\present-os\tools\test_browser_agent.py", line 42, in <module>
+    test_browse()
+  File "C:\present-os\tools\test_browser_agent.py", line 37, in test_browse
+    print(f"Result: {out.result.get('result', {}).get('answer')[:100]}...")
+                     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^
+TypeError: 'NoneType' object is not subscriptable

@@ -1,0 +1,643 @@
+INFO:     Started server process [34216]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+INFO:     Uvicorn running on http://127.0.0.1:8080 (Press CTRL+C to quit)
+INFO:     127.0.0.1:50806 - "GET /api/notifications HTTP/1.1" 200 OK
+INFO:     127.0.0.1:50807 - "GET /api/energy HTTP/1.1" 200 OK
+2026-01-27 14:58:09,302 INFO presentos.notion: XP summary calculated: {'P': 43, 'A': 302, 'E': 106, 'I': 84, 'total': 535, 'streak': 5}
+INFO:presentos.notion:XP summary calculated: {'P': 43, 'A': 302, 'E': 106, 'I': 84, 'total': 535, 'streak': 5}
+INFO:     127.0.0.1:50808 - "GET /api/status HTTP/1.1" 200 OK
+INFO:presentos.api:Processing message: Sarah prefers phone calls over email.
+INFO:presentos.graph:Graph invoked: 'Sarah prefers phone calls over email....'
+INFO:httpx:HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+INFO:presentos.intent:Raw intent data for 'Sarah prefers phone calls over email....': {
+  "intents": [
+    {
+      "intent": "add_note",
+      "category": "contact",
+      "payload": {
+        "contact_name": "Sarah",
+        "note": "prefers phone calls over email"
+      },
+      "paei_hint": "I"
+    }
+  ],
+  "read_domains": [],
+  "confidence": 1.0,
+  "explanation": "The user provided information about Sarah's communication preference, which is categorized as a contact management action.",
+  "paei_hint": "I"
+}
+INFO:presentos.graph:Intent classified: 1 intents
+INFO:presentos.parent_agent:ParentNode making REAL decisions
+INFO:httpx:HTTP Request: POST https://api.openai.com/v1/embeddings "HTTP/1.1 200 OK"
+INFO:presentos.pinecone:Pinecone returned 3 matches
+INFO:presentos.parent_agent:RAG Retrieved 3 memories
+INFO:presentos.parent_agent:PAEI Decision: I - Team harmony focus (morale: stable)
+INFO:presentos.parent_agent:RPM Result: 1.0 - proceed
+INFO:httpx:HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+INFO:httpx:HTTP Request: POST https://api.openai.com/v1/embeddings "HTTP/1.1 200 OK"
+INFO:presentos.pinecone:Upserted 1 vectors into namespace=user_patterns
+INFO:presentos.rag:Stored memory mem-55163cc3399c48cf92f61b02c48db4f7 (preference)
+INFO:presentos.parent_agent:Continuous learning: Memory writer check complete
+INFO:presentos.graph:Executing 2 instructions
+INFO:presentos.execution_router:Executing contact_agent with PAEI: I
+2026-01-27 14:58:43,978 INFO presentos.notion: Created XP entry: amount=10 paei=I week=5 id=2f533e0d-b053-8196-95ea-cbc32b766841
+INFO:presentos.notion:Created XP entry: amount=10 paei=I week=5 id=2f533e0d-b053-8196-95ea-cbc32b766841
+INFO:presentos.xp_agent:XP entry created: action=task_complete xp=10 page_id=2f533e0d-b053-8196-95ea-cbc32b766841
+INFO:httpx:HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+INFO:presentos.pinecone:PineconeClient initialized index=presentos-memory-1536 namespace=presentos-rag
+INFO:presentos.graph:Graph execution completed - PDF flow executed
+2026-01-27 14:58:48,951 INFO presentos.notion: XP summary calculated: {'P': 43, 'A': 302, 'E': 106, 'I': 84, 'total': 535, 'streak': 5}
+INFO:presentos.notion:XP summary calculated: {'P': 43, 'A': 302, 'E': 106, 'I': 84, 'total': 535, 'streak': 5}
+INFO:     127.0.0.1:50821 - "POST /api/chat HTTP/1.1" 200 OK
+INFO:     127.0.0.1:50225 - "GET /api/notifications HTTP/1.1" 200 OK
+INFO:     127.0.0.1:50226 - "GET /api/energy HTTP/1.1" 200 OK
+INFO:presentos.api:Processing message: what do I know about Sarah?
+INFO:presentos.graph:Graph invoked: 'what do I know about Sarah?...'
+INFO:httpx:HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+INFO:presentos.intent:Raw intent data for 'what do I know about Sarah?...': {
+  "intents": [],
+  "read_domains": [
+    "contact_info"
+  ],
+  "confidence": 1.0,
+  "explanation": "The user is asking for information about Sarah, which falls under the contact_info read-only domain.",
+  "paei_hint": ""
+}
+INFO:presentos.graph:Intent classified: 0 intents
+INFO:presentos.parent_agent:ParentNode making REAL decisions
+INFO:presentos.graph:Executing 1 instructions
+INFO:presentos.execution_router:Executing contact_agent with PAEI: P
+INFO:httpx:HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+INFO:presentos.pinecone:PineconeClient initialized index=presentos-memory-1536 namespace=presentos-rag
+INFO:presentos.graph:Graph execution completed - PDF flow executed
+2026-01-27 14:59:00,751 INFO presentos.notion: XP summary calculated: {'P': 43, 'A': 302, 'E': 106, 'I': 84, 'total': 535, 'streak': 5}
+INFO:presentos.notion:XP summary calculated: {'P': 43, 'A': 302, 'E': 106, 'I': 84, 'total': 535, 'streak': 5}
+INFO:     127.0.0.1:52092 - "POST /api/chat HTTP/1.1" 200 OK
+INFO:     127.0.0.1:63956 - "GET /api/notifications HTTP/1.1" 200 OK
+INFO:     127.0.0.1:63957 - "GET /api/energy HTTP/1.1" 200 OK
+2026-01-27 14:59:08,645 INFO presentos.notion: XP summary calculated: {'P': 43, 'A': 302, 'E': 106, 'I': 84, 'total': 535, 'streak': 5}
+INFO:presentos.notion:XP summary calculated: {'P': 43, 'A': 302, 'E': 106, 'I': 84, 'total': 535, 'streak': 5}
+INFO:     127.0.0.1:63958 - "GET /api/status HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62516 - "GET /api/notifications HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62517 - "GET /api/energy HTTP/1.1" 200 OK
+INFO:     127.0.0.1:51380 - "GET /api/notifications HTTP/1.1" 200 OK
+INFO:     127.0.0.1:51381 - "GET /api/energy HTTP/1.1" 200 OK
+2026-01-27 15:00:10,949 INFO presentos.notion: XP summary calculated: {'P': 43, 'A': 302, 'E': 106, 'I': 84, 'total': 535, 'streak': 5}
+INFO:presentos.notion:XP summary calculated: {'P': 43, 'A': 302, 'E': 106, 'I': 84, 'total': 535, 'streak': 5}
+INFO:     127.0.0.1:51382 - "GET /api/status HTTP/1.1" 200 OK
+INFO:     127.0.0.1:61009 - "GET /api/notifications HTTP/1.1" 200 OK
+INFO:     127.0.0.1:61010 - "GET /api/energy HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56374 - "GET /api/notifications HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56376 - "GET /api/energy HTTP/1.1" 200 OK
+2026-01-27 15:01:08,438 INFO presentos.notion: XP summary calculated: {'P': 43, 'A': 302, 'E': 106, 'I': 84, 'total': 535, 'streak': 5}
+INFO:presentos.notion:XP summary calculated: {'P': 43, 'A': 302, 'E': 106, 'I': 84, 'total': 535, 'streak': 5}
+INFO:     127.0.0.1:56377 - "GET /api/status HTTP/1.1" 200 OK
+INFO:     127.0.0.1:51506 - "GET /api/notifications HTTP/1.1" 200 OK
+INFO:     127.0.0.1:51507 - "GET /api/energy HTTP/1.1" 200 OK
+INFO:     127.0.0.1:64230 - "GET /api/notifications HTTP/1.1" 200 OK
+INFO:     127.0.0.1:64231 - "GET /api/energy HTTP/1.1" 200 OK
+2026-01-27 15:02:09,530 INFO presentos.notion: XP summary calculated: {'P': 43, 'A': 302, 'E': 106, 'I': 84, 'total': 535, 'streak': 5}
+INFO:presentos.notion:XP summary calculated: {'P': 43, 'A': 302, 'E': 106, 'I': 84, 'total': 535, 'streak': 5}
+INFO:     127.0.0.1:64232 - "GET /api/status HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57122 - "GET /api/notifications HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57123 - "GET /api/energy HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62486 - "GET /api/notifications HTTP/1.1" 200 OK
+2026-01-27 15:03:08,396 INFO presentos.notion: XP summary calculated: {'P': 43, 'A': 302, 'E': 106, 'I': 84, 'total': 535, 'streak': 5}
+INFO:presentos.notion:XP summary calculated: {'P': 43, 'A': 302, 'E': 106, 'I': 84, 'total': 535, 'streak': 5}
+INFO:     127.0.0.1:62489 - "GET /api/status HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62490 - "GET /api/energy HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56066 - "GET /api/notifications HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56067 - "GET /api/energy HTTP/1.1" 200 OK
+INFO:     127.0.0.1:65068 - "GET /api/notifications HTTP/1.1" 200 OK
+INFO:     127.0.0.1:65069 - "GET /api/energy HTTP/1.1" 200 OK
+2026-01-27 15:04:08,958 INFO presentos.notion: XP summary calculated: {'P': 43, 'A': 302, 'E': 106, 'I': 84, 'total': 535, 'streak': 5}
+INFO:presentos.notion:XP summary calculated: {'P': 43, 'A': 302, 'E': 106, 'I': 84, 'total': 535, 'streak': 5}
+INFO:     127.0.0.1:65070 - "GET /api/status HTTP/1.1" 200 OK
+INFO:     127.0.0.1:54557 - "GET /api/notifications HTTP/1.1" 200 OK
+INFO:     127.0.0.1:54558 - "GET /api/energy HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57287 - "GET /api/notifications HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57288 - "GET /api/energy HTTP/1.1" 200 OK
+2026-01-27 15:05:09,340 INFO presentos.notion: XP summary calculated: {'P': 43, 'A': 302, 'E': 106, 'I': 84, 'total': 535, 'streak': 5}
+INFO:presentos.notion:XP summary calculated: {'P': 43, 'A': 302, 'E': 106, 'I': 84, 'total': 535, 'streak': 5}
+INFO:     127.0.0.1:57289 - "GET /api/status HTTP/1.1" 200 OK
+INFO:     127.0.0.1:64930 - "GET /api/notifications HTTP/1.1" 200 OK
+INFO:     127.0.0.1:64932 - "GET /api/energy HTTP/1.1" 200 OK
+INFO:     127.0.0.1:61402 - "GET /api/notifications HTTP/1.1" 200 OK
+INFO:     127.0.0.1:61403 - "GET /api/energy HTTP/1.1" 200 OK
+2026-01-27 15:06:08,466 INFO presentos.notion: XP summary calculated: {'P': 43, 'A': 302, 'E': 106, 'I': 84, 'total': 535, 'streak': 5}
+INFO:presentos.notion:XP summary calculated: {'P': 43, 'A': 302, 'E': 106, 'I': 84, 'total': 535, 'streak': 5}
+INFO:     127.0.0.1:61404 - "GET /api/status HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62358 - "GET /api/notifications HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62359 - "GET /api/energy HTTP/1.1" 200 OK
+INFO:     127.0.0.1:55051 - "GET /api/notifications HTTP/1.1" 200 OK
+INFO:     127.0.0.1:55053 - "GET /api/energy HTTP/1.1" 200 OK
+2026-01-27 15:07:08,686 INFO presentos.notion: XP summary calculated: {'P': 43, 'A': 302, 'E': 106, 'I': 84, 'total': 535, 'streak': 5}
+INFO:presentos.notion:XP summary calculated: {'P': 43, 'A': 302, 'E': 106, 'I': 84, 'total': 535, 'streak': 5}
+INFO:     127.0.0.1:55054 - "GET /api/status HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58748 - "GET /api/notifications HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58749 - "GET /api/energy HTTP/1.1" 200 OK
+INFO:     127.0.0.1:50242 - "GET /api/energy HTTP/1.1" 200 OK
+INFO:     127.0.0.1:50243 - "GET /api/notifications HTTP/1.1" 200 OK
+2026-01-27 15:08:09,137 INFO presentos.notion: XP summary calculated: {'P': 43, 'A': 302, 'E': 106, 'I': 84, 'total': 535, 'streak': 5}
+INFO:presentos.notion:XP summary calculated: {'P': 43, 'A': 302, 'E': 106, 'I': 84, 'total': 535, 'streak': 5}
+INFO:     127.0.0.1:50244 - "GET /api/status HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62598 - "GET /api/notifications HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62599 - "GET /api/energy HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60396 - "GET /api/notifications HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60397 - "GET /api/energy HTTP/1.1" 200 OK
+2026-01-27 15:09:08,477 INFO presentos.notion: XP summary calculated: {'P': 43, 'A': 302, 'E': 106, 'I': 84, 'total': 535, 'streak': 5}
+INFO:presentos.notion:XP summary calculated: {'P': 43, 'A': 302, 'E': 106, 'I': 84, 'total': 535, 'streak': 5}
+INFO:     127.0.0.1:60398 - "GET /api/status HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60556 - "GET /api/notifications HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60558 - "GET /api/energy HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56557 - "GET /api/notifications HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56560 - "GET /api/energy HTTP/1.1" 200 OK
+2026-01-27 15:10:08,578 INFO presentos.notion: XP summary calculated: {'P': 43, 'A': 302, 'E': 106, 'I': 84, 'total': 535, 'streak': 5}
+INFO:presentos.notion:XP summary calculated: {'P': 43, 'A': 302, 'E': 106, 'I': 84, 'total': 535, 'streak': 5}
+INFO:     127.0.0.1:56561 - "GET /api/status HTTP/1.1" 200 OK
+INFO:     127.0.0.1:49674 - "GET /api/notifications HTTP/1.1" 200 OK
+INFO:     127.0.0.1:49675 - "GET /api/energy HTTP/1.1" 200 OK
+INFO:     127.0.0.1:64409 - "GET /api/notifications HTTP/1.1" 200 OK
+INFO:     127.0.0.1:64410 - "GET /api/energy HTTP/1.1" 200 OK
+2026-01-27 15:10:56,034 INFO presentos.notion: XP summary calculated: {'P': 43, 'A': 302, 'E': 106, 'I': 84, 'total': 535, 'streak': 5}
+INFO:presentos.notion:XP summary calculated: {'P': 43, 'A': 302, 'E': 106, 'I': 84, 'total': 535, 'streak': 5}
+INFO:     127.0.0.1:64412 - "GET /api/status HTTP/1.1" 200 OK
+INFO:     127.0.0.1:55663 - "GET /api/notifications HTTP/1.1" 200 OK
+INFO:     127.0.0.1:55664 - "GET /api/energy HTTP/1.1" 200 OK
+2026-01-27 15:10:58,231 INFO presentos.notion: XP summary calculated: {'P': 43, 'A': 302, 'E': 106, 'I': 84, 'total': 535, 'streak': 5}
+INFO:presentos.notion:XP summary calculated: {'P': 43, 'A': 302, 'E': 106, 'I': 84, 'total': 535, 'streak': 5}
+INFO:     127.0.0.1:49922 - "GET /api/status HTTP/1.1" 200 OK
+INFO:     127.0.0.1:51975 - "GET /api/notifications HTTP/1.1" 200 OK
+INFO:     127.0.0.1:51976 - "GET /api/energy HTTP/1.1" 200 OK
+2026-01-27 15:11:07,766 INFO presentos.notion: XP summary calculated: {'P': 43, 'A': 302, 'E': 106, 'I': 84, 'total': 535, 'streak': 5}
+INFO:presentos.notion:XP summary calculated: {'P': 43, 'A': 302, 'E': 106, 'I': 84, 'total': 535, 'streak': 5}
+INFO:     127.0.0.1:51977 - "GET /api/status HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62316 - "GET /api/notifications HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62317 - "GET /api/energy HTTP/1.1" 200 OK
+2026-01-27 15:11:09,735 INFO presentos.notion: XP summary calculated: {'P': 43, 'A': 302, 'E': 106, 'I': 84, 'total': 535, 'streak': 5}
+INFO:presentos.notion:XP summary calculated: {'P': 43, 'A': 302, 'E': 106, 'I': 84, 'total': 535, 'streak': 5}
+INFO:     127.0.0.1:62318 - "GET /api/status HTTP/1.1" 200 OK
+INFO:     127.0.0.1:64092 - "GET /api/notifications HTTP/1.1" 200 OK
+INFO:     127.0.0.1:64095 - "GET /api/energy HTTP/1.1" 200 OK
+2026-01-27 15:11:11,568 INFO presentos.notion: XP summary calculated: {'P': 43, 'A': 302, 'E': 106, 'I': 84, 'total': 535, 'streak': 5}
+INFO:presentos.notion:XP summary calculated: {'P': 43, 'A': 302, 'E': 106, 'I': 84, 'total': 535, 'streak': 5}
+INFO:     127.0.0.1:64096 - "GET /api/status HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62118 - "GET /api/notifications HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62120 - "GET /api/energy HTTP/1.1" 200 OK
+2026-01-27 15:11:16,304 INFO presentos.notion: XP summary calculated: {'P': 43, 'A': 302, 'E': 106, 'I': 84, 'total': 535, 'streak': 5}
+INFO:presentos.notion:XP summary calculated: {'P': 43, 'A': 302, 'E': 106, 'I': 84, 'total': 535, 'streak': 5}
+INFO:     127.0.0.1:62121 - "GET /api/status HTTP/1.1" 200 OK
+INFO:     127.0.0.1:51127 - "GET /api/notifications HTTP/1.1" 200 OK
+INFO:     127.0.0.1:51130 - "GET /api/energy HTTP/1.1" 200 OK
+2026-01-27 15:11:18,426 INFO presentos.notion: XP summary calculated: {'P': 43, 'A': 302, 'E': 106, 'I': 84, 'total': 535, 'streak': 5}
+INFO:presentos.notion:XP summary calculated: {'P': 43, 'A': 302, 'E': 106, 'I': 84, 'total': 535, 'streak': 5}
+INFO:     127.0.0.1:51131 - "GET /api/status HTTP/1.1" 200 OK
+INFO:     127.0.0.1:53781 - "GET /api/notifications HTTP/1.1" 200 OK
+INFO:     127.0.0.1:53783 - "GET /api/energy HTTP/1.1" 200 OK
+2026-01-27 15:11:21,131 INFO presentos.notion: XP summary calculated: {'P': 43, 'A': 302, 'E': 106, 'I': 84, 'total': 535, 'streak': 5}
+INFO:presentos.notion:XP summary calculated: {'P': 43, 'A': 302, 'E': 106, 'I': 84, 'total': 535, 'streak': 5}
+INFO:     127.0.0.1:59270 - "GET /api/status HTTP/1.1" 200 OK
+INFO:     127.0.0.1:49242 - "GET /api/notifications HTTP/1.1" 200 OK
+INFO:     127.0.0.1:49243 - "GET /api/energy HTTP/1.1" 200 OK
+INFO:presentos.api:Processing message:  Good morning, Martin. WhatÆs my status today?
+INFO:presentos.graph:Graph invoked: ' Good morning, Martin. WhatÆs my status today?...'
+INFO:httpx:HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+INFO:presentos.intent:Raw intent data for ' Good morning, Martin. WhatÆs my status today?...': {
+  "intents": [],
+  "read_domains": [
+    "plan_report"
+  ],
+  "confidence": 1.0,
+  "explanation": "The user is asking for their status report for the day.",
+  "paei_hint": "A"
+}
+INFO:presentos.graph:Intent classified: 0 intents
+INFO:presentos.parent_agent:ParentNode making REAL decisions
+INFO:presentos.graph:Executing 1 instructions
+INFO:presentos.execution_router:Executing plan_report_agent with PAEI: P
+INFO:presentos.plan_report_agent:PlanReportAgent completed (34 tasks)
+INFO:httpx:HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+INFO:presentos.pinecone:PineconeClient initialized index=presentos-memory-1536 namespace=presentos-rag
+INFO:presentos.graph:Graph execution completed - PDF flow executed
+2026-01-27 15:12:12,105 INFO presentos.notion: XP summary calculated: {'P': 43, 'A': 302, 'E': 106, 'I': 84, 'total': 535, 'streak': 5}
+INFO:presentos.notion:XP summary calculated: {'P': 43, 'A': 302, 'E': 106, 'I': 84, 'total': 535, 'streak': 5}
+INFO:     127.0.0.1:59891 - "POST /api/chat HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56173 - "GET /api/notifications HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56174 - "GET /api/energy HTTP/1.1" 200 OK
+2026-01-27 15:12:16,836 INFO presentos.notion: XP summary calculated: {'P': 43, 'A': 302, 'E': 106, 'I': 84, 'total': 535, 'streak': 5}
+INFO:presentos.notion:XP summary calculated: {'P': 43, 'A': 302, 'E': 106, 'I': 84, 'total': 535, 'streak': 5}
+INFO:     127.0.0.1:56176 - "GET /api/status HTTP/1.1" 200 OK
+INFO:     127.0.0.1:51301 - "GET /api/notifications HTTP/1.1" 200 OK
+INFO:     127.0.0.1:51302 - "GET /api/energy HTTP/1.1" 200 OK
+INFO:presentos.api:Processing message: HowÆs my energy and focus right now
+INFO:presentos.graph:Graph invoked: 'HowÆs my energy and focus right now...'
+INFO:httpx:HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+INFO:presentos.intent:Raw intent data for 'HowÆs my energy and focus right now...': {
+  "intents": [],
+  "read_domains": [],
+  "confidence": 0.0,
+  "explanation": "The user is asking about their current energy and focus, which does not fit into the defined intents or read domains.",
+  "paei_hint": ""
+}
+INFO:presentos.graph:Intent classified: 0 intents
+INFO:presentos.parent_agent:ParentNode making REAL decisions
+INFO:presentos.pinecone:PineconeClient initialized index=presentos-memory-1536 namespace=presentos-rag
+INFO:presentos.graph:Graph execution completed - PDF flow executed
+2026-01-27 15:13:11,637 INFO presentos.notion: XP summary calculated: {'P': 43, 'A': 302, 'E': 106, 'I': 84, 'total': 535, 'streak': 5}
+INFO:presentos.notion:XP summary calculated: {'P': 43, 'A': 302, 'E': 106, 'I': 84, 'total': 535, 'streak': 5}
+INFO:     127.0.0.1:58464 - "POST /api/chat HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52443 - "GET /api/notifications HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52444 - "GET /api/energy HTTP/1.1" 200 OK
+2026-01-27 15:13:13,102 INFO presentos.notion: XP summary calculated: {'P': 43, 'A': 302, 'E': 106, 'I': 84, 'total': 535, 'streak': 5}
+INFO:presentos.notion:XP summary calculated: {'P': 43, 'A': 302, 'E': 106, 'I': 84, 'total': 535, 'streak': 5}
+INFO:     127.0.0.1:52445 - "GET /api/status HTTP/1.1" 200 OK
+INFO:     127.0.0.1:51054 - "GET /api/notifications HTTP/1.1" 200 OK
+INFO:     127.0.0.1:51055 - "GET /api/energy HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56144 - "GET /api/notifications HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56149 - "GET /api/energy HTTP/1.1" 200 OK
+2026-01-27 15:14:12,267 INFO presentos.notion: XP summary calculated: {'P': 43, 'A': 302, 'E': 106, 'I': 84, 'total': 535, 'streak': 5}
+INFO:presentos.notion:XP summary calculated: {'P': 43, 'A': 302, 'E': 106, 'I': 84, 'total': 535, 'streak': 5}
+INFO:     127.0.0.1:56150 - "GET /api/status HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52239 - "GET /api/notifications HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52240 - "GET /api/energy HTTP/1.1" 200 OK
+2026-01-27 15:14:17,556 INFO presentos.notion: XP summary calculated: {'P': 43, 'A': 302, 'E': 106, 'I': 84, 'total': 535, 'streak': 5}
+INFO:presentos.notion:XP summary calculated: {'P': 43, 'A': 302, 'E': 106, 'I': 84, 'total': 535, 'streak': 5}
+INFO:     127.0.0.1:52241 - "GET /api/status HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52244 - "GET /api/notifications HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52245 - "GET /api/energy HTTP/1.1" 200 OK
+2026-01-27 15:14:20,754 INFO presentos.notion: XP summary calculated: {'P': 43, 'A': 302, 'E': 106, 'I': 84, 'total': 535, 'streak': 5}
+INFO:presentos.notion:XP summary calculated: {'P': 43, 'A': 302, 'E': 106, 'I': 84, 'total': 535, 'streak': 5}
+INFO:     127.0.0.1:65227 - "GET /api/status HTTP/1.1" 200 OK
+INFO:     127.0.0.1:61316 - "GET /api/notifications HTTP/1.1" 200 OK
+INFO:     127.0.0.1:61317 - "GET /api/energy HTTP/1.1" 200 OK
+2026-01-27 15:14:23,273 INFO presentos.notion: XP summary calculated: {'P': 43, 'A': 302, 'E': 106, 'I': 84, 'total': 535, 'streak': 5}
+INFO:presentos.notion:XP summary calculated: {'P': 43, 'A': 302, 'E': 106, 'I': 84, 'total': 535, 'streak': 5}
+INFO:     127.0.0.1:50513 - "GET /api/status HTTP/1.1" 200 OK
+INFO:     127.0.0.1:50516 - "GET /api/notifications HTTP/1.1" 200 OK
+INFO:     127.0.0.1:50517 - "GET /api/energy HTTP/1.1" 200 OK
+2026-01-27 15:14:25,110 INFO presentos.notion: XP summary calculated: {'P': 43, 'A': 302, 'E': 106, 'I': 84, 'total': 535, 'streak': 5}
+INFO:presentos.notion:XP summary calculated: {'P': 43, 'A': 302, 'E': 106, 'I': 84, 'total': 535, 'streak': 5}
+INFO:     127.0.0.1:54158 - "GET /api/status HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57858 - "GET /api/notifications HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57859 - "GET /api/energy HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60084 - "GET /api/notifications HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60085 - "GET /api/energy HTTP/1.1" 200 OK
+2026-01-27 15:15:23,506 INFO presentos.notion: XP summary calculated: {'P': 43, 'A': 302, 'E': 106, 'I': 84, 'total': 535, 'streak': 5}
+INFO:presentos.notion:XP summary calculated: {'P': 43, 'A': 302, 'E': 106, 'I': 84, 'total': 535, 'streak': 5}
+INFO:     127.0.0.1:60086 - "GET /api/status HTTP/1.1" 200 OK
+INFO:     127.0.0.1:54011 - "GET /api/notifications HTTP/1.1" 200 OK
+INFO:     127.0.0.1:54012 - "GET /api/energy HTTP/1.1" 200 OK
+2026-01-27 15:15:32,876 INFO presentos.notion: XP summary calculated: {'P': 43, 'A': 302, 'E': 106, 'I': 84, 'total': 535, 'streak': 5}
+INFO:presentos.notion:XP summary calculated: {'P': 43, 'A': 302, 'E': 106, 'I': 84, 'total': 535, 'streak': 5}
+INFO:     127.0.0.1:54013 - "GET /api/status HTTP/1.1" 200 OK
+INFO:     127.0.0.1:54015 - "GET /api/notifications HTTP/1.1" 200 OK
+2026-01-27 15:15:34,805 INFO presentos.notion: XP summary calculated: {'P': 43, 'A': 302, 'E': 106, 'I': 84, 'total': 535, 'streak': 5}
+INFO:presentos.notion:XP summary calculated: {'P': 43, 'A': 302, 'E': 106, 'I': 84, 'total': 535, 'streak': 5}
+INFO:     127.0.0.1:59727 - "GET /api/status HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59728 - "GET /api/energy HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52415 - "GET /api/notifications HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52416 - "GET /api/energy HTTP/1.1" 200 OK
+INFO:     127.0.0.1:51868 - "GET /api/notifications HTTP/1.1" 200 OK
+INFO:     127.0.0.1:51869 - "GET /api/energy HTTP/1.1" 200 OK
+2026-01-27 15:16:33,512 INFO presentos.notion: XP summary calculated: {'P': 43, 'A': 302, 'E': 106, 'I': 84, 'total': 535, 'streak': 5}
+INFO:presentos.notion:XP summary calculated: {'P': 43, 'A': 302, 'E': 106, 'I': 84, 'total': 535, 'streak': 5}
+INFO:     127.0.0.1:51870 - "GET /api/status HTTP/1.1" 200 OK
+INFO:     127.0.0.1:63031 - "GET /api/notifications HTTP/1.1" 200 OK
+INFO:     127.0.0.1:63032 - "GET /api/energy HTTP/1.1" 200 OK
+INFO:presentos.api:Processing message: show my xp
+INFO:presentos.graph:Graph invoked: 'show my xp...'
+INFO:httpx:HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+INFO:presentos.intent:Raw intent data for 'show my xp...': {
+  "intents": [],
+  "read_domains": [
+    "xp_status"
+  ],
+  "confidence": 1.0,
+  "explanation": "User is requesting information about their XP status.",
+  "paei_hint": "I"
+}
+INFO:presentos.graph:Intent classified: 0 intents
+INFO:presentos.parent_agent:ParentNode making REAL decisions
+INFO:presentos.graph:Executing 1 instructions
+2026-01-27 15:17:11,988 INFO presentos.notion: Created XP entry: amount=2 paei=None week=5 id=2f533e0d-b053-81bb-969c-e6e0854a47f4
+INFO:presentos.notion:Created XP entry: amount=2 paei=None week=5 id=2f533e0d-b053-81bb-969c-e6e0854a47f4
+INFO:presentos.xp_agent:XP entry created: action=report_viewed xp=2 page_id=2f533e0d-b053-81bb-969c-e6e0854a47f4
+INFO:httpx:HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+INFO:presentos.pinecone:PineconeClient initialized index=presentos-memory-1536 namespace=presentos-rag
+INFO:presentos.graph:Graph execution completed - PDF flow executed
+2026-01-27 15:17:15,247 INFO presentos.notion: XP summary calculated: {'P': 43, 'A': 302, 'E': 106, 'I': 84, 'total': 535, 'streak': 5}
+INFO:presentos.notion:XP summary calculated: {'P': 43, 'A': 302, 'E': 106, 'I': 84, 'total': 535, 'streak': 5}
+INFO:     127.0.0.1:56919 - "POST /api/chat HTTP/1.1" 200 OK
+INFO:     127.0.0.1:55009 - "GET /api/notifications HTTP/1.1" 200 OK
+INFO:     127.0.0.1:55010 - "GET /api/energy HTTP/1.1" 200 OK
+2026-01-27 15:17:32,882 INFO presentos.notion: XP summary calculated: {'P': 43, 'A': 302, 'E': 106, 'I': 84, 'total': 535, 'streak': 5}
+INFO:presentos.notion:XP summary calculated: {'P': 43, 'A': 302, 'E': 106, 'I': 84, 'total': 535, 'streak': 5}
+INFO:     127.0.0.1:55011 - "GET /api/status HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57888 - "GET /api/notifications HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57889 - "GET /api/energy HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62026 - "GET /api/notifications HTTP/1.1" 200 OK
+2026-01-27 15:18:33,594 INFO presentos.notion: XP summary calculated: {'P': 43, 'A': 302, 'E': 106, 'I': 84, 'total': 535, 'streak': 5}
+INFO:presentos.notion:XP summary calculated: {'P': 43, 'A': 302, 'E': 106, 'I': 84, 'total': 535, 'streak': 5}
+INFO:     127.0.0.1:62027 - "GET /api/status HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62028 - "GET /api/energy HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60905 - "GET /api/notifications HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60906 - "GET /api/energy HTTP/1.1" 200 OK
+2026-01-27 15:19:16,909 INFO presentos.notion: XP summary calculated: {'P': 43, 'A': 302, 'E': 106, 'I': 84, 'total': 535, 'streak': 5}
+INFO:presentos.notion:XP summary calculated: {'P': 43, 'A': 302, 'E': 106, 'I': 84, 'total': 535, 'streak': 5}
+INFO:     127.0.0.1:60916 - "GET /api/status HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60920 - "GET /api/energy HTTP/1.1" 200 OK
+INFO:presentos.api:Processing message: Hello Martin
+INFO:presentos.graph:Graph invoked: 'Hello Martin...'
+INFO:httpx:HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+INFO:presentos.intent:Raw intent data for 'Hello Martin...': {
+  "intents": [],
+  "read_domains": [],
+  "confidence": 0.9,
+  "explanation": "The user is greeting someone named Martin, which falls under small talk or general engagement.",
+  "paei_hint": "I"
+}
+INFO:presentos.graph:Intent classified: 0 intents
+INFO:presentos.parent_agent:ParentNode making REAL decisions
+INFO:presentos.pinecone:PineconeClient initialized index=presentos-memory-1536 namespace=presentos-rag
+INFO:presentos.graph:Graph execution completed - PDF flow executed
+2026-01-27 15:19:28,217 INFO presentos.notion: XP summary calculated: {'P': 43, 'A': 302, 'E': 106, 'I': 84, 'total': 535, 'streak': 5}
+INFO:presentos.notion:XP summary calculated: {'P': 43, 'A': 302, 'E': 106, 'I': 84, 'total': 535, 'streak': 5}
+INFO:     127.0.0.1:60922 - "POST /api/chat HTTP/1.1" 200 OK
+INFO:presentos.api:Processing message: What do I know about Sarah?
+INFO:presentos.graph:Graph invoked: 'What do I know about Sarah?...'
+INFO:httpx:HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+INFO:presentos.intent:Raw intent data for 'What do I know about Sarah?...': {
+  "intents": [],
+  "read_domains": [
+    "contact_info"
+  ],
+  "confidence": 1.0,
+  "explanation": "User is asking for information about Sarah, which falls under the contact_info domain.",
+  "paei_hint": ""
+}
+INFO:presentos.graph:Intent classified: 0 intents
+INFO:presentos.parent_agent:ParentNode making REAL decisions
+INFO:presentos.graph:Executing 1 instructions
+INFO:presentos.execution_router:Executing contact_agent with PAEI: P
+INFO:httpx:HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+INFO:presentos.pinecone:PineconeClient initialized index=presentos-memory-1536 namespace=presentos-rag
+INFO:presentos.graph:Graph execution completed - PDF flow executed
+2026-01-27 15:19:38,326 INFO presentos.notion: XP summary calculated: {'P': 43, 'A': 302, 'E': 106, 'I': 84, 'total': 535, 'streak': 5}
+INFO:presentos.notion:XP summary calculated: {'P': 43, 'A': 302, 'E': 106, 'I': 84, 'total': 535, 'streak': 5}
+INFO:     127.0.0.1:60928 - "POST /api/chat HTTP/1.1" 200 OK
+2026-01-27 15:19:40,780 INFO presentos.notion: XP summary calculated: {'P': 43, 'A': 302, 'E': 106, 'I': 84, 'total': 535, 'streak': 5}
+INFO:presentos.notion:XP summary calculated: {'P': 43, 'A': 302, 'E': 106, 'I': 84, 'total': 535, 'streak': 5}
+INFO:     127.0.0.1:53964 - "GET /api/status HTTP/1.1" 200 OK
+INFO:presentos.api:Processing message: Check the weather
+INFO:presentos.graph:Graph invoked: 'Check the weather...'
+INFO:httpx:HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+INFO:presentos.intent:Raw intent data for 'Check the weather...': {
+  "intents": [],
+  "read_domains": [
+    "weather"
+  ],
+  "confidence": 1.0,
+  "explanation": "The user is requesting information about the weather, which falls under the read-only domain.",
+  "paei_hint": ""
+}
+INFO:presentos.graph:Intent classified: 0 intents
+INFO:presentos.parent_agent:ParentNode making REAL decisions
+INFO:presentos.graph:Executing 1 instructions
+INFO:presentos.integrations.weather:Weather: clear, Wind: 10.9kt
+INFO:presentos.weather_agent:WeatherAgent: Read-only forecast for Pune
+INFO:httpx:HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+INFO:presentos.pinecone:PineconeClient initialized index=presentos-memory-1536 namespace=presentos-rag
+INFO:presentos.graph:Graph execution completed - PDF flow executed
+2026-01-27 15:19:49,897 INFO presentos.notion: XP summary calculated: {'P': 43, 'A': 302, 'E': 106, 'I': 84, 'total': 535, 'streak': 5}
+INFO:presentos.notion:XP summary calculated: {'P': 43, 'A': 302, 'E': 106, 'I': 84, 'total': 535, 'streak': 5}
+INFO:     127.0.0.1:53969 - "POST /api/chat HTTP/1.1" 200 OK
+INFO:     127.0.0.1:53976 - "GET /api/notifications HTTP/1.1" 200 OK
+INFO:     127.0.0.1:61891 - "GET /api/notifications HTTP/1.1" 200 OK
+INFO:     127.0.0.1:61892 - "GET /api/energy HTTP/1.1" 200 OK
+2026-01-27 15:20:33,368 INFO presentos.notion: XP summary calculated: {'P': 43, 'A': 302, 'E': 106, 'I': 84, 'total': 535, 'streak': 5}
+INFO:presentos.notion:XP summary calculated: {'P': 43, 'A': 302, 'E': 106, 'I': 84, 'total': 535, 'streak': 5}
+INFO:     127.0.0.1:62164 - "GET /api/status HTTP/1.1" 200 OK
+INFO:     127.0.0.1:54612 - "GET /api/notifications HTTP/1.1" 200 OK
+INFO:     127.0.0.1:54614 - "GET /api/energy HTTP/1.1" 200 OK
+INFO:     127.0.0.1:53893 - "GET /api/notifications HTTP/1.1" 200 OK
+INFO:     127.0.0.1:53894 - "GET /api/energy HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56308 - "GET /api/notifications HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56309 - "GET /api/energy HTTP/1.1" 200 OK
+2026-01-27 15:21:33,878 INFO presentos.notion: XP summary calculated: {'P': 43, 'A': 302, 'E': 106, 'I': 84, 'total': 535, 'streak': 5}
+INFO:presentos.notion:XP summary calculated: {'P': 43, 'A': 302, 'E': 106, 'I': 84, 'total': 535, 'streak': 5}
+INFO:     127.0.0.1:56311 - "GET /api/status HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58133 - "GET /api/notifications HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58134 - "GET /api/energy HTTP/1.1" 200 OK
+INFO:     127.0.0.1:53949 - "GET /api/notifications HTTP/1.1" 200 OK
+INFO:     127.0.0.1:53951 - "GET /api/energy HTTP/1.1" 200 OK
+2026-01-27 15:22:33,539 INFO presentos.notion: XP summary calculated: {'P': 43, 'A': 302, 'E': 106, 'I': 84, 'total': 535, 'streak': 5}
+INFO:presentos.notion:XP summary calculated: {'P': 43, 'A': 302, 'E': 106, 'I': 84, 'total': 535, 'streak': 5}
+INFO:     127.0.0.1:53952 - "GET /api/status HTTP/1.1" 200 OK
+INFO:     127.0.0.1:61279 - "GET /api/notifications HTTP/1.1" 200 OK
+INFO:     127.0.0.1:61280 - "GET /api/energy HTTP/1.1" 200 OK
+2026-01-27 15:23:05,513 INFO presentos.notion: XP summary calculated: {'P': 43, 'A': 302, 'E': 106, 'I': 84, 'total': 535, 'streak': 5}
+INFO:presentos.notion:XP summary calculated: {'P': 43, 'A': 302, 'E': 106, 'I': 84, 'total': 535, 'streak': 5}
+INFO:     127.0.0.1:61281 - "GET /api/status HTTP/1.1" 200 OK
+INFO:     127.0.0.1:61286 - "GET /api/energy HTTP/1.1" 200 OK
+INFO:presentos.api:Processing message: Hello Martin
+INFO:presentos.graph:Graph invoked: 'Hello Martin...'
+INFO:presentos.intent:Raw intent data for 'Hello Martin...': {
+  "intents": [],
+  "read_domains": [],
+  "confidence": 0.9,
+  "explanation": "The user is greeting someone named Martin, which falls under small talk or general engagement.",
+  "paei_hint": "I"
+}
+INFO:presentos.graph:Intent classified: 0 intents
+INFO:presentos.parent_agent:ParentNode making REAL decisions
+INFO:presentos.pinecone:PineconeClient initialized index=presentos-memory-1536 namespace=presentos-rag
+INFO:presentos.graph:Graph execution completed - PDF flow executed
+2026-01-27 15:23:14,369 INFO presentos.notion: XP summary calculated: {'P': 43, 'A': 302, 'E': 106, 'I': 84, 'total': 535, 'streak': 5}
+INFO:presentos.notion:XP summary calculated: {'P': 43, 'A': 302, 'E': 106, 'I': 84, 'total': 535, 'streak': 5}
+INFO:     127.0.0.1:61289 - "POST /api/chat HTTP/1.1" 200 OK
+INFO:presentos.api:Processing message: What do I know about Sarah?
+INFO:presentos.graph:Graph invoked: 'What do I know about Sarah?...'
+INFO:presentos.intent:Raw intent data for 'What do I know about Sarah?...': {
+  "intents": [],
+  "read_domains": [
+    "contact_info"
+  ],
+  "confidence": 1.0,
+  "explanation": "User is asking for information about Sarah, which falls under the contact_info domain.",
+  "paei_hint": ""
+}
+INFO:presentos.graph:Intent classified: 0 intents
+INFO:presentos.parent_agent:ParentNode making REAL decisions
+INFO:presentos.graph:Executing 1 instructions
+INFO:presentos.execution_router:Executing contact_agent with PAEI: P
+INFO:httpx:HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+INFO:presentos.pinecone:PineconeClient initialized index=presentos-memory-1536 namespace=presentos-rag
+INFO:presentos.graph:Graph execution completed - PDF flow executed
+2026-01-27 15:23:23,507 INFO presentos.notion: XP summary calculated: {'P': 43, 'A': 302, 'E': 106, 'I': 84, 'total': 535, 'streak': 5}
+INFO:presentos.notion:XP summary calculated: {'P': 43, 'A': 302, 'E': 106, 'I': 84, 'total': 535, 'streak': 5}
+INFO:     127.0.0.1:61292 - "POST /api/chat HTTP/1.1" 200 OK
+INFO:presentos.api:Processing message: Check the weather
+INFO:presentos.graph:Graph invoked: 'Check the weather...'
+INFO:presentos.intent:Raw intent data for 'Check the weather...': {
+  "intents": [],
+  "read_domains": [
+    "weather"
+  ],
+  "confidence": 1.0,
+  "explanation": "The user is requesting information about the weather, which falls under the read-only domain.",
+  "paei_hint": ""
+}
+INFO:presentos.graph:Intent classified: 0 intents
+INFO:presentos.parent_agent:ParentNode making REAL decisions
+INFO:presentos.graph:Executing 1 instructions
+INFO:presentos.integrations.weather:Weather: clear, Wind: 10.9kt
+INFO:presentos.weather_agent:WeatherAgent: Read-only forecast for Pune
+INFO:httpx:HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+INFO:presentos.pinecone:PineconeClient initialized index=presentos-memory-1536 namespace=presentos-rag
+INFO:presentos.graph:Graph execution completed - PDF flow executed
+2026-01-27 15:23:32,226 INFO presentos.notion: XP summary calculated: {'P': 43, 'A': 302, 'E': 106, 'I': 84, 'total': 535, 'streak': 5}
+INFO:presentos.notion:XP summary calculated: {'P': 43, 'A': 302, 'E': 106, 'I': 84, 'total': 535, 'streak': 5}
+INFO:     127.0.0.1:61296 - "POST /api/chat HTTP/1.1" 200 OK
+INFO:     127.0.0.1:49962 - "GET /api/notifications HTTP/1.1" 200 OK
+2026-01-27 15:24:01,619 INFO presentos.notion: XP summary calculated: {'P': 43, 'A': 302, 'E': 106, 'I': 84, 'total': 535, 'streak': 5}
+INFO:presentos.notion:XP summary calculated: {'P': 43, 'A': 302, 'E': 106, 'I': 84, 'total': 535, 'streak': 5}
+INFO:     127.0.0.1:61458 - "GET /api/status HTTP/1.1" 200 OK
+INFO:     127.0.0.1:50987 - "GET /api/notifications HTTP/1.1" 200 OK
+INFO:     127.0.0.1:50988 - "GET /api/energy HTTP/1.1" 200 OK
+2026-01-27 15:24:04,288 INFO presentos.notion: XP summary calculated: {'P': 43, 'A': 302, 'E': 106, 'I': 84, 'total': 535, 'streak': 5}
+INFO:presentos.notion:XP summary calculated: {'P': 43, 'A': 302, 'E': 106, 'I': 84, 'total': 535, 'streak': 5}
+INFO:     127.0.0.1:50989 - "GET /api/status HTTP/1.1" 200 OK
+INFO:     127.0.0.1:61488 - "GET /api/energy HTTP/1.1" 200 OK
+INFO:presentos.api:Processing message: Hello Martin
+INFO:presentos.graph:Graph invoked: 'Hello Martin...'
+INFO:presentos.intent:Raw intent data for 'Hello Martin...': {
+  "intents": [],
+  "read_domains": [],
+  "confidence": 0.9,
+  "explanation": "The user is greeting someone named Martin, which falls under small talk or general engagement.",
+  "paei_hint": "I"
+}
+INFO:presentos.graph:Intent classified: 0 intents
+INFO:presentos.parent_agent:ParentNode making REAL decisions
+INFO:presentos.pinecone:PineconeClient initialized index=presentos-memory-1536 namespace=presentos-rag
+INFO:presentos.graph:Graph execution completed - PDF flow executed
+2026-01-27 15:24:10,274 INFO presentos.notion: XP summary calculated: {'P': 43, 'A': 302, 'E': 106, 'I': 84, 'total': 535, 'streak': 5}
+INFO:presentos.notion:XP summary calculated: {'P': 43, 'A': 302, 'E': 106, 'I': 84, 'total': 535, 'streak': 5}
+INFO:     127.0.0.1:61491 - "POST /api/chat HTTP/1.1" 200 OK
+INFO:presentos.api:Processing message: What do I know about Sarah?
+INFO:presentos.graph:Graph invoked: 'What do I know about Sarah?...'
+INFO:presentos.intent:Raw intent data for 'What do I know about Sarah?...': {
+  "intents": [],
+  "read_domains": [
+    "contact_info"
+  ],
+  "confidence": 1.0,
+  "explanation": "User is asking for information about Sarah, which falls under the contact_info domain.",
+  "paei_hint": ""
+}
+INFO:presentos.graph:Intent classified: 0 intents
+INFO:presentos.parent_agent:ParentNode making REAL decisions
+INFO:presentos.graph:Executing 1 instructions
+INFO:presentos.execution_router:Executing contact_agent with PAEI: P
+INFO:httpx:HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+INFO:presentos.pinecone:PineconeClient initialized index=presentos-memory-1536 namespace=presentos-rag
+INFO:presentos.graph:Graph execution completed - PDF flow executed
+2026-01-27 15:24:19,764 INFO presentos.notion: XP summary calculated: {'P': 43, 'A': 302, 'E': 106, 'I': 84, 'total': 535, 'streak': 5}
+INFO:presentos.notion:XP summary calculated: {'P': 43, 'A': 302, 'E': 106, 'I': 84, 'total': 535, 'streak': 5}
+INFO:     127.0.0.1:61496 - "POST /api/chat HTTP/1.1" 200 OK
+INFO:presentos.api:Processing message: Check the weather
+INFO:presentos.graph:Graph invoked: 'Check the weather...'
+INFO:presentos.intent:Raw intent data for 'Check the weather...': {
+  "intents": [],
+  "read_domains": [
+    "weather"
+  ],
+  "confidence": 1.0,
+  "explanation": "The user is requesting information about the weather, which falls under the read-only domain.",
+  "paei_hint": ""
+}
+INFO:presentos.graph:Intent classified: 0 intents
+INFO:presentos.parent_agent:ParentNode making REAL decisions
+INFO:presentos.graph:Executing 1 instructions
+INFO:presentos.integrations.weather:Weather: clear, Wind: 10.9kt
+INFO:presentos.weather_agent:WeatherAgent: Read-only forecast for Pune
+INFO:httpx:HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+INFO:presentos.pinecone:PineconeClient initialized index=presentos-memory-1536 namespace=presentos-rag
+INFO:presentos.graph:Graph execution completed - PDF flow executed
+2026-01-27 15:24:29,668 INFO presentos.notion: XP summary calculated: {'P': 43, 'A': 302, 'E': 106, 'I': 84, 'total': 535, 'streak': 5}
+INFO:presentos.notion:XP summary calculated: {'P': 43, 'A': 302, 'E': 106, 'I': 84, 'total': 535, 'streak': 5}
+INFO:     127.0.0.1:61500 - "POST /api/chat HTTP/1.1" 200 OK
+INFO:     127.0.0.1:61508 - "GET /api/notifications HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52563 - "GET /api/notifications HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52566 - "GET /api/energy HTTP/1.1" 200 OK
+2026-01-27 15:25:05,344 INFO presentos.notion: XP summary calculated: {'P': 43, 'A': 302, 'E': 106, 'I': 84, 'total': 535, 'streak': 5}
+INFO:presentos.notion:XP summary calculated: {'P': 43, 'A': 302, 'E': 106, 'I': 84, 'total': 535, 'streak': 5}
+INFO:     127.0.0.1:52567 - "GET /api/status HTTP/1.1" 200 OK
+INFO:     127.0.0.1:54991 - "GET /api/notifications HTTP/1.1" 200 OK
+INFO:     127.0.0.1:54994 - "GET /api/energy HTTP/1.1" 200 OK
+2026-01-27 15:25:30,638 INFO presentos.notion: XP summary calculated: {'P': 43, 'A': 302, 'E': 106, 'I': 84, 'total': 535, 'streak': 5}
+INFO:presentos.notion:XP summary calculated: {'P': 43, 'A': 302, 'E': 106, 'I': 84, 'total': 535, 'streak': 5}
+INFO:     127.0.0.1:54996 - "GET /api/status HTTP/1.1" 200 OK
+INFO:     127.0.0.1:50381 - "GET /api/notifications HTTP/1.1" 200 OK
+INFO:     127.0.0.1:50383 - "GET /api/energy HTTP/1.1" 200 OK
+2026-01-27 15:25:32,497 INFO presentos.notion: XP summary calculated: {'P': 43, 'A': 302, 'E': 106, 'I': 84, 'total': 535, 'streak': 5}
+INFO:presentos.notion:XP summary calculated: {'P': 43, 'A': 302, 'E': 106, 'I': 84, 'total': 535, 'streak': 5}
+INFO:     127.0.0.1:60338 - "GET /api/status HTTP/1.1" 200 OK
+INFO:     127.0.0.1:63143 - "GET /api/notifications HTTP/1.1" 200 OK
+INFO:     127.0.0.1:63144 - "GET /api/energy HTTP/1.1" 200 OK
+INFO:presentos.api:Processing message: hi
+INFO:presentos.graph:Graph invoked: 'hi...'
+INFO:httpx:HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+INFO:presentos.intent:Raw intent data for 'hi...': {
+  "intents": [],
+  "read_domains": [],
+  "confidence": 1.0,
+  "explanation": "The user is engaging in small talk with a greeting.",
+  "paei_hint": "I"
+}
+INFO:presentos.graph:Intent classified: 0 intents
+INFO:presentos.parent_agent:ParentNode making REAL decisions
+INFO:presentos.pinecone:PineconeClient initialized index=presentos-memory-1536 namespace=presentos-rag
+INFO:presentos.graph:Graph execution completed - PDF flow executed
+2026-01-27 15:26:11,980 INFO presentos.notion: XP summary calculated: {'P': 43, 'A': 302, 'E': 106, 'I': 84, 'total': 535, 'streak': 5}
+INFO:presentos.notion:XP summary calculated: {'P': 43, 'A': 302, 'E': 106, 'I': 84, 'total': 535, 'streak': 5}
+INFO:     127.0.0.1:55363 - "POST /api/chat HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56249 - "GET /api/notifications HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56250 - "GET /api/energy HTTP/1.1" 200 OK
+2026-01-27 15:26:31,451 INFO presentos.notion: XP summary calculated: {'P': 43, 'A': 302, 'E': 106, 'I': 84, 'total': 535, 'streak': 5}
+INFO:presentos.notion:XP summary calculated: {'P': 43, 'A': 302, 'E': 106, 'I': 84, 'total': 535, 'streak': 5}
+INFO:     127.0.0.1:56251 - "GET /api/status HTTP/1.1" 200 OK
+INFO:     127.0.0.1:55809 - "GET /api/notifications HTTP/1.1" 200 OK
+INFO:     127.0.0.1:55811 - "GET /api/energy HTTP/1.1" 200 OK
+INFO:     127.0.0.1:64395 - "GET /api/notifications HTTP/1.1" 200 OK
+INFO:     127.0.0.1:64397 - "GET /api/energy HTTP/1.1" 200 OK
+2026-01-27 15:27:15,001 INFO presentos.notion: XP summary calculated: {'P': 43, 'A': 302, 'E': 106, 'I': 84, 'total': 535, 'streak': 5}
+INFO:presentos.notion:XP summary calculated: {'P': 43, 'A': 302, 'E': 106, 'I': 84, 'total': 535, 'streak': 5}
+INFO:     127.0.0.1:64400 - "GET /api/status HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62936 - "GET /api/notifications HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62938 - "GET /api/energy HTTP/1.1" 200 OK
+INFO:     127.0.0.1:51424 - "GET /api/notifications HTTP/1.1" 200 OK
+INFO:     127.0.0.1:51425 - "GET /api/energy HTTP/1.1" 200 OK
+2026-01-27 15:27:18,700 INFO presentos.notion: XP summary calculated: {'P': 43, 'A': 302, 'E': 106, 'I': 84, 'total': 535, 'streak': 5}
+INFO:presentos.notion:XP summary calculated: {'P': 43, 'A': 302, 'E': 106, 'I': 84, 'total': 535, 'streak': 5}
+INFO:     127.0.0.1:51426 - "GET /api/status HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62202 - "GET /api/notifications HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62205 - "GET /api/energy HTTP/1.1" 200 OK
+2026-01-27 15:27:21,178 INFO presentos.notion: XP summary calculated: {'P': 43, 'A': 302, 'E': 106, 'I': 84, 'total': 535, 'streak': 5}
+INFO:presentos.notion:XP summary calculated: {'P': 43, 'A': 302, 'E': 106, 'I': 84, 'total': 535, 'streak': 5}
+INFO:     127.0.0.1:62206 - "GET /api/status HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52248 - "GET /api/notifications HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52249 - "GET /api/energy HTTP/1.1" 200 OK
+2026-01-27 15:27:25,824 INFO presentos.notion: XP summary calculated: {'P': 43, 'A': 302, 'E': 106, 'I': 84, 'total': 535, 'streak': 5}
+INFO:presentos.notion:XP summary calculated: {'P': 43, 'A': 302, 'E': 106, 'I': 84, 'total': 535, 'streak': 5}
+INFO:     127.0.0.1:51467 - "GET /api/status HTTP/1.1" 200 OK
+INFO:     127.0.0.1:54470 - "GET /api/notifications HTTP/1.1" 200 OK
+INFO:     127.0.0.1:54471 - "GET /api/energy HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56468 - "GET /api/notifications HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56471 - "GET /api/energy HTTP/1.1" 200 OK
+2026-01-27 15:28:19,860 INFO presentos.notion: XP summary calculated: {'P': 43, 'A': 302, 'E': 106, 'I': 84, 'total': 535, 'streak': 5}
+INFO:presentos.notion:XP summary calculated: {'P': 43, 'A': 302, 'E': 106, 'I': 84, 'total': 535, 'streak': 5}
+INFO:     127.0.0.1:56472 - "GET /api/status HTTP/1.1" 200 OK
+INFO:     127.0.0.1:49398 - "GET /api/notifications HTTP/1.1" 200 OK
+INFO:     127.0.0.1:49399 - "GET /api/energy HTTP/1.1" 200 OK
